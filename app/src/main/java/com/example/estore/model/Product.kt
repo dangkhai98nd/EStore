@@ -9,14 +9,7 @@ class Product() {
     var commentCounter: Int? = null
 
     //    var color: List<String>?
-    constructor(
-        id: String?,
-        name: String?,
-        price: Int?,
-        photo: String?,
-        likeCounter: Int?,
-        commentCounter: Int?
-    ): this() {
+    constructor(id: String?, name: String?, price: Int?, photo: String?, likeCounter: Int?, commentCounter: Int?) : this() {
         this.id = id
         this.commentCounter = commentCounter
         this.likeCounter = likeCounter
