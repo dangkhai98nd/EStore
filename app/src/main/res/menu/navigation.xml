@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+            android:id="@+id/navigation_browse"
+            android:icon="@drawable/ic_browsebutton"
+            android:title="BROWSE" />
+
+    <item
+            android:id="@+id/navigation_hot"
+            android:icon="@drawable/ic_hotitems"
+            android:title="HOT" />
+
+    <item
+            android:id="@+id/navigation_cart"
+            android:icon="@drawable/ic_cart"
+            android:title="CART" />
+
+    <item
+            android:id="@+id/navigation_profile"
+            android:icon="@drawable/ic_profile"
+            android:title="PROFILE" />
+</menu>
