@@ -43,7 +43,7 @@
                     tools:ignore="ContentDescription"/>
 
             <ImageView
-                    android:id="@+id/productPhoto"
+                    android:id="@+id/productPhotoDetail"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:layout_marginStart="12dp"
