@@ -1,7 +1,8 @@
-package com.example.estore
+package com.example.estore.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.example.estore.R
 
 class DetailActivity : AppCompatActivity() {
 

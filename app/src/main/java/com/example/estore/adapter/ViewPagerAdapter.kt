@@ -1,9 +1,11 @@
-package com.example.estore
+package com.example.estore.adapter
 
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.example.estore.fragment.BrowseFragment
+import com.example.estore.fragment.HotFragment
 
 class ViewPagerAdapter(
     fm: FragmentManager,

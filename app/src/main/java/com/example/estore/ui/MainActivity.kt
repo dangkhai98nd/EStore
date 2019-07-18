@@ -1,12 +1,12 @@
-package com.example.estore
+package com.example.estore.ui
 
 import android.os.Bundle
 import android.view.MenuItem
-import android.widget.Switch
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.bottomnavigation.BottomNavigationItemView
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.example.estore.R
+import com.example.estore.adapter.ViewPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
@@ -16,7 +16,22 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        initToolbar()
         initView()
+    }
+
+    private fun initToolbar() {
+        ic_search.setOnClickListener {
+            groupNormal.visibility = View.GONE
+            groupSearch.visibility = View.VISIBLE
+        }
+        ic_close.setOnClickListener{
+            groupNormal.visibility = View.VISIBLE
+            groupSearch.visibility = View.GONE
+        }
+        tvSearch.setOnClickListener {
+
+        }
     }
 
     private fun initView() {
@@ -32,9 +47,6 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         viewPager.addOnPageChangeListener(this)
         val viewPagerAdapter = ViewPagerAdapter(supportFragmentManager, this)
         viewPager.adapter = viewPagerAdapter
-//        tabLayout.setupWithViewPager(viewPager)
-//        tabLayout.getTabAt(0)?.customView = viewPagerAdapter.createTabView(0, true)
-//        tabLayout.getTabAt(1)?.customView = viewPagerAdapter.createTabView(1)
     }
 
     override fun onPageScrollStateChanged(state: Int) {

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:orientation="vertical"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="0dp"
+        android:layout_width="250dp"
+        android:layout_height="370dp">
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_margin="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <com.mikhaellopez.circularimageview.CircularImageView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:id="@+id/ivColorCart"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_cart"
+                app:civ_border_color="#3f51b5"
+                app:civ_border_width="20dp"/>
+
+        <ImageView
+                android:id="@+id/ivProductCart"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginTop="20dp"
+                android:layout_width="130dp"
+                android:layout_height="130dp"/>
+
+        <ImageView
+                android:id="@+id/lineCart"
+                app:layout_constraintTop_toBottomOf="@id/ivProductCart"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="16dp"
+                android:background="@drawable/ic_line"
+                app:layout_constraintWidth_percent="0.92"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/tvProductNameCart"
+                android:layout_margin="16dp"
+                android:maxLines="1"
+                android:text="Product"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/lineCart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/tvColorCart"
+                android:text="Blue"
+                android:gravity="center"
+                android:textSize="12sp"
+                android:maxLines="1"
+                app:layout_constraintTop_toBottomOf="@id/tvProductNameCart"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <TextView
+                android:id="@+id/tvPrice"
+                app:layout_constraintTop_toBottomOf="@id/tvColorCart"
+                android:text="$199.00"
+                android:gravity="center"
+                android:textSize="22sp"
+                android:layout_marginTop="10dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+                app:layout_constraintTop_toBottomOf="@+id/tvPrice"
+                app:layout_constraintStart_toStartOf="@id/tvProductNameCart"
+                app:layout_constraintEnd_toEndOf="@id/tvProductNameCart"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content">
+            <ImageView
+                    android:id="@+id/ivMinusCart"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:src="@drawable/ic_minusbutton"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+
+            <EditText
+                    android:id="@+id/edtQuantity"
+                    android:text="1"
+                    android:gravity="center"
+                    app:layout_constraintStart_toEndOf="@id/ivMinusCart"
+                    app:layout_constraintEnd_toStartOf="@id/ivAddCart"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:background="@android:color/transparent"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"/>
+
+            <ImageView
+                    android:id="@+id/ivAddCart"
+                    android:src="@drawable/ic_addbutton"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="@id/ivMinusCart"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
