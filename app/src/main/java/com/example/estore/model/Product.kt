@@ -17,6 +17,7 @@ class Product() : Parcelable {
     var numberSold: Int? = null
     var trending: Boolean? = null
     var listUserLike: MutableList<String>? = null
+    var rating: Int? = null
 
     constructor(parcel: Parcel) : this() {
         id = parcel.readString()
@@ -31,6 +32,7 @@ class Product() : Parcelable {
         os = parcel.readString()
         numberSold = parcel.readValue(Int::class.java.classLoader) as? Int
         trending = parcel.readValue(Boolean::class.java.classLoader) as? Boolean
+        rating = parcel.readValue(Int::class.java.classLoader) as? Int
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -46,6 +48,7 @@ class Product() : Parcelable {
         parcel.writeString(os)
         parcel.writeValue(numberSold)
         parcel.writeValue(trending)
+        parcel.writeValue(rating)
     }
 
     override fun describeContents(): Int {
