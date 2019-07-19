@@ -1,12 +1,15 @@
 package com.example.estore
 
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.example.estore.model.LikeProduct
 import com.example.estore.model.Product
 import com.example.estore.model.User
 import com.google.firebase.database.*
 
-class FirebaseFunction {
+class FirebaseFunction : ViewModel() {
     private lateinit var databaseRef: DatabaseReference
+    var listProductLiveData : MutableLiveData<List<Product>> = MutableLiveData()
     private var listProduct: MutableList<Product> = ArrayList()
     private var user: User? = null
 //    private var productLike: LikeProduct? = null
@@ -32,6 +35,7 @@ class FirebaseFunction {
                 val product = p0.getValue(Product::class.java)
                 if (product != null) {
                     listProduct.add(product)
+                    listProductLiveData.value = listProduct
                 }
             }
 
@@ -61,6 +65,7 @@ class FirebaseFunction {
                 val product = p0.getValue(Product::class.java)
                 if (product != null) {
                     listProduct.add(product)
+                    listProductLiveData.value = listProduct
                 }
             }
 
