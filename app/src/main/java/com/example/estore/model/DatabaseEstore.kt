@@ -17,5 +17,7 @@ class DatabaseEstore {
             })
             firebaseFunction.estoreGetProductAll()
         }
+
+        var userEstore: User? = null
     }
 }
