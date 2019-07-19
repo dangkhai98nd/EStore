@@ -64,7 +64,7 @@ class FirebaseFunction : ViewModel() {
             override fun onChildAdded(p0: DataSnapshot, p1: String?) {
                 val product = p0.getValue(Product::class.java)
                 if (product != null) {
-                    listProduct.add(product)
+//                    listProduct.add(product)
                     productLiveData.value = product
                 }
             }
