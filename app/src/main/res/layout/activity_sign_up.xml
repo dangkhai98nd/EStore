@@ -66,10 +66,11 @@
     <Button
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@drawable/button_login"
+        android:background="@drawable/ic_button_login"
         android:text="@string/sign_up"
         android:layout_marginTop="20dp"
         android:id="@+id/buttonSignUp"
+        android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
