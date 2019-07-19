@@ -112,6 +112,16 @@ class FirebaseFunction : ViewModel() {
 
     //////////////////////////////
 
+    fun updateProduct(product: Product){
+        databaseRef = FirebaseDatabase.getInstance().getReference("Product")
+        product.id?.let { databaseRef.child(it).setValue(product) }
+    }
+
+    fun updateUser(user: User){
+        databaseRef = FirebaseDatabase.getInstance().getReference("User")
+        user.id?.let { databaseRef.child(it).setValue(user) }
+    }
+
 //    fun estoreGetProductUserLike(idUser: String) {
 //        databaseRef = FirebaseDatabase.getInstance().getReference("LikeProduct")
 //        databaseRef.orderByChild("idUser").equalTo(idUser).addChildEventListener(object : ChildEventListener {
