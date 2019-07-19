@@ -54,23 +54,18 @@ class DetailActivity : AppCompatActivity() {
         when {
             productDetail.rating == 5 -> {
                 set5star()
-                star5click = true
             }
             productDetail.rating == 4 -> {
                 set4star()
-                star4click = true
             }
             productDetail.rating == 3 -> {
                 set3star()
-                star3click = true
             }
             productDetail.rating == 2 -> {
                 set2star()
-                star2click = true
             }
             productDetail.rating == 1 -> {
                 set1star()
-                star1click = true
             }
         }
         star5.setOnClickListener {
