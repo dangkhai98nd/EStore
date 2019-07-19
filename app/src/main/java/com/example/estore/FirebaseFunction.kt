@@ -9,7 +9,7 @@ import com.google.firebase.database.*
 
 class FirebaseFunction : ViewModel() {
     private lateinit var databaseRef: DatabaseReference
-    var listProductLiveData : MutableLiveData<List<Product>> = MutableLiveData()
+    var productLiveData : MutableLiveData<Product> = MutableLiveData()
     private var listProduct: MutableList<Product> = ArrayList()
     private var user: User? = null
 //    private var productLike: LikeProduct? = null
@@ -35,7 +35,7 @@ class FirebaseFunction : ViewModel() {
                 val product = p0.getValue(Product::class.java)
                 if (product != null) {
                     listProduct.add(product)
-                    listProductLiveData.value = listProduct
+                    productLiveData.value = product
                 }
             }
 
@@ -65,7 +65,7 @@ class FirebaseFunction : ViewModel() {
                 val product = p0.getValue(Product::class.java)
                 if (product != null) {
                     listProduct.add(product)
-                    listProductLiveData.value = listProduct
+                    productLiveData.value = product
                 }
             }
 
