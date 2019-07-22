@@ -15,22 +15,24 @@ class Product() {
     var trending: Boolean? = null
     var listUserLike: MutableList<String>? = null
     var rating: Int? = null
+    var time: String? = null
 
     constructor(
-        id: String? = null,
-        name: String? = null,
-        price: Int? = null,
-        photoDark: String? = null,
-        photoLight: String? = null,
-        likeCounter: Int? = null,
-        commentCounter: Int? = null,
-        type: String? = null, //phone? table? watch? headphones?
-        brand: String? = null, //samsung? apple? oppo? xiaomi? beats? skullcandy?
-        os: String? = null, // android? ios? null?
-        numberSold: Int? = null,
-        trending: Boolean? = null,
-        listUserLike: MutableList<String>? = null,
-        rating: Int? = null
+        id: String?,
+        name: String?,
+        price: Int?,
+        photoDark: String?,
+        photoLight: String?,
+        likeCounter: Int?,
+        commentCounter: Int?,
+        type: String?, //phone? table? watch? headphones?
+        brand: String?, //samsung? apple? oppo? xiaomi? beats? skullcandy?
+        os: String?, // android? ios? null?
+        numberSold: Int?,
+        trending: Boolean?,
+        listUserLike: MutableList<String>?,
+        rating: Int?,
+        time: String?
     ) : this() {
 
         this.id = id
@@ -47,6 +49,7 @@ class Product() {
         this.trending = trending
         this.listUserLike = listUserLike
         this.rating = rating
+        this.time = time
     }
 
 
