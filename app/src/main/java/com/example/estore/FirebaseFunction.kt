@@ -10,8 +10,9 @@ import com.google.firebase.database.*
 class FirebaseFunction : ViewModel() {
     private lateinit var databaseRef: DatabaseReference
     var productLiveData : MutableLiveData<Product> = MutableLiveData()
+    var userLiveData : MutableLiveData<User> = MutableLiveData()
     private var listProduct: MutableList<Product> = ArrayList()
-    private var user: User? = null
+//    private var user: User? = null
 //    private var productLike: LikeProduct? = null
 
     fun estoreGetProductFilter(filter: String) {
@@ -93,7 +94,8 @@ class FirebaseFunction : ViewModel() {
                 }
 
                 override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                    user = p0.getValue(User::class.java)
+//                    val user = p0.getValue(User::class.java)
+                    userLiveData.value = p0.getValue(User::class.java)
                 }
 
                 override fun onChildRemoved(p0: DataSnapshot) {
@@ -102,9 +104,9 @@ class FirebaseFunction : ViewModel() {
             })
     }
 
-    fun getUser(): User? {
-        return user
-    }
+//    fun getUser(): User? {
+//        return user
+//    }
 
     fun getListProduct(): MutableList<Product> {
         return listProduct
