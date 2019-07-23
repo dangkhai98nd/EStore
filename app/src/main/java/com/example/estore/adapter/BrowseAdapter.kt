@@ -30,7 +30,7 @@ class BrowseAdapter (
     override fun getItemCount(): Int = products.size
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(products[position])
+        holder.bind(products[position], position)
     }
 
 
@@ -46,7 +46,7 @@ class BrowseAdapter (
         private val cvItemBrowse = containerView.findViewById<CardView>(R.id.cvItemBrowse)
 
 
-        fun bind(product : Product) {
+        fun bind(product : Product, position: Int) {
             Glide.with(mContext)
                 .load(product.photoDark)
                 .into(ivProductBrowse)
@@ -61,6 +61,7 @@ class BrowseAdapter (
             cvItemBrowse.setOnClickListener {
                 val intent = Intent(mContext,DetailActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("position", position)
                 mContext.startActivity(intent)
             }
         }
