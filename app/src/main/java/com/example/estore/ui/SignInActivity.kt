@@ -6,10 +6,12 @@ import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.estore.FirebaseFunction
 import com.example.estore.R
 import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
+import com.example.estore.model.DatabaseEstore.Companion.getDatabase
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.google.firebase.auth.FirebaseAuth
@@ -45,21 +47,21 @@ class SignInActivity : AppCompatActivity() {
                         val user = mAuth.currentUser
 
                         if (user != null) {
-                            firebaseFunction.estoreGetUserFromId(user.uid)
-                            Handler().postDelayed({
-//                                userEstore = firebaseFunction.getUser()
-                                Log.i("databaseUser", "${userEstore?.id}")
-                            }, 2000)
-
+                            getDatabase(this, user.uid)
                         }
                         Toast.makeText(baseContext, "Success.", Toast.LENGTH_SHORT).show()
 
-                        firebaseFunction.estoreGetProductAll()
-                        DatabaseEstore.getDatabase(this)
+
 
                         Handler().postDelayed({
-                            Log.i("database", "${database[0]}")
-                        }, 2000)
+                            val intent = Intent(this, MainActivity::class.java)
+                            Log.e("size","${database.size}")
+                            startActivity(intent)
+//                            if (user != null) {
+//                                getDatabase(this, user.uid)
+//                            }
+
+                        }, 4000)
                     }else{
                         Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
                     }
