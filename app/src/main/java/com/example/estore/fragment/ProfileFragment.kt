@@ -1,19 +1,18 @@
 package com.example.estore.fragment
 
+//import com.example.estore.ui.SignInActivity.Companion.database
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.estore.R
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.ui.SignInActivity
-//import com.example.estore.ui.SignInActivity.Companion.database
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment: Fragment() {
@@ -22,11 +21,12 @@ class ProfileFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        userName.text = userEstore?.id
+        userName.text = userEstore?.userName
         profileStatus.text = userEstore?.status
 
         Glide.with(this)
             .load(userEstore?.profilePhoto)
+            .apply(RequestOptions.circleCropTransform())
             .into(profilePhoto)
 
         buttonLogout.setOnClickListener {
