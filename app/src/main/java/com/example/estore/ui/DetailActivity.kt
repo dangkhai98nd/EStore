@@ -1,17 +1,15 @@
 package com.example.estore.ui
 
-import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.estore.FirebaseFunction
 import com.example.estore.R
+import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.example.estore.model.ProductCart
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : AppCompatActivity() {
@@ -24,12 +22,16 @@ class DetailActivity : AppCompatActivity() {
     private var favoriteClick = false
     private var heartClick = false
     private var cartClick = false
+    private var productToPush: Product? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
-        val productDetail = Product()
+        intent
+        val position = intent.getIntExtra("position", -1)
+
+        val productDetail = database[position]
 
         Glide.with(this)
             .load(productDetail.photoDark)
@@ -38,19 +40,36 @@ class DetailActivity : AppCompatActivity() {
         tvProductNameDetail.text = productDetail.name
         tvProductPriceDetail.text = StringBuilder().append("$").append(productDetail.price)
         tvLikeCounterDetail.text =
-            StringBuilder().append(productDetail.likeCounter).append(" likes")
+            StringBuilder().append(productDetail.listUserLike?.size).append(" likes")
         tvCommentCounterDetail.text =
             StringBuilder().append(productDetail.commentCounter).append(" comments")
         numberLikeDetail.text =
-            StringBuilder().append(productDetail.likeCounter).append(" people like this")
+            StringBuilder().append(productDetail.listUserLike?.size).append(" people like this")
 
-        productDetail.trending = true
 
-        if (productDetail.trending!!) {
+        if(userEstore?.listFavorite?.contains(productDetail.id) == true){
+            favoriteClick = true
+            buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
+        }else {
+            favoriteClick = false
+            buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
+        }
+
+        if(productDetail.listUserLike?.contains(userEstore?.id) == true){
+            heartClick = true
+            buttonHeartDetail.setImageResource(R.drawable.ic_heartitemenabled)
+        }else{
+            heartClick = false
+            buttonHeartDetail.setImageResource(R.drawable.ic_heartitemdisabled)
+        }
+
+
+        if (productDetail.trending == true) {
             tvTrendingDetail.visibility = View.VISIBLE
         } else {
             tvTrendingDetail.visibility = View.INVISIBLE
         }
+
         when {
             productDetail.rating == 5 -> {
                 set5star()
@@ -69,31 +88,48 @@ class DetailActivity : AppCompatActivity() {
             }
         }
         star5.setOnClickListener {
-            if (star5click) resetStar() else set5star()
+            if (star5click) resetStar() else{
+                set5star()
+                productDetail.rating = 5
+            }
         }
 
         star4.setOnClickListener {
-            if (star4click) resetStar() else set4star()
+            if (star4click) resetStar() else {
+                set4star()
+                productDetail.rating = 4
+            }
         }
 
         star3.setOnClickListener {
-            if (star3click) resetStar() else set3star()
+            if (star3click) resetStar() else {
+                set3star()
+                productDetail.rating = 3
+            }
         }
 
         star2.setOnClickListener {
-            if (star2click) resetStar() else set2star()
+            if (star2click) resetStar() else {
+                set2star()
+                productDetail.rating = 2
+            }
         }
 
         star1.setOnClickListener {
-            if (star1click) resetStar() else set1star()
+            if (star1click) resetStar() else {
+                set1star()
+                productDetail.rating = 1
+            }
         }
 
         buttonFavoriteDetail.setOnClickListener {
             favoriteClick = if(!favoriteClick){
                 buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
+                productDetail.id?.let { it1 -> userEstore?.listFavorite?.add(it1) }
                 true
             }else{
                 buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
+                productDetail.id?.let { it1 -> userEstore?.listFavorite?.remove(it1) }
                 false
             }
         }
@@ -101,9 +137,19 @@ class DetailActivity : AppCompatActivity() {
         buttonHeartDetail.setOnClickListener {
             heartClick = if(!heartClick){
                 buttonHeartDetail.setImageResource(R.drawable.ic_heartitemenabled)
+                userEstore?.id?.let { it1 -> productDetail.listUserLike?.add(it1) }
+                numberLikeDetail.text =
+                    StringBuilder().append(productDetail.listUserLike?.size).append(" people like this")
+                tvLikeCounterDetail.text =
+                    StringBuilder().append(productDetail.listUserLike?.size).append(" likes")
                 true
             }else{
                 buttonHeartDetail.setImageResource(R.drawable.ic_heartitemdisabled)
+                userEstore?.id?.let { it1 -> productDetail.listUserLike?.remove(it1) }
+                numberLikeDetail.text =
+                    StringBuilder().append(productDetail.listUserLike?.size).append(" people like this")
+                tvLikeCounterDetail.text =
+                    StringBuilder().append(productDetail.listUserLike?.size).append(" likes")
                 false
             }
         }
@@ -112,20 +158,29 @@ class DetailActivity : AppCompatActivity() {
             if(!cartClick) {
                 buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_uncheck)
                 imageCartCheck.visibility = View.VISIBLE
-                productDetail.id?.let { it1 -> userEstore?.cartList?.add(it1) }
+                productDetail.id?.let { it1 -> userEstore?.cartList?.add(ProductCart(it1)) }
                 cartClick = true
             }else{
                 buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_login)
                 imageCartCheck.visibility = View.INVISIBLE
-                productDetail.id?.let { it1 -> userEstore?.cartList?.remove(it1) }
+                productDetail.id?.let { it1 -> userEstore?.cartList?.remove(ProductCart(it1)) }
                 cartClick = false
             }
         }
+
+        productToPush = productDetail
     }
 
     override fun onBackPressed() {
         userEstore?.let { firebaseFunction.updateUser(it) }
+        productToPush?.let { firebaseFunction.updateProduct(it) }
         super.onBackPressed()
+    }
+
+    override fun onPause() {
+        userEstore?.let { firebaseFunction.updateUser(it) }
+        productToPush?.let { firebaseFunction.updateProduct(it) }
+        super.onPause()
     }
 
     private fun set5star() {
