@@ -2,23 +2,25 @@
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
+        android:paddingBottom="60dp"
+        android:layout_marginBottom="180dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvCart"
             app:layout_constraintTop_toTopOf="parent"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.4">
+            android:layout_height="316dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 
     <androidx.cardview.widget.CardView
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rvCart"
-            android:layout_margin="16dp"
-            app:cardCornerRadius="20dp"
+            android:layout_margin="8dp"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="10dp"
             android:layout_width="match_parent"
             android:layout_height="0dp">
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -72,7 +74,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/line1Cart"
                         app:layout_constraintBottom_toTopOf="@id/line2Cart"
-                        android:text="Taxes :"
+                        android:text="Taxes (10%) :"
                         android:textSize="18sp"
                         android:layout_marginLeft="28dp"
                         android:layout_width="wrap_content"

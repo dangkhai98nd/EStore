@@ -1,25 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
+        android:layout_margin="8dp"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:orientation="vertical"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
-        android:layout_width="250dp"
-        android:layout_height="370dp">
+        android:layout_width="200dp"
+        android:layout_height="300dp">
     <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_margin="16dp"
+            android:layout_margin="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-        <com.mikhaellopez.circularimageview.CircularImageView
+        <androidx.cardview.widget.CardView
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:id="@+id/ivColorCart"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:src="@drawable/ic_cart"
-                app:civ_border_color="#3f51b5"
-                app:civ_border_width="20dp"/>
+                android:id="@+id/cvColorCart"
+                android:layout_margin="8dp"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:cardBackgroundColor="@color/colorWhite"
+                app:cardElevation="12dp"
+                app:cardCornerRadius="10dp"/>
 
         <ImageView
                 android:id="@+id/ivProductCart"
@@ -27,8 +29,8 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 android:layout_marginTop="20dp"
-                android:layout_width="130dp"
-                android:layout_height="130dp"/>
+                android:layout_width="100dp"
+                android:layout_height="100dp"/>
 
         <ImageView
                 android:id="@+id/lineCart"
@@ -64,7 +66,7 @@
                 android:layout_height="wrap_content"/>
 
         <TextView
-                android:id="@+id/tvPrice"
+                android:id="@+id/tvPriceCart"
                 app:layout_constraintTop_toBottomOf="@id/tvColorCart"
                 android:text="$199.00"
                 android:gravity="center"
@@ -74,7 +76,7 @@
                 android:layout_height="wrap_content"/>
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                app:layout_constraintTop_toBottomOf="@+id/tvPrice"
+                app:layout_constraintTop_toBottomOf="@+id/tvPriceCart"
                 app:layout_constraintStart_toStartOf="@id/tvProductNameCart"
                 app:layout_constraintEnd_toEndOf="@id/tvProductNameCart"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -89,8 +91,9 @@
                     android:layout_height="40dp"/>
 
             <EditText
-                    android:id="@+id/edtQuantity"
+                    android:id="@+id/edtQuantityCart"
                     android:text="1"
+                    android:inputType="numberDecimal"
                     android:gravity="center"
                     app:layout_constraintStart_toEndOf="@id/ivMinusCart"
                     app:layout_constraintEnd_toStartOf="@id/ivAddCart"
