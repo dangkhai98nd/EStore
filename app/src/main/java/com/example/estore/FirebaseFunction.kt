@@ -2,78 +2,32 @@ package com.example.estore
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.estore.model.LikeProduct
 import com.example.estore.model.Product
 import com.example.estore.model.User
 import com.google.firebase.database.*
 
 class FirebaseFunction : ViewModel() {
     private lateinit var databaseRef: DatabaseReference
-    var productLiveData : MutableLiveData<Product> = MutableLiveData()
+    var productLiveData : MutableLiveData<List<Product>> = MutableLiveData()
     var userLiveData : MutableLiveData<User> = MutableLiveData()
     private var listProduct: MutableList<Product> = ArrayList()
-//    private var user: User? = null
-//    private var productLike: LikeProduct? = null
-
-    fun estoreGetProductFilter(filter: String) {
-        databaseRef = FirebaseDatabase.getInstance().getReference("Product")
-//            .startAt(price.toDouble())
-        databaseRef.orderByChild(filter).addChildEventListener(object :
-            ChildEventListener {
-            override fun onCancelled(p0: DatabaseError) {
-
-            }
-
-            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-
-            }
-
-            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-
-            }
-
-            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                val product = p0.getValue(Product::class.java)
-                if (product != null) {
-                    listProduct.add(product)
-                    productLiveData.value = product
-                }
-            }
-
-            override fun onChildRemoved(p0: DataSnapshot) {
-
-            }
-        })
-    }
 
     fun estoreGetProductAll() {
         databaseRef = FirebaseDatabase.getInstance().getReference("Product")
-        databaseRef.addChildEventListener(object :
-            ChildEventListener {
+        databaseRef.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
 
             }
 
-            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-
-            }
-
-            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-
-            }
-
-            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-                val product = p0.getValue(Product::class.java)
-                if (product != null) {
-//                    listProduct.add(product)
-                    productLiveData.value = product
+            override fun onDataChange(p0: DataSnapshot) {
+                for(product in p0.children){
+                    product.getValue(Product::class.java)?.let { listProduct.add(it) }
                 }
+                productLiveData.value = listProduct
             }
 
-            override fun onChildRemoved(p0: DataSnapshot) {
-
-            }
         })
+
 
     }
 
@@ -104,12 +58,22 @@ class FirebaseFunction : ViewModel() {
             })
     }
 
-//    fun getUser(): User? {
-//        return user
-//    }
+    //////////////////////////////
 
-    fun getListProduct(): MutableList<Product> {
-        return listProduct
+    fun updateOnFeed(productId: String): User?{
+        var product: User? = null
+        databaseRef = FirebaseDatabase.getInstance().getReference("User")
+        databaseRef.child(productId).addValueEventListener(object : ValueEventListener{
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                 product = p0.getValue(User::class.java)
+
+            }
+        })
+        return product
     }
 
     //////////////////////////////
@@ -124,33 +88,40 @@ class FirebaseFunction : ViewModel() {
         user.id?.let { databaseRef.child(it).setValue(user) }
     }
 
-//    fun estoreGetProductUserLike(idUser: String) {
-//        databaseRef = FirebaseDatabase.getInstance().getReference("LikeProduct")
-//        databaseRef.orderByChild("idUser").equalTo(idUser).addChildEventListener(object : ChildEventListener {
-//            override fun onCancelled(p0: DatabaseError) {
-//
-//            }
-//
-//            override fun onChildMoved(p0: DataSnapshot, p1: String?) {
-//
-//            }
-//
-//            override fun onChildChanged(p0: DataSnapshot, p1: String?) {
-//
-//            }
-//
-//            override fun onChildAdded(p0: DataSnapshot, p1: String?) {
-//                productLike = p0.getValue(LikeProduct::class.java)
-//            }
-//
-//            override fun onChildRemoved(p0: DataSnapshot) {
-//
-//            }
-//        })
-//    }
-//
-//    fun getListProductLike(): LikeProduct? {
-//        return productLike
-//    }
+    fun sortingNew(listProduct: MutableList<Product>): MutableList<Product> {
+        var listNewSort = mutableListOf<Product>()
+        listNewSort.addAll(listProduct)
+        val size = listProduct.size
 
+        var maxidx: Int
+        for(i in 0 until size){
+            maxidx = i
+            for(j in i+1 until size){
+                if(listNewSort[j].time!! > listNewSort[maxidx].time!!){
+                    maxidx = j
+                }
+                listNewSort[maxidx] = listNewSort[i].also { listNewSort[i] = listNewSort[maxidx] }
+            }
+        }
+        return listNewSort
+    }
+
+    fun sortingPrice(listProduct: MutableList<Product>): MutableList<Product>{
+        var listPriceSort = mutableListOf<Product>()
+        listPriceSort.addAll(listProduct)
+        val size = listProduct.size
+
+        var minidx: Int
+        for(i in 0 until size){
+            minidx = i
+            for(j in i+1 until size){
+                if(listPriceSort[j].price!! > listPriceSort[minidx].price!!){
+                    minidx = j
+                }
+                listPriceSort[minidx] = listPriceSort[i].also { listPriceSort[i] = listPriceSort[minidx] }
+            }
+        }
+        return listPriceSort
+    }
 }
+
