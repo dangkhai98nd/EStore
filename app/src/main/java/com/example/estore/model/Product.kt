@@ -6,7 +6,6 @@ class Product() {
     var price: Int? = null
     var photoDark: String? = null
     var photoLight: String? = null
-    var likeCounter: Int? = null
     var commentCounter: Int? = null
     var type: String? = null //phone? table? watch? headphones?
     var brand: String? = null //samsung? apple? oppo? xiaomi? beats? skullcandy?
@@ -23,7 +22,6 @@ class Product() {
         price: Int?,
         photoDark: String?,
         photoLight: String?,
-        likeCounter: Int?,
         commentCounter: Int?,
         type: String?, //phone? table? watch? headphones?
         brand: String?, //samsung? apple? oppo? xiaomi? beats? skullcandy?
@@ -40,7 +38,6 @@ class Product() {
         this.price = price
         this.photoDark = photoDark
         this.photoLight = photoLight
-        this.likeCounter = likeCounter
         this.commentCounter = commentCounter
         this.type = type
         this.brand = brand
