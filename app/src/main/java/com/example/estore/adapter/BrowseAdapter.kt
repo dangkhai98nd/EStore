@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.estore.FirebaseFunction
 import com.example.estore.R
+import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.ui.DetailActivity
@@ -121,12 +122,14 @@ class BrowseAdapter (
                                     tvLikeCounterBrowse.text = StringBuilder().append(productGet.listUserLike?.size?.plus(1)).append(" likes")
                                     userEstore?.id?.let { it1 -> productGet.listUserLike?.add(it1) }
                                     userEstore?.id?.let { it1 -> product.listUserLike?.add(it1) }
+                                    userEstore?.id?.let { it1 -> database[position].listUserLike?.add(it1) }
                                     true
                                 }else{
                                     buttonHeartBrowse.setImageResource(R.drawable.ic_heartitemdisabled)
                                     tvLikeCounterBrowse.text = StringBuilder().append(productGet.listUserLike?.size?.minus(1)).append(" likes")
                                     userEstore?.id?.let { it1 -> productGet.listUserLike?.remove(it1) }
                                     userEstore?.id?.let { it1 -> product.listUserLike?.remove(it1) }
+                                    userEstore?.id?.let { it1 -> database[position].listUserLike?.remove(it1) }
                                     false
                                 }
                             }
