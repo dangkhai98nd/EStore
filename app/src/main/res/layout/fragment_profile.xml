@@ -84,7 +84,10 @@
                     android:id="@+id/constraint1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="?android:attr/selectableItemBackground"
                     app:layout_constraintTop_toBottomOf="@id/unusedLineDetail">
 
                     <ImageView
@@ -126,7 +129,10 @@
                     android:id="@+id/constraint2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="?android:attr/selectableItemBackground"
                     app:layout_constraintTop_toBottomOf="@id/unusedLine2Detail">
 
                     <ImageView
@@ -168,7 +174,10 @@
                     android:id="@+id/constraint3"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
                     android:layout_marginTop="12dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="?android:attr/selectableItemBackground"
                     app:layout_constraintTop_toBottomOf="@id/unusedLine3">
 
                     <ImageView
