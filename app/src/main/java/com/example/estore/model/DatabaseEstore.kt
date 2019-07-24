@@ -8,6 +8,7 @@ class DatabaseEstore {
     companion object {
         var database : MutableList<Product> = mutableListOf()
         var userEstore: User? = null
+        var listUser: MutableList<User> = mutableListOf()
         fun getDatabase(lifecycleOwner: LifecycleOwner, idUser: String ){
             val firebaseFunction = FirebaseFunction()
             firebaseFunction.productLiveData.observe(lifecycleOwner , Observer {
@@ -20,8 +21,13 @@ class DatabaseEstore {
                 userEstore = it
             })
 
+            firebaseFunction.listUserLiveData.observe(lifecycleOwner, Observer {
+                listUser.addAll(it)
+            })
+
             firebaseFunction.estoreGetProductAll()
             firebaseFunction.estoreGetUserFromId(idUser)
+            firebaseFunction.estoreGetUserAll()
         }
 
     }

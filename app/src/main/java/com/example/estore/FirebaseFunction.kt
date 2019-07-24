@@ -10,7 +10,9 @@ class FirebaseFunction : ViewModel() {
     private lateinit var databaseRef: DatabaseReference
     var productLiveData : MutableLiveData<List<Product>> = MutableLiveData()
     var userLiveData : MutableLiveData<User> = MutableLiveData()
+    var listUserLiveData : MutableLiveData<List<User>> = MutableLiveData()
     private var listProduct: MutableList<Product> = ArrayList()
+    private var listUser: MutableList<User> = ArrayList()
 
     fun estoreGetProductAll() {
         databaseRef = FirebaseDatabase.getInstance().getReference("Product")
@@ -27,7 +29,6 @@ class FirebaseFunction : ViewModel() {
             }
 
         })
-
 
     }
 
@@ -58,29 +59,28 @@ class FirebaseFunction : ViewModel() {
             })
     }
 
-    //////////////////////////////
-
-    fun updateOnFeed(productId: String): User?{
-        var product: User? = null
+    fun estoreGetUserAll(){
         databaseRef = FirebaseDatabase.getInstance().getReference("User")
-        databaseRef.child(productId).addValueEventListener(object : ValueEventListener{
+        databaseRef.addValueEventListener(object : ValueEventListener{
             override fun onCancelled(p0: DatabaseError) {
 
             }
 
             override fun onDataChange(p0: DataSnapshot) {
-                 product = p0.getValue(User::class.java)
-
+                for(product in p0.children){
+                    product.getValue(User::class.java)?.let { listUser.add(it) }
+                }
+                listUserLiveData.value = listUser
             }
+
         })
-        return product
     }
 
     //////////////////////////////
 
-    fun updateProduct(product: Product){
+    fun updateProduct(product: Product, path: String){
         databaseRef = FirebaseDatabase.getInstance().getReference("Product")
-        product.id?.let { databaseRef.child(it).setValue(product) }
+        product.id?.let { databaseRef.child(it).child(path).setValue(product) }
     }
 
     fun updateUser(user: User){
