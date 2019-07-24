@@ -1,19 +1,20 @@
 package com.example.estore.ui
 
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.estore.FirebaseFunction
 import com.example.estore.R
 import com.example.estore.adapter.ListLikeAdapter
 import com.example.estore.model.DatabaseEstore.Companion.database
-import com.example.estore.model.DatabaseEstore.Companion.listUser
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.model.ProductCart
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : AppCompatActivity() {
@@ -33,10 +34,18 @@ class DetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        val behavior = BottomSheetBehavior.from(bottom_sheet)
+
         intent
         val position = intent.getIntExtra("position", -1)
 
         val productDetail = database[position]
+
+        nameInSheet.text = productDetail.name
+        priceInSheet.text = StringBuilder().append("$").append(productDetail.price)
+        Glide.with(this)
+            .load(productDetail.photoDark)
+            .into(imageInSheet)
 
         Glide.with(this)
             .load(productDetail.photoDark)
@@ -161,13 +170,21 @@ class DetailActivity : AppCompatActivity() {
 
         buttonAddCartDetail.setOnClickListener {
             if(!cartClick) {
-                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_uncheck)
+                if(behavior.state != BottomSheetBehavior.STATE_EXPANDED){
+                    behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
                 imageCartCheck.visibility = View.VISIBLE
+                buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
                 productDetail.id?.let { it1 -> userEstore?.cartList?.add(ProductCart(it1)) }
                 cartClick = true
+                Handler().postDelayed({
+                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                },4000)
             }else{
                 buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_login)
                 imageCartCheck.visibility = View.INVISIBLE
+                buttonAddCartDetail.text = StringBuilder().append("ADD TO CART")
                 productDetail.id?.let { it1 -> userEstore?.cartList?.remove(ProductCart(it1)) }
                 cartClick = false
             }
@@ -175,12 +192,15 @@ class DetailActivity : AppCompatActivity() {
 
         productDetail.listUserLike?.let { setUpAdapter(it) }
 
+
+
         productToPush = productDetail
     }
 
     override fun onBackPressed() {
-        userEstore?.let { firebaseFunction.updateUser(it) }
+//        userEstore?.let { firebaseFunction.updateUser(it) }
 //        productToPush?.let { firebaseFunction.updateProduct(it) }
+        finish()
         super.onBackPressed()
     }
 
