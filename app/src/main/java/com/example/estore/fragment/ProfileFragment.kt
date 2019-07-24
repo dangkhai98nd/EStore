@@ -12,6 +12,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.example.estore.R
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
+import com.example.estore.ui.FavoriteActivity
 import com.example.estore.ui.SignInActivity
 import kotlinx.android.synthetic.main.fragment_profile.*
 
@@ -34,6 +35,11 @@ class ProfileFragment: Fragment() {
             database.clear()
             userEstore = null
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
+
+        constraint1.setOnClickListener {
+            val intent = Intent(context, FavoriteActivity::class.java)
             startActivity(intent)
         }
     }
