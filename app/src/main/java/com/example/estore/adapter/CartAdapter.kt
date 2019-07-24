@@ -66,7 +66,6 @@ class CartAdapter(
             }
 
             edtQuantityCart.setText(productCart?.quantity.toString())
-            Log.e("cart","${productCart?.quantity}")
             if (productCart?.color == "dark") {
                 cvColorCart.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.colorDark))
                 tvColorCart.text = "Dark"

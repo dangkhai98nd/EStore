@@ -2,40 +2,37 @@ package com.example.estore.ui
 
 import android.os.Bundle
 import android.os.Handler
-import android.util.AttributeSet
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.estore.R
 import com.example.estore.adapter.FilterAdapter
-import com.example.estore.adapter.ViewPagerAdapter
+import com.example.estore.adapter.ViewPagerMainAdapter
 import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
-import com.example.estore.utils.BottomNavigationBehavior
+import com.example.estore.utils.CubeInRotationTransformation
 import com.example.estore.utils.RecyclerViewOnClickListener
 import com.google.android.material.appbar.AppBarLayout
-import com.google.android.material.appbar.CollapsingToolbarLayout
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
 
     private var preMenuItem: MenuItem? = null
     private var filterAdapter: FilterAdapter? = null
-    private var viewPagerAdapter: ViewPagerAdapter? = null
+    private var viewPagerMainAdapter: ViewPagerMainAdapter? = null
     private var paramsAppBarLayout: AppBarLayout.LayoutParams? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        DatabaseEstore.getDatabase(this, "4WMDEUBKMldJjWs4MV3JCbYtruG2")
+        DatabaseEstore.getDatabase(this, "meCSq8W5SKT8EQRITQhDHuoTcLG2")
         Handler().postDelayed({
             Log.e("static", "${database[0].name}")
             Log.e("static user", "${userEstore?.userName}")
@@ -85,17 +82,18 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     private fun setupNavigation() {
         navigation.setOnNavigationItemSelectedListener {
             when (it.itemId) {
-                R.id.navigation_browse -> viewPager.currentItem = 0
-                R.id.navigation_hot -> viewPager.currentItem = 1
-                R.id.navigation_cart -> viewPager.currentItem = 2
-                R.id.navigation_profile -> viewPager.currentItem = 3
+                R.id.navigation_browse -> vpMain.currentItem = 0
+                R.id.navigation_hot -> vpMain.currentItem = 1
+                R.id.navigation_cart -> vpMain.currentItem = 2
+                R.id.navigation_profile -> vpMain.currentItem = 3
             }
             false
         }
 
-        viewPager.addOnPageChangeListener(this)
-        viewPagerAdapter = ViewPagerAdapter(supportFragmentManager)
-        viewPager.adapter = viewPagerAdapter
+        vpMain.addOnPageChangeListener(this)
+        viewPagerMainAdapter = ViewPagerMainAdapter(supportFragmentManager)
+        vpMain.adapter = viewPagerMainAdapter
+        vpMain.setPageTransformer(true, CubeInRotationTransformation())
     }
 
     private fun setupRvFilter() {
@@ -153,7 +151,6 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
             }
         }
         ctlMain.layoutParams = paramsAppBarLayout
-        Log.e("change","bottom")
     }
 
 }

@@ -8,12 +8,12 @@ import com.example.estore.fragment.CartFragment
 import com.example.estore.fragment.HotFragment
 import com.example.estore.fragment.ProfileFragment
 
-class ViewPagerAdapter(
+class ViewPagerMainAdapter(
     fm: FragmentManager
 ) : FragmentPagerAdapter(fm) {
-    companion object {
-        val NUMBER_PAGE: Int = 4
-    }
+
+    val NUMBER_PAGE: Int = 4
+
 
     override fun getItem(position: Int): Fragment {
         return when (position) {

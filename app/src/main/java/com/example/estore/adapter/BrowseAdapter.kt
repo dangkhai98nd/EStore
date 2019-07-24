@@ -149,7 +149,6 @@ class BrowseAdapter (
     }
 
     fun add(product: Product) {
-        Log.e("name","${product.name}")
         this.products.add(product)
         notifyDataSetChanged()
     }
