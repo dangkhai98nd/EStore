@@ -68,9 +68,9 @@ class BrowseAdapter (
             tvLikeCounterBrowse.text = StringBuilder().append(product.listUserLike?.size).append(" likes")
             tvCommentCounterBrowse.text = StringBuilder().append(product.commentCounter).append(" comments")
             cvItemBrowse.setOnClickListener {
-                val firebaseFunction = FirebaseFunction()
-                firebaseFunction.updateProduct(product)
-                userEstore?.let { it1 -> firebaseFunction.updateUser(it1) }
+//                val firebaseFunction = FirebaseFunction()
+//                firebaseFunction.updateProduct(product)
+//                userEstore?.let { it1 -> firebaseFunction.updateUser(it1) }
                 val intent = Intent(mContext,DetailActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 intent.putExtra("position", position)
@@ -122,14 +122,14 @@ class BrowseAdapter (
                                     tvLikeCounterBrowse.text = StringBuilder().append(productGet.listUserLike?.size?.plus(1)).append(" likes")
                                     userEstore?.id?.let { it1 -> productGet.listUserLike?.add(it1) }
                                     userEstore?.id?.let { it1 -> product.listUserLike?.add(it1) }
-                                    userEstore?.id?.let { it1 -> database[position].listUserLike?.add(it1) }
+//                                    userEstore?.id?.let { it1 -> database[position].listUserLike?.add(it1) }
                                     true
                                 }else{
                                     buttonHeartBrowse.setImageResource(R.drawable.ic_heartitemdisabled)
                                     tvLikeCounterBrowse.text = StringBuilder().append(productGet.listUserLike?.size?.minus(1)).append(" likes")
                                     userEstore?.id?.let { it1 -> productGet.listUserLike?.remove(it1) }
                                     userEstore?.id?.let { it1 -> product.listUserLike?.remove(it1) }
-                                    userEstore?.id?.let { it1 -> database[position].listUserLike?.remove(it1) }
+//                                    userEstore?.id?.let { it1 -> database[position].listUserLike?.remove(it1) }
                                     false
                                 }
                             }
