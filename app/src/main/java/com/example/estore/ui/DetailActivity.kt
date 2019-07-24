@@ -3,10 +3,14 @@ package com.example.estore.ui
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.estore.FirebaseFunction
 import com.example.estore.R
+import com.example.estore.adapter.ListLikeAdapter
 import com.example.estore.model.DatabaseEstore.Companion.database
+import com.example.estore.model.DatabaseEstore.Companion.listUser
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.model.ProductCart
@@ -23,6 +27,7 @@ class DetailActivity : AppCompatActivity() {
     private var heartClick = false
     private var cartClick = false
     private var productToPush: Product? = null
+    private var listLikeAdapter: ListLikeAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -168,18 +173,20 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
+        productDetail.listUserLike?.let { setUpAdapter(it) }
+
         productToPush = productDetail
     }
 
     override fun onBackPressed() {
         userEstore?.let { firebaseFunction.updateUser(it) }
-        productToPush?.let { firebaseFunction.updateProduct(it) }
+//        productToPush?.let { firebaseFunction.updateProduct(it) }
         super.onBackPressed()
     }
 
     override fun onPause() {
         userEstore?.let { firebaseFunction.updateUser(it) }
-        productToPush?.let { firebaseFunction.updateProduct(it) }
+//        productToPush?.let { firebaseFunction.updateProduct(it) }
         super.onPause()
     }
 
@@ -259,6 +266,11 @@ class DetailActivity : AppCompatActivity() {
         star3click = false
         star4click = false
         star5click = false
+    }
 
+    private fun setUpAdapter(listLike: List<String>){
+        listLikeAdapter = ListLikeAdapter(this, listLike)
+        rvListLike.adapter = listLikeAdapter
+        rvListLike.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
     }
 }
