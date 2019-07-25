@@ -12,7 +12,7 @@ class Product() {
     var os: String? = null // android? ios? null?
     var numberSold: Int? = null
     var trending: Boolean? = null
-    var listUserLike: MutableList<String>? = null
+    var listUserLike: MutableList<String> = ArrayList()
     var rating: Int? = null
     var time: String? = null
 
@@ -28,11 +28,10 @@ class Product() {
         os: String?, // android? ios? null?
         numberSold: Int?,
         trending: Boolean?,
-        listUserLike: MutableList<String>?,
+        listUserLike: MutableList<String>,
         rating: Int?,
         time: String?
     ) : this() {
-
         this.id = id
         this.name = name
         this.price = price
@@ -44,7 +43,7 @@ class Product() {
         this.os = os
         this.numberSold = numberSold
         this.trending = trending
-        this.listUserLike = listUserLike
+        this.listUserLike.addAll(listUserLike)
         this.rating = rating
         this.time = time
     }
