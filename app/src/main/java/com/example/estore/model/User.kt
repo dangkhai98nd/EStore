@@ -12,16 +12,14 @@ class User() {
         id: String?,
         userName: String?,
         cartList: MutableList<ProductCart>,
-        listFavorite: MutableList<String>?,
+        listFavorite: MutableList<String>,
         status: String?,
         profilePhoto: String?
     ) : this() {
         this.id = id
         this.userName = userName
-        this.cartList = cartList
-        if (listFavorite != null) {
-            this.listFavorite.addAll(listFavorite)
-        }
+        this.cartList.addAll(cartList)
+        this.listFavorite.addAll(listFavorite)
         this.status = status
         this.profilePhoto = profilePhoto
     }
