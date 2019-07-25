@@ -35,11 +35,6 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        DatabaseEstore.getDatabase(this, "meCSq8W5SKT8EQRITQhDHuoTcLG2")
-        Handler().postDelayed({
-            Log.e("static", "${database[0].name}")
-            Log.e("static user", "${userEstore?.userName}")
-        }, 4000)
         databaseFilter.value = database
         paramsAppBarLayout = ctlMain.layoutParams as AppBarLayout.LayoutParams
         initToolbar()

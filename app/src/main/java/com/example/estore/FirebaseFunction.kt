@@ -93,42 +93,5 @@ class FirebaseFunction : ViewModel() {
         databaseRef.child(id).child(stringChild).setValue(value)
     }
 
-
-
-    fun sortingNew(listProduct: MutableList<Product>): MutableList<Product> {
-        var listNewSort = mutableListOf<Product>()
-        listNewSort.addAll(listProduct)
-        val size = listProduct.size
-
-        var maxidx: Int
-        for(i in 0 until size-1){
-            maxidx = i
-            for(j in i+1 until size-1){
-                if(listNewSort[j].time!! > listNewSort[maxidx].time!!){
-                    maxidx = j
-                }
-                listNewSort[maxidx] = listNewSort[i].also { listNewSort[i] = listNewSort[maxidx] }
-            }
-        }
-        return listNewSort
-    }
-
-    fun sortingPrice(listProduct: MutableList<Product>): MutableList<Product>{
-        var listPriceSort = mutableListOf<Product>()
-        listPriceSort.addAll(listProduct)
-        val size = listProduct.size
-
-        var maxidx: Int
-        for(i in 0 until size-1){
-            maxidx = i
-            for(j in i+1 until size){
-                if(listPriceSort[j].price!! > listPriceSort[maxidx].price!!){
-                    maxidx = j
-                }
-                listPriceSort[maxidx] = listPriceSort[i].also { listPriceSort[i] = listPriceSort[maxidx] }
-            }
-        }
-        return listPriceSort
-    }
 }
 
