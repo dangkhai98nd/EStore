@@ -3,6 +3,7 @@ package com.example.estore.ui
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -29,6 +30,7 @@ class DetailActivity : AppCompatActivity() {
     private var cartClick = false
     private var productToPush: Product? = null
     private var listLikeAdapter: ListLikeAdapter? = null
+    private var listLikeSize = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,13 +54,18 @@ class DetailActivity : AppCompatActivity() {
             .into(productPhotoDetail)
 
         tvProductNameDetail.text = productDetail.name
+        tvProductNameDetail.isSelected = true
+
         tvProductPriceDetail.text = StringBuilder().append("$").append(productDetail.price)
+
+        listLikeSize = productDetail.listUserLike.size
+
         tvLikeCounterDetail.text =
-            StringBuilder().append(productDetail.listUserLike?.size).append(" likes")
+            StringBuilder().append(listLikeSize).append(" likes")
         tvCommentCounterDetail.text =
             StringBuilder().append(productDetail.commentCounter).append(" comments")
         numberLikeDetail.text =
-            StringBuilder().append(productDetail.listUserLike?.size).append(" people like this")
+            StringBuilder().append(listLikeSize).append(" people like this")
 
 
         if(userEstore?.listFavorite?.contains(productDetail.id) == true){
@@ -69,7 +76,7 @@ class DetailActivity : AppCompatActivity() {
             buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
         }
 
-        if(productDetail.listUserLike?.contains(userEstore?.id) == true){
+        if(productDetail.listUserLike.contains(userEstore?.id)){
             heartClick = true
             buttonHeartDetail.setImageResource(R.drawable.ic_heartitemenabled)
         }else{
@@ -101,6 +108,7 @@ class DetailActivity : AppCompatActivity() {
                 set1star()
             }
         }
+
         star5.setOnClickListener {
             if (star5click) resetStar() else{
                 set5star()
@@ -140,10 +148,12 @@ class DetailActivity : AppCompatActivity() {
             favoriteClick = if(!favoriteClick){
                 buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
                 productDetail.id?.let { it1 -> userEstore?.listFavorite?.add(it1) }
+                firebaseFunction.updateAny("User", userEstore!!.id!!, "listFavorite", userEstore!!.listFavorite)
                 true
             }else{
                 buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
                 productDetail.id?.let { it1 -> userEstore?.listFavorite?.remove(it1) }
+                firebaseFunction.updateAny("User", userEstore!!.id!!, "listFavorite", userEstore!!.listFavorite)
                 false
             }
         }
@@ -151,20 +161,31 @@ class DetailActivity : AppCompatActivity() {
         buttonHeartDetail.setOnClickListener {
             heartClick = if(!heartClick){
                 buttonHeartDetail.setImageResource(R.drawable.ic_heartitemenabled)
-                userEstore?.id?.let { it1 -> productDetail.listUserLike?.add(it1) }
-                numberLikeDetail.text =
-                    StringBuilder().append(productDetail.listUserLike?.size).append(" people like this")
-                tvLikeCounterDetail.text =
-                    StringBuilder().append(productDetail.listUserLike?.size).append(" likes")
+                userEstore?.id?.let { it1 -> productDetail.listUserLike.add(it1) }
+                firebaseFunction.updateAny("Product", productDetail.id!!, "listUserLike", productDetail.listUserLike)
+                listLikeSize++
+                listLikeAdapter?.notifyDataSetChanged()
+                numberLikeDetail.text = StringBuilder().append(listLikeSize).append(" people like this")
+                tvLikeCounterDetail.text = StringBuilder().append(listLikeSize).append(" likes")
                 true
             }else{
                 buttonHeartDetail.setImageResource(R.drawable.ic_heartitemdisabled)
-                userEstore?.id?.let { it1 -> productDetail.listUserLike?.remove(it1) }
-                numberLikeDetail.text =
-                    StringBuilder().append(productDetail.listUserLike?.size).append(" people like this")
-                tvLikeCounterDetail.text =
-                    StringBuilder().append(productDetail.listUserLike?.size).append(" likes")
+                userEstore?.id?.let { it1 -> productDetail.listUserLike.remove(it1) }
+                firebaseFunction.updateAny("Product", productDetail.id!!, "listUserLike", productDetail.listUserLike)
+                listLikeSize--
+                listLikeAdapter?.notifyDataSetChanged()
+                numberLikeDetail.text = StringBuilder().append(listLikeSize).append(" people like this")
+                tvLikeCounterDetail.text = StringBuilder().append(listLikeSize).append(" likes")
                 false
+            }
+        }
+
+        val index = userEstore?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
+        if (index != null) {
+            if(index >= 0){
+                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
+                imageCartCheck.visibility = View.VISIBLE
+                buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
             }
         }
 
@@ -190,24 +211,14 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        productDetail.listUserLike?.let { setUpAdapter(it) }
-
-
+        setUpAdapter(productDetail.listUserLike)
 
         productToPush = productDetail
     }
 
     override fun onBackPressed() {
-//        userEstore?.let { firebaseFunction.updateUser(it) }
-//        productToPush?.let { firebaseFunction.updateProduct(it) }
         finish()
         super.onBackPressed()
-    }
-
-    override fun onPause() {
-        userEstore?.let { firebaseFunction.updateUser(it) }
-//        productToPush?.let { firebaseFunction.updateProduct(it) }
-        super.onPause()
     }
 
     private fun set5star() {
