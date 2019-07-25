@@ -1,6 +1,5 @@
 package com.example.estore.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -33,10 +32,20 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
+        val behavior = BottomSheetBehavior.from(bottom_sheet)
+
+        intent
         initToolbar()
         val position = intent.getIntExtra("position", -1)
 
         val productDetail = database[position]
+
+        nameInSheet.text = productDetail.name
+        priceInSheet.text = StringBuilder().append("$").append(productDetail.price)
+        Glide.with(this)
+            .load(productDetail.photoDark)
+            .into(imageInSheet)
 
         Glide.with(this)
             .load(productDetail.photoDark)
@@ -161,19 +170,29 @@ class DetailActivity : AppCompatActivity() {
 
         buttonAddCartDetail.setOnClickListener {
             if(!cartClick) {
-                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_uncheck)
+                if(behavior.state != BottomSheetBehavior.STATE_EXPANDED){
+                    behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
                 imageCartCheck.visibility = View.VISIBLE
+                buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
                 productDetail.id?.let { it1 -> userEstore?.cartList?.add(ProductCart(it1)) }
                 cartClick = true
+                Handler().postDelayed({
+                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                },4000)
             }else{
                 buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_login)
                 imageCartCheck.visibility = View.INVISIBLE
+                buttonAddCartDetail.text = StringBuilder().append("ADD TO CART")
                 productDetail.id?.let { it1 -> userEstore?.cartList?.remove(ProductCart(it1)) }
                 cartClick = false
             }
         }
 
         productDetail.listUserLike?.let { setUpAdapter(it) }
+
+
 
         productToPush = productDetail
     }
@@ -204,6 +223,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onBackPressed() {
         userEstore?.let { firebaseFunction.updateUser(it) }
 //        productToPush?.let { firebaseFunction.updateProduct(it) }
+        finish()
         super.onBackPressed()
     }
 

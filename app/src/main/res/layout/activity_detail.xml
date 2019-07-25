@@ -1,13 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
-            xmlns:tools="http://schemas.android.com/tools"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fillViewport="true"
-            tools:context=".ui.DetailActivity">
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.DetailActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <com.google.android.material.appbar.AppBarLayout
@@ -103,329 +112,401 @@
 
         </com.google.android.material.appbar.AppBarLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/productFieldDetail"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.55"
-                app:layout_constraintTop_toBottomOf="@id/toolbarDetail">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/productField1Detail"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/productFieldDetail"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    app:layout_constraintHeight_percent="0.8"
+                    app:layout_constraintHeight_percent="0.55"
                     app:layout_constraintTop_toTopOf="parent">
 
-                <ImageView
-                        android:id="@+id/buttonHeartDetail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="16dp"
-                        android:src="@drawable/ic_heartitemdisabled"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="ContentDescription"/>
-
-                <ImageView
-                        android:id="@+id/buttonFavoriteDetail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:layout_marginEnd="20dp"
-                        android:src="@drawable/ic_favoriteditemdisabled"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="ContentDescription"/>
-
-                <ImageView
-                        android:id="@+id/productPhotoDetail"
-                        android:layout_width="0dp"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/productField1Detail"
+                        android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginEnd="12dp"
-                        android:layout_marginBottom="12dp"
-                        app:layout_constraintBottom_toTopOf="@id/clTrendingDetail"
-                        app:layout_constraintEnd_toStartOf="@id/buttonFavoriteDetail"
-                        app:layout_constraintStart_toEndOf="@id/buttonHeartDetail"
-                        app:layout_constraintTop_toBottomOf="@id/buttonFavoriteDetail"
-                        app:layout_constraintVertical_bias="1"
-                        tools:ignore="ContentDescription"/>
+                        app:layout_constraintHeight_percent="0.8"
+                        app:layout_constraintTop_toTopOf="parent">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                        android:id="@+id/clTrendingDetail"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="12dp"
-                        app:layout_constraintBottom_toBottomOf="@+id/productField1Detail"
-                        app:layout_constraintStart_toStartOf="@id/buttonHeartDetail">
-
-                    <ImageView
-                            android:id="@+id/icTrendingDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_flag"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            tools:ignore="ContentDescription"/>
-
-                    <TextView
-                            android:id="@+id/tvTrendingDetail"
+                        <ImageView
+                            android:id="@+id/buttonHeartDetail"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:text="TRENDING"
-                            android:textColor="@color/colorRed"
-                            app:layout_constraintStart_toEndOf="@+id/icTrendingDetail"
-                            app:layout_constraintTop_toTopOf="@id/icTrendingDetail"
-                            app:layout_constraintBottom_toBottomOf="@id/icTrendingDetail"
-                            tools:ignore="HardcodedText"/>
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                            android:layout_marginTop="16dp"
+                            android:src="@drawable/ic_heartitemdisabled"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:id="@+id/buttonFavoriteDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginEnd="20dp"
+                            android:src="@drawable/ic_favoriteditemdisabled"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="ContentDescription" />
+
+                        <ImageView
+                            android:id="@+id/productPhotoDetail"
+                            android:layout_width="0dp"
+                            android:layout_height="0dp"
+                            android:layout_marginStart="12dp"
+                            android:layout_marginEnd="12dp"
+                            android:layout_marginBottom="12dp"
+                            app:layout_constraintBottom_toTopOf="@id/clTrendingDetail"
+                            app:layout_constraintEnd_toStartOf="@id/buttonFavoriteDetail"
+                            app:layout_constraintStart_toEndOf="@id/buttonHeartDetail"
+                            app:layout_constraintTop_toBottomOf="@id/buttonFavoriteDetail"
+                            app:layout_constraintVertical_bias="1"
+                            tools:ignore="ContentDescription" />
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:id="@+id/clTrendingDetail"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="12dp"
+                            app:layout_constraintBottom_toBottomOf="@+id/productField1Detail"
+                            app:layout_constraintStart_toStartOf="@id/buttonHeartDetail">
+
+                            <ImageView
+                                android:id="@+id/icTrendingDetail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@drawable/ic_flag"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:id="@+id/tvTrendingDetail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:text="TRENDING"
+                                android:textColor="@color/colorRed"
+                                app:layout_constraintStart_toEndOf="@+id/icTrendingDetail"
+                                app:layout_constraintTop_toTopOf="@id/icTrendingDetail"
+                                app:layout_constraintBottom_toBottomOf="@id/icTrendingDetail"
+                                tools:ignore="HardcodedText" />
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    app:layout_constraintHeight_percent="0.2"
-                    app:layout_constraintTop_toBottomOf="@id/productField1Detail">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        app:layout_constraintHeight_percent="0.2"
+                        app:layout_constraintTop_toBottomOf="@id/productField1Detail">
 
-                <ImageView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/ic_line"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintWidth_percent="0.92"
-                        tools:ignore="ContentDescription"/>
+                        <ImageView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/ic_line"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintWidth_percent="0.92"
+                            tools:ignore="ContentDescription" />
 
-                <TextView
-                        android:id="@+id/tvProductNameDetail"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginEnd="28dp"
-                        android:ellipsize="marquee"
-                        android:marqueeRepeatLimit="marquee_forever"
-                        android:singleLine="true"
-                        android:text="Some thing to demo don't mind it, lorem ipsum blabla i don't remember, bla bla bla bla bla"
-                        android:textColor="#000000"
-                        android:textSize="20sp"
+                        <TextView
+                            android:id="@+id/tvProductNameDetail"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="12dp"
+                            android:layout_marginEnd="28dp"
+                            android:ellipsize="marquee"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:singleLine="true"
+                            android:text="Some thing to demo don't mind it, lorem ipsum blabla i don't remember, bla bla bla bla bla"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toStartOf="@id/tvProductPriceDetail"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:id="@+id/tvProductPriceDetail"
+                            android:layout_width="60dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="20dp"
+                            android:text="$300"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="@id/tvProductNameDetail"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/tvProductNameDetail"
+                            tools:ignore="HardcodedText" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:layout_marginTop="12dp"
+                            android:orientation="horizontal"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/tvProductNameDetail">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="4dp"
+                                android:src="@drawable/ic_favorite_black_24dp"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:id="@+id/tvLikeCounterDetail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="4dp"
+                                android:text="23 likes"
+                                tools:ignore="HardcodedText" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginEnd="4dp"
+                                android:src="@drawable/ic_comment"
+                                tools:ignore="ContentDescription" />
+
+                            <TextView
+                                android:id="@+id/tvCommentCounterDetail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:text="123 comments"
+                                tools:ignore="HardcodedText" />
+                        </LinearLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/buttonFieldDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/productFieldDetail"
+                    app:layout_constraintWidth_percent="0.8">
+
+                    <Button
+                        android:id="@+id/buttonAddCartDetail"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/ic_button_login"
+                        android:minWidth="120dp"
+                        android:text="ADD TO CART"
+                        android:textColor="#FFFFFF"
                         android:textStyle="bold"
-                        app:layout_constraintEnd_toStartOf="@id/tvProductPriceDetail"
-                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="HardcodedText"/>
+                        tools:ignore="HardcodedText" />
 
-                <TextView
-                        android:id="@+id/tvProductPriceDetail"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="20dp"
-                        android:text="$300"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="@id/tvProductNameDetail"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/tvProductNameDetail"
-                        tools:ignore="HardcodedText"/>
-
-                <LinearLayout
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:layout_marginTop="12dp"
-                        android:orientation="horizontal"
+                        android:elevation="2dp"
+                        android:id="@+id/imageCartCheck"
+                        android:src="@drawable/ic_check_white"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="@id/buttonAddCartDetail"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.9"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/buttonAddCartDetail"
+                        tools:ignore="ContentDescription" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <TextView
+                    android:id="@+id/numberLikeDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="people like this"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/buttonFieldDetail"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:id="@+id/unusedLineDetail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/ic_line"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/numberLikeDetail"
+                    app:layout_constraintWidth_percent="0.92"
+                    tools:ignore="ContentDescription" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="72dp"
+                    android:id="@+id/constraintDetail8"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginEnd="20dp"
+                    app:layout_constraintTop_toBottomOf="@id/unusedLineDetail">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:id="@+id/rvListLike"
                         app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/tvProductNameDetail">
+                        app:layout_constraintRight_toRightOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/unusedTextDetail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="AVERAGE REVIEW"
+                    android:layout_marginTop="16dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/constraintDetail8"
+                    tools:ignore="HardcodedText" />
+
+                <ImageView
+                    android:id="@+id/unusedLine2Detail"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@drawable/ic_line"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/unusedTextDetail"
+                    app:layout_constraintWidth_percent="0.92"
+                    tools:ignore="ContentDescription" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    android:layout_marginTop="8dp"
+                    app:layout_constraintTop_toBottomOf="@id/unusedLine2Detail">
 
                     <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginEnd="4dp"
-                            android:src="@drawable/ic_favorite_black_24dp"
-                            tools:ignore="ContentDescription"/>
-
-                    <TextView
-                            android:id="@+id/tvLikeCounterDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginEnd="4dp"
-                            android:text="23 likes"
-                            tools:ignore="HardcodedText"/>
+                        android:id="@+id/star1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star_border_red_24dp"
+                        tools:ignore="ContentDescription" />
 
                     <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginEnd="4dp"
-                            android:src="@drawable/ic_comment"
-                            tools:ignore="ContentDescription"/>
+                        android:id="@+id/star2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star_border_red_24dp"
+                        tools:ignore="ContentDescription" />
 
-                    <TextView
-                            android:id="@+id/tvCommentCounterDetail"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:text="123 comments"
-                            tools:ignore="HardcodedText"/>
+                    <ImageView
+                        android:id="@+id/star3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star_border_red_24dp"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:id="@+id/star4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star_border_red_24dp"
+                        tools:ignore="ContentDescription" />
+
+                    <ImageView
+                        android:id="@+id/star5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_star_border_red_24dp"
+                        tools:ignore="ContentDescription" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/buttonFieldDetail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/productFieldDetail"
-                app:layout_constraintWidth_percent="0.8">
-
-            <Button
-                    android:id="@+id/buttonAddCartDetail"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:background="@drawable/ic_button_login"
-                    android:minWidth="120dp"
-                    android:text="ADD TO CART"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="HardcodedText"/>
-
-            <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:elevation="2dp"
-                    android:id="@+id/imageCartCheck"
-                    android:src="@drawable/ic_check_white"
-                    android:visibility="invisible"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.9"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-
-        <TextView
-                android:id="@+id/numberLikeDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="people like this"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/buttonFieldDetail"
-                tools:ignore="HardcodedText"/>
+        </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:background="#F2FFFFFF"
+        android:id="@+id/bottom_sheet"
+        app:behavior_hideable="true"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <ImageView
-                android:id="@+id/unusedLineDetail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/ic_line"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/numberLikeDetail"
-                app:layout_constraintWidth_percent="0.92"
-                tools:ignore="ContentDescription"/>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="72dp"
-                android:id="@+id/constraintDetail8"
-                android:layout_marginTop="12dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginEnd="20dp"
-                app:layout_constraintTop_toBottomOf="@id/unusedLineDetail">
-
-            <androidx.recyclerview.widget.RecyclerView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:id="@+id/rvListLike"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-                android:id="@+id/unusedTextDetail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="AVERAGE REVIEW"
-                android:layout_marginTop="16dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/constraintDetail8"
-                tools:ignore="HardcodedText"/>
-
-        <ImageView
-                android:id="@+id/unusedLine2Detail"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:background="@drawable/ic_line"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/unusedTextDetail"
-                app:layout_constraintWidth_percent="0.92"
-                tools:ignore="ContentDescription"/>
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:id="@+id/imageInSheet"
+            tools:ignore="ContentDescription" />
 
         <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="@id/imageInSheet"
+            app:layout_constraintBottom_toBottomOf="@id/imageInSheet"
+            app:layout_constraintStart_toEndOf="@id/imageInSheet"
+            android:layout_marginStart="8dp">
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@id/unusedLine2Detail">
+                android:id="@+id/nameInSheet"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:text="something to demo"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/priceInSheet"
+                android:text="demoPrice"
+                tools:ignore="HardcodedText" />
+        </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="8dp"
+            android:id="@+id/linearCartInSheet"
+            android:orientation="vertical"
+            android:gravity="center">
             <ImageView
-                    android:id="@+id/star1"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star_border_red_24dp"
-                    tools:ignore="ContentDescription"/>
-
-            <ImageView
-                    android:id="@+id/star2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star_border_red_24dp"
-                    tools:ignore="ContentDescription"/>
-
-            <ImageView
-                    android:id="@+id/star3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star_border_red_24dp"
-                    tools:ignore="ContentDescription"/>
-
-            <ImageView
-                    android:id="@+id/star4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star_border_red_24dp"
-                    tools:ignore="ContentDescription"/>
-
-            <ImageView
-                    android:id="@+id/star5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_star_border_red_24dp"
-                    tools:ignore="ContentDescription"/>
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/imageCartInSheet"
+                android:src="@drawable/ic_cart_red"
+                tools:ignore="ContentDescription" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="VIEW"
+                android:textColor="#D0021B"
+                tools:ignore="HardcodedText" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CART"
+                android:textColor="#D0021B"
+                tools:ignore="HardcodedText" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-</ScrollView>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
