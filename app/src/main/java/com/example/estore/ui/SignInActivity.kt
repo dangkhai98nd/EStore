@@ -6,8 +6,10 @@ import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.estore.R
 import com.example.estore.model.DatabaseEstore.Companion.database
+import com.example.estore.model.DatabaseEstore.Companion.databaseFilter
 import com.example.estore.model.DatabaseEstore.Companion.getDatabase
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_sign_in.*
@@ -45,11 +47,16 @@ class SignInActivity : AppCompatActivity() {
                         }
                         Toast.makeText(baseContext, "Success.", Toast.LENGTH_SHORT).show()
 
-                        Handler().postDelayed({
+//                        Handler().postDelayed({
+//                            val intent = Intent(this, MainActivity::class.java)
+//                            Log.e("size","${database.size}")
+//                            startActivity(intent)
+//                        }, 2000)
+                        databaseFilter.observe(this, Observer {
                             val intent = Intent(this, MainActivity::class.java)
                             Log.e("size","${database.size}")
                             startActivity(intent)
-                        }, 2000)
+                        })
                     }else{
                         Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
                     }

@@ -16,6 +16,7 @@ class DatabaseEstore {
             val firebaseFunction = FirebaseFunction()
             firebaseFunction.productLiveData.observe(lifecycleOwner , Observer {
                 database.addAll(it)
+                databaseFilter.value = it
 //            Log.e("observe size","${products.size}")
 //            Toast.makeText(view.context,"${products[0].name}",Toast.LENGTH_SHORT).show()
             })
@@ -28,9 +29,9 @@ class DatabaseEstore {
                 listUser.addAll(it)
             })
 
-            firebaseFunction.estoreGetProductAll()
             firebaseFunction.estoreGetUserFromId(idUser)
             firebaseFunction.estoreGetUserAll()
+            firebaseFunction.estoreGetProductAll()
         }
 
     }
