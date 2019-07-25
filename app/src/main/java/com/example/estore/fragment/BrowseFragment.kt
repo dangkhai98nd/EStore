@@ -15,13 +15,12 @@ import com.example.estore.FirebaseFunction
 import com.example.estore.R
 import com.example.estore.adapter.BrowseAdapter
 import com.example.estore.model.DatabaseEstore.Companion.database
+import com.example.estore.model.DatabaseEstore.Companion.databaseFilter
 import com.example.estore.model.Product
 import kotlinx.android.synthetic.main.fragment_browse.*
 
 class BrowseFragment : Fragment() {
-    private val firebaseFunction = FirebaseFunction()
     private var browseAdapter : BrowseAdapter? = null
-    private var products : List<Product> = listOf()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_browse,container,false)
@@ -30,8 +29,12 @@ class BrowseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupAdapter(view)
         Handler().postDelayed({
-            browseAdapter?.addAll(database)
+            browseAdapter?.setProducts(databaseFilter.value ?: emptyList())
+
         },2000)
+        databaseFilter.observe(this, Observer {
+            browseAdapter?.setProducts(it)
+        })
 
     }
 

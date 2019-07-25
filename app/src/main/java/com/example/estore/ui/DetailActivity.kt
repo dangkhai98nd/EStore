@@ -1,5 +1,6 @@
 package com.example.estore.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -32,8 +33,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
-
-        intent
+        initToolbar()
         val position = intent.getIntExtra("position", -1)
 
         val productDetail = database[position]
@@ -176,6 +176,29 @@ class DetailActivity : AppCompatActivity() {
         productDetail.listUserLike?.let { setUpAdapter(it) }
 
         productToPush = productDetail
+    }
+
+    private fun initToolbar() {
+        ic_searchDetail.setOnClickListener {
+            groupNormalDetail.visibility = View.GONE
+            groupSearchDetail.visibility = View.VISIBLE
+        }
+        ic_closeDetail.setOnClickListener {
+            groupSearchDetail.visibility = View.GONE
+            groupNormalDetail.visibility = View.VISIBLE
+            edtSearchDetail.text?.clear()
+        }
+        ic_backDetail.setOnClickListener {
+            onBackPressed()
+        }
+        tvSearchDetail.setOnClickListener {
+            if (edtSearchDetail.text.toString() != "") {
+                val intent = Intent(this, SearchResultActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("keyword", edtSearchDetail.text.toString())
+                startActivity(intent)
+            }
+        }
     }
 
     override fun onBackPressed() {

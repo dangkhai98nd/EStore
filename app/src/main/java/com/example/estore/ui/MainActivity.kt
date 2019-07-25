@@ -1,5 +1,6 @@
 package com.example.estore.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
@@ -15,7 +16,9 @@ import com.example.estore.adapter.FilterAdapter
 import com.example.estore.adapter.ViewPagerMainAdapter
 import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
+import com.example.estore.model.DatabaseEstore.Companion.databaseFilter
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
+import com.example.estore.model.Product
 import com.example.estore.utils.CubeInRotationTransformation
 import com.example.estore.utils.RecyclerViewOnClickListener
 import com.google.android.material.appbar.AppBarLayout
@@ -37,12 +40,11 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
             Log.e("static", "${database[0].name}")
             Log.e("static user", "${userEstore?.userName}")
         }, 4000)
+        databaseFilter.value = database
         paramsAppBarLayout = ctlMain.layoutParams as AppBarLayout.LayoutParams
         initToolbar()
         initView()
-
     }
-
 
     private fun initToolbar() {
         ic_search.setOnClickListener {
@@ -56,7 +58,12 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
             groupSearch.visibility = View.GONE
         }
         tvSearch.setOnClickListener {
-
+            if (edtSearch.text.toString() != "") {
+                val intent = Intent(this, SearchResultActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("keyword", edtSearch.text.toString())
+                startActivity(intent)
+            }
         }
     }
 
@@ -72,9 +79,15 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
                 this, object : RecyclerViewOnClickListener.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
                         filterAdapter?.setSelectedPosition(position)
-
+                        Log.e("position filter","$position")
+                        when(position)
+                        {
+                            0 -> databaseFilter.value = database
+                            1 -> databaseFilter.value = database.filter { it.trending == true }
+                            2 -> databaseFilter.value = sortingNew()
+                            3 -> databaseFilter.value = sortingPrice()
+                        }
                     }
-
                 })
         )
     }
@@ -122,7 +135,7 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
             0 -> {
                 paramsAppBarLayout?.scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL +
                         AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
-                tvTitle.text = "BROWSE"
+                tvTitle.text = StringBuilder().append("BROWSE")
                 ic_search.visibility = ImageView.VISIBLE
                 ic_paymentconfirmed.visibility = ImageView.GONE
                 rvFilter.visibility = RecyclerView.VISIBLE
@@ -130,27 +143,64 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
             1 -> {
                 paramsAppBarLayout?.scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL +
                         AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
-                tvTitle.text = "HOT"
+                tvTitle.text = StringBuilder().append("HOT")
                 ic_search.visibility = ImageView.VISIBLE
                 ic_paymentconfirmed.visibility = ImageView.GONE
                 rvFilter.visibility = RecyclerView.VISIBLE
             }
             2 -> {
                 paramsAppBarLayout?.scrollFlags = 0
-                tvTitle.text = "CART"
+                tvTitle.text = StringBuilder().append("CART")
                 ic_search.visibility = ImageView.GONE
                 ic_paymentconfirmed.visibility = ImageView.VISIBLE
                 rvFilter.visibility = RecyclerView.GONE
             }
             else -> {
                 paramsAppBarLayout?.scrollFlags = 0
-                tvTitle.text = "PROFILE"
+                tvTitle.text = StringBuilder().append("PROFILE")
                 ic_search.visibility = ImageView.GONE
                 ic_paymentconfirmed.visibility = ImageView.GONE
                 rvFilter.visibility = RecyclerView.GONE
             }
         }
         ctlMain.layoutParams = paramsAppBarLayout
+        tvTitle.visibility = View.VISIBLE
+        groupSearch.visibility = View.GONE
     }
 
+    fun sortingNew(): MutableList<Product> {
+        var listNewSort = mutableListOf<Product>()
+        listNewSort.addAll(database)
+        val size = database.size
+
+        var maxidx: Int
+        for(i in 0 until size){
+            maxidx = i
+            for(j in i+1 until size){
+                if(listNewSort[j].time!! > listNewSort[maxidx].time!!){
+                    maxidx = j
+                }
+                listNewSort[maxidx] = listNewSort[i].also { listNewSort[i] = listNewSort[maxidx] }
+            }
+        }
+        return listNewSort
+    }
+
+    fun sortingPrice(): MutableList<Product>{
+        val listPriceSort = mutableListOf<Product>()
+        listPriceSort.addAll(database)
+        val size = database.size
+
+        var minidx: Int
+        for(i in 0 until size){
+            minidx = i
+            for(j in i+1 until size){
+                if(listPriceSort[j].price!! > listPriceSort[minidx].price!!){
+                    minidx = j
+                }
+                listPriceSort[minidx] = listPriceSort[i].also { listPriceSort[i] = listPriceSort[minidx] }
+            }
+        }
+        return listPriceSort
+    }
 }

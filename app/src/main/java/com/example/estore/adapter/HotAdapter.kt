@@ -10,6 +10,8 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.estore.R
 import com.example.estore.model.DatabaseEstore.Companion.database
+import com.example.estore.model.DatabaseEstore.Companion.databaseFilter
+import com.example.estore.model.Product
 import com.example.estore.utils.CubeInRotationTransformation
 import com.example.estore.utils.DepthTransformation
 import kotlinx.android.extensions.LayoutContainer
@@ -22,10 +24,16 @@ class HotAdapter(
         return ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_hot, parent, false))
     }
 
-    override fun getItemCount(): Int = 5
+    override fun getItemCount(): Int = 4
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind()
+        when(position)
+        {
+            0 -> holder.bind(databaseFilter.value?.filter { it.brand == "apple" } ?: databaseFilter.value ?: database)
+            1 -> holder.bind(databaseFilter.value?.filter { it.brand == "samsung" } ?: databaseFilter.value ?: database)
+            2 -> holder.bind(databaseFilter.value?.filter { it.brand == "xiaomi" } ?: databaseFilter.value ?: database)
+            3 -> holder.bind( databaseFilter.value ?: database)
+        }
     }
 
     inner class ItemViewHolder(
@@ -36,15 +44,15 @@ class HotAdapter(
         private val ivBackwardtickHot = containerView.findViewById<ImageView>(R.id.ivBackwardtickHot)
         private val ivForwardtickHot = containerView.findViewById<ImageView>(R.id.ivForwardtickHot)
         private val tvProductNameHot = containerView.findViewById<TextView>(R.id.tvProductNameHot)
-        //        private val ivProductLargeCart = containerView.findViewById<ImageView>(R.id.ivProductLargeCart)
         private val vpLargeProductHot = containerView.findViewById<ViewPager>(R.id.vpLargeProductHot)
         private var vpSmallProductHotAdapter: ViewPagerHotAdapter? = null
         private var vpLargeProductHotAdapter: ViewPagerHotAdapter? = null
 
 
-        fun bind() {
-            setupViewPagerLarge()
-            setupViewPagerSmall()
+        fun bind(products : List<Product>) {
+            setupViewPagerLarge(products)
+            setupViewPagerSmall(products)
+            tvProductNameHot.text = products[0].name
             ivBackwardtickHot.setOnClickListener {
                 vpSmallProductHot.currentItem -= 1
             }
@@ -53,7 +61,7 @@ class HotAdapter(
             }
         }
 
-        private fun setupViewPagerSmall() {
+        private fun setupViewPagerSmall(products : List<Product>) {
             vpSmallProductHot.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 private var mScrollState = ViewPager.SCROLL_STATE_IDLE
                 override fun onPageScrollStateChanged(state: Int) {
@@ -72,32 +80,29 @@ class HotAdapter(
 
                 override fun onPageSelected(position: Int) {
                     when (position) {
-                        0 -> ivBackwardtickHot.visibility = ImageView.INVISIBLE
-                        database.size - 1 -> ivForwardtickHot.visibility = ImageView.INVISIBLE
-                        else -> {
+                        0 -> {
+                            ivBackwardtickHot.visibility = ImageView.INVISIBLE
                             ivForwardtickHot.visibility = ImageView.VISIBLE
+                        }
+                        products.size - 1 -> {
                             ivBackwardtickHot.visibility = ImageView.VISIBLE
+                            ivForwardtickHot.visibility = ImageView.INVISIBLE
+                        }
+                        else -> {
+                            ivBackwardtickHot.visibility = ImageView.VISIBLE
+                            ivForwardtickHot.visibility = ImageView.VISIBLE
                         }
                     }
-                    tvProductNameHot.text = database[position].name
-//                    Glide.with(mContext)
-//                        .load(database[position].photoDark)
-//                        .apply(bitmapTransform(BlurTransformation(10, 1)))
-//                        .into(ivProductLargeCart)
+                    tvProductNameHot.text = products[position].name
                 }
             })
             vpSmallProductHotAdapter = ViewPagerHotAdapter(containerView.context, true)
             vpSmallProductHot.adapter = vpSmallProductHotAdapter
             vpSmallProductHot.setPageTransformer(true, DepthTransformation())
-            vpSmallProductHotAdapter?.notifyDataSetChanged()
-            tvProductNameHot.text = database[0].name
-//            Glide.with(mContext)
-//                .load(database[0].photoDark)
-//                .apply(bitmapTransform(BlurTransformation(10, 1)))
-//                .into(ivProductLargeCart)
+            vpSmallProductHotAdapter?.setProducts(products)
         }
 
-        private fun setupViewPagerLarge() {
+        private fun setupViewPagerLarge(products : List<Product>) {
             vpLargeProductHot.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(state: Int) {
 
@@ -113,7 +118,7 @@ class HotAdapter(
             })
             vpLargeProductHotAdapter = ViewPagerHotAdapter(containerView.context, false)
             vpLargeProductHot.adapter = vpLargeProductHotAdapter
-            vpLargeProductHotAdapter?.notifyDataSetChanged()
+            vpLargeProductHotAdapter?.setProducts(products)
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.estore.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,16 +10,17 @@ import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.estore.R
-import com.example.estore.model.DatabaseEstore.Companion.database
+import com.example.estore.model.Product
+import com.example.estore.ui.DetailActivity
 import jp.wasabeef.glide.transformations.BlurTransformation
 import kotlinx.android.extensions.LayoutContainer
 
 class ViewPagerHotAdapter(
-    mContext: Context,
-    private val isSmall : Boolean
+    private val mContext: Context,
+    private val isSmall: Boolean
 ) : PagerAdapter() {
     private val mInflater: LayoutInflater = mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
-
+    private var products: List<Product> = listOf()
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         return when (isSmall) {
             true -> {
@@ -40,10 +42,9 @@ class ViewPagerHotAdapter(
     }
 
 
-
     override fun isViewFromObject(view: View, `object`: Any): Boolean = view === `object`
 
-    override fun getCount(): Int = database.size
+    override fun getCount(): Int = products.size
 
     override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
         container.removeView(`object` as View)
@@ -55,21 +56,32 @@ class ViewPagerHotAdapter(
         private val ivProductSmallHot = containerView.findViewById<ImageView>(R.id.ivProductSmallHot)
         fun bind(position: Int) {
             Glide.with(containerView)
-                .load(database[position].photoDark)
+                .load(products[position].photoDark)
                 .into(ivProductSmallHot)
+            ivProductSmallHot.setOnClickListener {
+                val intent = Intent(mContext, DetailActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                intent.putExtra("position", position)
+                mContext.startActivity(intent)
+            }
         }
     }
 
-    class ItemLargeViewHolder(
+    inner class ItemLargeViewHolder(
         override val containerView: View
     ) : LayoutContainer {
         private val ivProductLargeCart = containerView.findViewById<ImageView>(R.id.ivProductLargeCart)
         fun bind(position: Int) {
             Glide.with(containerView)
-                .load(database[position].photoDark)
+                .load(products[position].photoDark)
                 .apply(bitmapTransform(BlurTransformation(10, 1)))
                 .into(ivProductLargeCart)
         }
+    }
+
+    fun setProducts(products: List<Product>) {
+        this.products = products
+        notifyDataSetChanged()
     }
 
 }

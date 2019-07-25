@@ -10,7 +10,7 @@
 
     <com.google.android.material.appbar.AppBarLayout
             app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbarMain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
         <com.google.android.material.appbar.CollapsingToolbarLayout
@@ -21,12 +21,12 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="60dp">
+                    android:layout_height="@dimen/height_appbar">
                 <TextView
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        android:text="BROWSE"
                         android:id="@+id/tvTitle"
+                        android:text="@string/browse"
                         android:gravity="center"
                         android:textStyle="bold"
                         android:textSize="18sp"
@@ -38,7 +38,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:src="@drawable/ic_searchbutton"
                         android:id="@+id/ic_search"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginEnd="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"/>
 
@@ -48,7 +48,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         android:src="@drawable/ic_paymentconfirmed"
                         android:id="@+id/ic_paymentconfirmed"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginEnd="20dp"
                         android:visibility="gone"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"/>
@@ -58,14 +58,14 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginLeft="20dp"
+                        android:layout_marginStart="20dp"
                         android:src="@drawable/ic_closebutton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"/>
 
                 <androidx.appcompat.widget.AppCompatEditText
                         android:id="@+id/edtSearch"
-                        android:hint="Keyword..."
+                        android:hint="@string/keyword"
                         android:maxLines="1"
                         android:gravity="center|left"
                         android:imeOptions="actionNext"
@@ -74,6 +74,7 @@
                         app:layout_constraintEnd_toStartOf="@id/tvSearch"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
+                        android:background="@android:color/transparent"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"/>
 
@@ -82,10 +83,10 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginRight="20dp"
+                        android:layout_marginEnd="20dp"
                         android:gravity="center"
                         android:textStyle="bold"
-                        android:text="Search"
+                        android:text="@string/search"
                         android:textSize="18sp"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"/>
@@ -118,14 +119,14 @@
                 android:id="@+id/rvFilter"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="60dp">
+                android:layout_height="@dimen/height_appbar">
 
         </androidx.recyclerview.widget.RecyclerView>
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.example.estore.utils.NonSwipeableViewPager
             android:id="@+id/vpMain"
-            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            app:layout_constraintTop_toBottomOf="@+id/toolbarMain"
             app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -143,7 +144,6 @@
                 app:layout_scrollFlags="scroll|enterAlways"
                 android:id="@+id/ctlNavigation"
                 android:layout_gravity="bottom"
-
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
             <com.google.android.material.bottomnavigation.BottomNavigationView

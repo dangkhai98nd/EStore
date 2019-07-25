@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="height_appbar">50dp</dimen>
+    <dimen name="height_item_filter">38dp</dimen>
+    <dimen name="width_item_filter">120dp</dimen>
+    <dimen name="layout_margin_item_filter">6dp</dimen>
+    <dimen name="CornerRadius_item_filter">19dp</dimen>
+</resources>

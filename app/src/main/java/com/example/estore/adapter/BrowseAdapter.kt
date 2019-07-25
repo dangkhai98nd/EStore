@@ -25,7 +25,7 @@ class BrowseAdapter (
     private val mContext : Context
 ) : RecyclerView.Adapter<BrowseAdapter.ItemViewHolder>() {
 
-    private val products : MutableList<Product> = mutableListOf()
+    private var products : List<Product> = listOf()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_browse,parent,false))
@@ -143,13 +143,17 @@ class BrowseAdapter (
         }
     }
 
-    fun addAll(products : List<Product>) {
-        this.products.addAll(products)
-        notifyDataSetChanged()
-    }
+//    fun addAll(products : List<Product>) {
+//        this.products = products
+//        notifyDataSetChanged()
+//    }
 
-    fun add(product: Product) {
-        this.products.add(product)
+//    fun add(product: Product) {
+//        this.products.add(product)
+//        notifyDataSetChanged()
+//    }
+    fun setProducts(products: List<Product>) {
+        this.products = products
         notifyDataSetChanged()
     }
 }

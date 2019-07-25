@@ -9,4 +9,13 @@
     <string name="enter_your_username">Enter your username</string>
     <string name="sign_up">Sign Up</string>
     <string name="trending">TRENDING</string>
+    <string name="browse">BROWSE</string>
+    <string name="hot">HOT</string>
+    <string name="cart">CART</string>
+    <string name="profile">PROFILE</string>
+    <string name="product_detail">Product Detail</string>
+    <string name="keyword">Keyword...</string>
+    <string name="search">Search</string>
+    <string name="favorites">Favorites</string>
+    <string name="search_result">Search Result</string>
 </resources>
