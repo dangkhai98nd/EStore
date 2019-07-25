@@ -88,15 +88,22 @@ class FirebaseFunction : ViewModel() {
         user.id?.let { databaseRef.child(it).setValue(user) }
     }
 
+    fun updateAny(pathRef: String, id: String, stringChild: String, value: Any){
+        databaseRef = FirebaseDatabase.getInstance().getReference(pathRef)
+        databaseRef.child(id).child(stringChild).setValue(value)
+    }
+
+
+
     fun sortingNew(listProduct: MutableList<Product>): MutableList<Product> {
         var listNewSort = mutableListOf<Product>()
         listNewSort.addAll(listProduct)
         val size = listProduct.size
 
         var maxidx: Int
-        for(i in 0 until size){
+        for(i in 0 until size-1){
             maxidx = i
-            for(j in i+1 until size){
+            for(j in i+1 until size-1){
                 if(listNewSort[j].time!! > listNewSort[maxidx].time!!){
                     maxidx = j
                 }
@@ -111,14 +118,14 @@ class FirebaseFunction : ViewModel() {
         listPriceSort.addAll(listProduct)
         val size = listProduct.size
 
-        var minidx: Int
-        for(i in 0 until size){
-            minidx = i
+        var maxidx: Int
+        for(i in 0 until size-1){
+            maxidx = i
             for(j in i+1 until size){
-                if(listPriceSort[j].price!! > listPriceSort[minidx].price!!){
-                    minidx = j
+                if(listPriceSort[j].price!! > listPriceSort[maxidx].price!!){
+                    maxidx = j
                 }
-                listPriceSort[minidx] = listPriceSort[i].also { listPriceSort[i] = listPriceSort[minidx] }
+                listPriceSort[maxidx] = listPriceSort[i].also { listPriceSort[i] = listPriceSort[maxidx] }
             }
         }
         return listPriceSort

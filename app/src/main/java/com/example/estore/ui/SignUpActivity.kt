@@ -36,7 +36,7 @@ class SignUpActivity : AppCompatActivity() {
                         databaseRef = FirebaseDatabase.getInstance().getReference("User")
                         val uid = mAuth.currentUser?.uid
                         if (uid != null) {
-                            databaseRef.child(uid).setValue(User(uid, null, null, null, null, null))
+                            databaseRef.child(uid).setValue(User(uid, null, ArrayList(), ArrayList(), null, null))
                         }
 
                     }else{

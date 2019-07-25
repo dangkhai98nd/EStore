@@ -6,20 +6,14 @@ import android.os.Handler
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
-import com.example.estore.FirebaseFunction
 import com.example.estore.R
-import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.getDatabase
-import com.example.estore.model.DatabaseEstore.Companion.userEstore
-import com.example.estore.model.Product
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 class SignInActivity : AppCompatActivity() {
     private lateinit var mAuth: FirebaseAuth
-    private var firebaseFunction = FirebaseFunction()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,17 +45,11 @@ class SignInActivity : AppCompatActivity() {
                         }
                         Toast.makeText(baseContext, "Success.", Toast.LENGTH_SHORT).show()
 
-
-
                         Handler().postDelayed({
                             val intent = Intent(this, MainActivity::class.java)
                             Log.e("size","${database.size}")
                             startActivity(intent)
-//                            if (user != null) {
-//                                getDatabase(this, user.uid)
-//                            }
-
-                        }, 4000)
+                        }, 2000)
                     }else{
                         Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
                     }
