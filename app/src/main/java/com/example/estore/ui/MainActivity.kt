@@ -17,6 +17,7 @@ import com.example.estore.adapter.ViewPagerMainAdapter
 import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.databaseFilter
+import com.example.estore.model.DatabaseEstore.Companion.listUser
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.utils.CubeInRotationTransformation
@@ -35,10 +36,17 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        databaseFilter.value = database
         paramsAppBarLayout = ctlMain.layoutParams as AppBarLayout.LayoutParams
         initToolbar()
         initView()
+    }
+
+    override fun onBackPressed() {
+        database.clear()
+        userEstore = null
+        databaseFilter.value = null
+        listUser.clear()
+        super.onBackPressed()
     }
 
     private fun initToolbar() {
