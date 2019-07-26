@@ -4,16 +4,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.estore.FirebaseFunction
 import com.example.estore.R
 import com.example.estore.adapter.ListLikeAdapter
 import com.example.estore.model.DatabaseEstore.Companion.database
-import com.example.estore.model.DatabaseEstore.Companion.listUser
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.model.ProductCart
@@ -29,10 +27,12 @@ class DetailActivity : AppCompatActivity() {
     private var star5click = false
     private var favoriteClick = false
     private var heartClick = false
-    private var cartClick = false
+    private var cartAdded = false
     private var productToPush: Product? = null
     private var listLikeAdapter: ListLikeAdapter? = null
     private var listLikeSize = 0
+    private var quantity = 0
+    private var colorChoose = "dark"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,15 +46,72 @@ class DetailActivity : AppCompatActivity() {
 
         val productDetail = database[position]
 
+        val index = userEstore?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
+        if (index != null) {
+            if(index >= 0){
+                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
+                imageCartCheck.visibility = View.VISIBLE
+                buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
+                darkButtonDetail.isEnabled = false
+                lightButtonDetail.isEnabled = false
+
+                ivAddCartDetail.isEnabled = false
+                ivMinusCartDetail.isEnabled = false
+                edtQuantityCartDetail.isEnabled = false
+
+                cartAdded = true
+
+                quantity = userEstore?.cartList?.get(index)?.quantity!!
+                edtQuantityCartDetail.setText(quantity.toString())
+                val color = userEstore?.cartList?.get(index)?.color
+                if(color == "dark"){
+                    darkButtonDetail.isChecked = true
+                    lightButtonDetail.isChecked = false
+
+                    colorChoose = "dark"
+
+                    Glide.with(this)
+                        .load(productDetail.photoDark)
+                        .into(productPhotoDetail)
+                    Glide.with(this)
+                        .load(productDetail.photoDark)
+                        .into(imageInSheet)
+                }else{
+                    darkButtonDetail.isChecked = false
+                    lightButtonDetail.isChecked = true
+
+                    Glide.with(this)
+                        .load(productDetail.photoLight)
+                        .into(productPhotoDetail)
+                    Glide.with(this)
+                        .load(productDetail.photoLight)
+                        .into(imageInSheet)
+
+                    colorChoose = "light"
+                }
+            }else{
+                Glide.with(this)
+                    .load(productDetail.photoDark)
+                    .into(productPhotoDetail)
+                Glide.with(this)
+                    .load(productDetail.photoDark)
+                    .into(imageInSheet)
+                darkButtonDetail.isChecked = true
+                lightButtonDetail.isChecked = false
+                edtQuantityCartDetail.setText(quantity.toString())
+
+                ivAddCartDetail.isEnabled = true
+                ivMinusCartDetail.isEnabled = true
+                edtQuantityCartDetail.isEnabled = true
+            }
+        }
+
+
+
+
+
         nameInSheet.text = productDetail.name
         priceInSheet.text = StringBuilder().append("$").append(productDetail.price)
-        Glide.with(this)
-            .load(productDetail.photoDark)
-            .into(imageInSheet)
-
-        Glide.with(this)
-            .load(productDetail.photoDark)
-            .into(productPhotoDetail)
 
         tvProductNameDetail.text = productDetail.name
         tvProductNameDetail.isSelected = true
@@ -146,6 +203,29 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
+        darkButtonDetail.setOnClickListener {
+            lightButtonDetail.isChecked = false
+            colorChoose = "dark"
+            Glide.with(this)
+                .load(productDetail.photoDark)
+                .into(productPhotoDetail)
+
+            Glide.with(this)
+                .load(productDetail.photoDark)
+                .into(imageInSheet)
+        }
+        lightButtonDetail.setOnClickListener {
+            darkButtonDetail.isChecked = false
+            colorChoose = "light"
+            Glide.with(this)
+                .load(productDetail.photoLight)
+                .into(productPhotoDetail)
+
+            Glide.with(this)
+                .load(productDetail.photoLight)
+                .into(imageInSheet)
+        }
+
         buttonFavoriteDetail.setOnClickListener {
             favoriteClick = if(!favoriteClick){
                 buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
@@ -182,36 +262,64 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-        val index = userEstore?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
-        if (index != null) {
-            if(index >= 0){
-                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
-                imageCartCheck.visibility = View.VISIBLE
-                buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
-            }
-        }
-
         buttonAddCartDetail.setOnClickListener {
-            if(!cartClick) {
-                if(behavior.state != BottomSheetBehavior.STATE_EXPANDED){
-                    behavior.state = BottomSheetBehavior.STATE_EXPANDED
+            if(!cartAdded) {
+                if(quantity > 0){
+                    if(behavior.state != BottomSheetBehavior.STATE_EXPANDED){
+                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    }
+                    buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
+                    imageCartCheck.visibility = View.VISIBLE
+                    buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
+                    userEstore?.cartList?.add(ProductCart(productDetail.id, quantity, colorChoose))
+                    darkButtonDetail.isEnabled = false
+                    lightButtonDetail.isEnabled = false
+
+                    ivAddCartDetail.isEnabled = false
+                    ivMinusCartDetail.isEnabled = false
+                    edtQuantityCartDetail.isEnabled = false
+
+                    cartAdded = true
+                    Handler().postDelayed({
+                        firebaseFunction.updateAny("User", userEstore?.id!!, "cartList", userEstore?.cartList!!)
+                        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    },4000)
+                }else{
+                    Toast.makeText(this, "Number must be larger than 0", Toast.LENGTH_SHORT).show()
                 }
-                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
-                imageCartCheck.visibility = View.VISIBLE
-                buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
-                productDetail.id?.let { it1 -> userEstore?.cartList?.add(ProductCart(it1)) }
-                cartClick = true
-                Handler().postDelayed({
-                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                },4000)
+
             }else{
                 buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_login)
                 imageCartCheck.visibility = View.INVISIBLE
                 buttonAddCartDetail.text = StringBuilder().append("ADD TO CART")
-                productDetail.id?.let { it1 -> userEstore?.cartList?.remove(ProductCart(it1)) }
-                cartClick = false
+                val i = userEstore?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
+                userEstore?.cartList?.removeAt(i!!)
+                firebaseFunction.updateAny("User", userEstore?.id!!, "cartList", userEstore?.cartList!!)
+
+                darkButtonDetail.isEnabled = true
+                lightButtonDetail.isEnabled = true
+
+                ivAddCartDetail.isEnabled = true
+                ivMinusCartDetail.isEnabled = true
+                edtQuantityCartDetail.isEnabled = true
+
+                cartAdded = false
             }
         }
+
+
+
+        ivMinusCartDetail.setOnClickListener {
+            if(quantity > 0){
+                quantity -= 1
+                edtQuantityCartDetail.setText(quantity.toString())
+            }
+        }
+        ivAddCartDetail.setOnClickListener {
+            quantity += 1
+            edtQuantityCartDetail.setText(quantity.toString())
+        }
+
 
         setUpAdapter(productDetail.listUserLike)
 
