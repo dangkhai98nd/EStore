@@ -69,7 +69,7 @@ class BrowseAdapter(
             cvItemBrowse.setOnClickListener {
                 val intent = Intent(mContext, DetailActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.putExtra("position", position)
+                intent.putExtra("position", database.indexOf(product))
                 mContext.startActivity(intent)
             }
 

@@ -1,7 +1,6 @@
 package com.example.estore.fragment
 
 import android.os.Bundle
-import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,13 +24,12 @@ class HotFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         rvHot = root?.findViewById<RecyclerView>(R.id.rvHot)
-        Handler().postDelayed({
-            hotAdapter = HotAdapter(view.context)
-            rvHot?.adapter = hotAdapter
-            rvHot?.layoutManager = LinearLayoutManager(view.context)
-            hotAdapter?.notifyDataSetChanged()
-        }, 2000)
+        hotAdapter = HotAdapter(view.context)
+        rvHot?.adapter = hotAdapter
+        rvHot?.layoutManager = LinearLayoutManager(view.context)
+        hotAdapter?.notifyDataSetChanged()
         databaseFilter.observe(this, Observer {
+            rvHot?.layoutManager?.scrollToPosition(0)
             hotAdapter?.notifyDataSetChanged()
         })
     }

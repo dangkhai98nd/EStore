@@ -10,6 +10,7 @@ import androidx.viewpager.widget.PagerAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions.bitmapTransform
 import com.example.estore.R
+import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.Product
 import com.example.estore.ui.DetailActivity
 import jp.wasabeef.glide.transformations.BlurTransformation
@@ -61,7 +62,7 @@ class ViewPagerHotAdapter(
             ivProductSmallHot.setOnClickListener {
                 val intent = Intent(mContext, DetailActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.putExtra("position", position)
+                intent.putExtra("position", database.indexOf(products[position]))
                 mContext.startActivity(intent)
             }
         }
