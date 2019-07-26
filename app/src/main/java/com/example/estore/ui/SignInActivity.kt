@@ -11,6 +11,8 @@ import com.example.estore.R
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.databaseFilter
 import com.example.estore.model.DatabaseEstore.Companion.getDatabase
+import com.example.estore.model.DatabaseEstore.Companion.listUser
+import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
@@ -23,7 +25,6 @@ class SignInActivity : AppCompatActivity() {
         setContentView(R.layout.activity_sign_in)
 
         mAuth = FirebaseAuth.getInstance()
-
         buttonSignIn.setOnClickListener {
             authentication(emailInput.text.toString(), passwordInput.text.toString())
         }

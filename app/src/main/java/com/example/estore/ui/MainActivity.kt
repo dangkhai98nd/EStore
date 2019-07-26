@@ -42,11 +42,13 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     }
 
     override fun onBackPressed() {
+        val intent = Intent(this@MainActivity, SignInActivity::class.java)
         database.clear()
         userEstore = null
-        databaseFilter.value = null
-        listUser.clear()
-        super.onBackPressed()
+        DatabaseEstore.databaseFilter.value = listOf()
+        DatabaseEstore.listUser.clear()
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(intent)
     }
 
     private fun initToolbar() {

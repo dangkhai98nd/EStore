@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.estore.R
+import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.ui.FavoriteActivity
@@ -34,6 +35,8 @@ class ProfileFragment: Fragment() {
             val intent = Intent(context, SignInActivity::class.java)
             database.clear()
             userEstore = null
+            DatabaseEstore.databaseFilter.value = listOf()
+            DatabaseEstore.listUser.clear()
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
             startActivity(intent)
         }

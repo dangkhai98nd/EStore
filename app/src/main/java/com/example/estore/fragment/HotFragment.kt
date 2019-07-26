@@ -29,8 +29,10 @@ class HotFragment : Fragment() {
         rvHot?.layoutManager = LinearLayoutManager(view.context)
         hotAdapter?.notifyDataSetChanged()
         databaseFilter.observe(this, Observer {
-            rvHot?.layoutManager?.scrollToPosition(0)
-            hotAdapter?.notifyDataSetChanged()
+            if(it.isNotEmpty()) {
+                hotAdapter?.notifyDataSetChanged()
+                rvHot?.layoutManager?.scrollToPosition(0)
+            }
         })
     }
 }
