@@ -35,7 +35,8 @@
                                 android:layout_marginStart="20dp"
                                 android:src="@drawable/ic_backbutton"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                            tools:ignore="ContentDescription" />
                         <TextView
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -44,6 +45,7 @@
                                 android:gravity="center"
                                 android:textStyle="bold"
                                 android:textSize="18sp"
+                            android:textColor="#FFFFFF"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"/>
                         <ImageView
@@ -54,7 +56,8 @@
                                 android:id="@+id/ic_searchDetail"
                                 android:layout_marginEnd="20dp"
                                 android:layout_width="wrap_content"
-                                android:layout_height="match_parent"/>
+                                android:layout_height="match_parent"
+                            tools:ignore="ContentDescription" />
 
                         <ImageView
                                 android:id="@+id/ic_closeDetail"
@@ -64,13 +67,14 @@
                                 android:layout_marginStart="20dp"
                                 android:src="@drawable/ic_closebutton"
                                 android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"/>
+                                android:layout_height="wrap_content"
+                            tools:ignore="ContentDescription" />
 
                         <androidx.appcompat.widget.AppCompatEditText
                                 android:id="@+id/edtSearchDetail"
                                 android:hint="@string/keyword"
                                 android:maxLines="1"
-                                android:gravity="center|left"
+                                android:gravity="center|start"
                                 android:imeOptions="actionNext"
                                 android:textSize="18sp"
                                 app:layout_constraintStart_toEndOf="@+id/ic_closeDetail"
@@ -325,7 +329,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@id/ivMinusCartDetail"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="HardcodedText" />
+                        tools:ignore="Autofill,HardcodedText,LabelFor" />
 
                     <ImageView
                         android:id="@+id/ivAddCartDetail"

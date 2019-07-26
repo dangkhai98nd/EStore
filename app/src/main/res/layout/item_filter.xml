@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView
         xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:orientation="horizontal"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="horizontal"
         app:cardCornerRadius="@dimen/CornerRadius_item_filter"
         app:cardElevation="0dp"
         app:cardBackgroundColor="#00000000"
-        android:outlineSpotShadowColor="@color/colorWhite"
         android:id="@+id/cvFilter"
         android:layout_margin="@dimen/layout_margin_item_filter"
         android:layout_width="@dimen/width_item_filter"
@@ -13,9 +13,11 @@
     <TextView
             android:id="@+id/tvFilter"
             android:text="All"
+        android:background="@drawable/ic_border_filter"
             android:textSize="18sp"
             android:textColor="@color/colorWhite"
             android:gravity="center"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+        tools:ignore="HardcodedText" />
 </androidx.cardview.widget.CardView>
