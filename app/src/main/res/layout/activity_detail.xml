@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.DetailActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:context=".ui.DetailActivity">
 
-        <ScrollView
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fillViewport="true">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                <com.google.android.material.appbar.AppBarLayout
+                    <com.google.android.material.appbar.AppBarLayout
                         android:id="@+id/toolbarDetail"
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:layout_width="match_parent"
                             android:layout_height="@dimen/height_appbar">
-                        <ImageView
+                            <ImageView
                                 android:id="@+id/ic_backDetail"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
@@ -36,8 +38,8 @@
                                 android:src="@drawable/ic_backbutton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                            tools:ignore="ContentDescription" />
-                        <TextView
+                                tools:ignore="ContentDescription" />
+                            <TextView
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 android:text="@string/product_detail"
@@ -45,10 +47,10 @@
                                 android:gravity="center"
                                 android:textStyle="bold"
                                 android:textSize="18sp"
-                            android:textColor="#FFFFFF"
+                                android:textColor="#FFFFFF"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"/>
-                        <ImageView
+                            <ImageView
                                 app:layout_constraintTop_toTopOf="parent"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -57,9 +59,9 @@
                                 android:layout_marginEnd="20dp"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                            tools:ignore="ContentDescription" />
+                                tools:ignore="ContentDescription" />
 
-                        <ImageView
+                            <ImageView
                                 android:id="@+id/ic_closeDetail"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
@@ -68,9 +70,9 @@
                                 android:src="@drawable/ic_closebutton"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                            tools:ignore="ContentDescription" />
+                                tools:ignore="ContentDescription" />
 
-                        <androidx.appcompat.widget.AppCompatEditText
+                            <androidx.appcompat.widget.AppCompatEditText
                                 android:id="@+id/edtSearchDetail"
                                 android:hint="@string/keyword"
                                 android:maxLines="1"
@@ -85,7 +87,7 @@
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"/>
 
-                        <TextView
+                            <TextView
                                 android:id="@+id/tvSearchDetail"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintTop_toTopOf="parent"
@@ -98,39 +100,39 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"/>
 
-                        <androidx.constraintlayout.widget.Group
+                            <androidx.constraintlayout.widget.Group
                                 android:id="@+id/groupSearchDetail"
                                 app:constraint_referenced_ids="tvSearchDetail,edtSearchDetail,ic_closeDetail"
                                 android:visibility="gone"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"/>
 
-                        <androidx.constraintlayout.widget.Group
+                            <androidx.constraintlayout.widget.Group
                                 android:id="@+id/groupNormalDetail"
                                 app:constraint_referenced_ids="ic_backDetail,tvTitleDetail,ic_searchDetail"
                                 android:visibility="visible"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"/>
 
-                    </androidx.constraintlayout.widget.ConstraintLayout>
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                </com.google.android.material.appbar.AppBarLayout>
+                    </com.google.android.material.appbar.AppBarLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:id="@+id/productFieldDetail"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
                         app:layout_constraintHeight_percent="0.55"
                         app:layout_constraintTop_toBottomOf="@id/toolbarDetail">
 
-                    <androidx.constraintlayout.widget.ConstraintLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/productField1Detail"
                             android:layout_width="match_parent"
                             android:layout_height="0dp"
                             app:layout_constraintHeight_percent="0.8"
                             app:layout_constraintTop_toTopOf="parent">
 
-                        <ImageView
+                            <ImageView
                                 android:id="@+id/buttonHeartDetail"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -141,7 +143,7 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 tools:ignore="ContentDescription"/>
 
-                        <ImageView
+                            <ImageView
                                 android:id="@+id/buttonFavoriteDetail"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -152,7 +154,7 @@
                                 app:layout_constraintTop_toTopOf="parent"
                                 tools:ignore="ContentDescription"/>
 
-                        <ImageView
+                            <ImageView
                                 android:id="@+id/productPhotoDetail"
                                 android:layout_width="0dp"
                                 android:layout_height="0dp"
@@ -166,7 +168,7 @@
                                 app:layout_constraintVertical_bias="1"
                                 tools:ignore="ContentDescription"/>
 
-                        <androidx.constraintlayout.widget.ConstraintLayout
+                            <androidx.constraintlayout.widget.ConstraintLayout
                                 android:id="@+id/clTrendingDetail"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
@@ -174,7 +176,7 @@
                                 app:layout_constraintBottom_toBottomOf="@+id/productField1Detail"
                                 app:layout_constraintStart_toStartOf="@id/buttonHeartDetail">
 
-                            <ImageView
+                                <ImageView
                                     android:id="@+id/icTrendingDetail"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
@@ -183,220 +185,220 @@
                                     app:layout_constraintTop_toTopOf="parent"
                                     tools:ignore="ContentDescription"/>
 
+                                <TextView
+                                    android:id="@+id/tvTrendingDetail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="10dp"
+                                    android:text="TRENDING"
+                                    android:textColor="@color/colorRed"
+                                    app:layout_constraintBottom_toBottomOf="@id/icTrendingDetail"
+                                    app:layout_constraintStart_toEndOf="@+id/icTrendingDetail"
+                                    app:layout_constraintTop_toTopOf="@id/icTrendingDetail"
+                                    tools:ignore="HardcodedText" />
+                            </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
+
+                        <androidx.constraintlayout.widget.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="0dp"
+                            app:layout_constraintHeight_percent="0.2"
+                            app:layout_constraintTop_toBottomOf="@id/productField1Detail">
+
+                            <ImageView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:background="@drawable/ic_line"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:layout_constraintWidth_percent="0.92"
+                                tools:ignore="ContentDescription" />
+
+                            <RelativeLayout
+                                android:id="@+id/reLayoutDetail"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="16dp"
+                                android:layout_marginEnd="28dp"
+                                app:layout_constraintEnd_toStartOf="@id/tvProductPriceDetail"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent">
+
+                                <TextView
+                                    android:id="@+id/tvProductNameDetail"
+                                    android:layout_width="800dp"
+                                    android:layout_height="wrap_content"
+                                    android:ellipsize="marquee"
+                                    android:marqueeRepeatLimit="marquee_forever"
+                                    android:singleLine="true"
+                                    android:text="Some thing to demo don't mind it, lorem ipsum blabla i don't remember, bla bla bla bla bla"
+                                    android:textColor="#000000"
+                                    android:textSize="20sp"
+                                    android:textStyle="bold"
+                                    tools:ignore="HardcodedText" />
+                            </RelativeLayout>
+
+
                             <TextView
-                                android:id="@+id/tvTrendingDetail"
+                                android:id="@+id/tvProductPriceDetail"
+                                android:layout_width="60dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="20dp"
+                                android:text="$300"
+                                android:textSize="16sp"
+                                app:layout_constraintBottom_toBottomOf="@id/reLayoutDetail"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="@id/reLayoutDetail"
+                                tools:ignore="HardcodedText" />
+
+                            <LinearLayout
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="10dp"
-                                android:text="TRENDING"
-                                android:textColor="@color/colorRed"
-                                app:layout_constraintBottom_toBottomOf="@id/icTrendingDetail"
-                                app:layout_constraintStart_toEndOf="@+id/icTrendingDetail"
-                                app:layout_constraintTop_toTopOf="@id/icTrendingDetail"
-                                tools:ignore="HardcodedText" />
+                                android:layout_marginStart="20dp"
+                                android:layout_marginTop="12dp"
+                                android:orientation="horizontal"
+                                app:layout_constraintLeft_toLeftOf="parent"
+                                app:layout_constraintTop_toBottomOf="@id/reLayoutDetail">
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="4dp"
+                                    android:src="@drawable/ic_favorite_black_24dp"
+                                    tools:ignore="ContentDescription" />
+
+                                <TextView
+                                    android:id="@+id/tvLikeCounterDetail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="4dp"
+                                    android:text="23 likes"
+                                    tools:ignore="HardcodedText" />
+
+                                <ImageView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:layout_marginEnd="4dp"
+                                    android:src="@drawable/ic_comment"
+                                    tools:ignore="ContentDescription" />
+
+                                <TextView
+                                    android:id="@+id/tvCommentCounterDetail"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:text="123 comments"
+                                    tools:ignore="HardcodedText" />
+                            </LinearLayout>
                         </androidx.constraintlayout.widget.ConstraintLayout>
 
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
                     <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        app:layout_constraintHeight_percent="0.2"
-                        app:layout_constraintTop_toBottomOf="@id/productField1Detail">
+                        android:id="@+id/constraintDetail9"
+                        android:layout_width="0dp"
+                        app:layout_constraintWidth_percent="0.8"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/productFieldDetail">
 
                         <ImageView
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/ic_line"
-                            app:layout_constraintEnd_toEndOf="parent"
+                            android:id="@+id/ivMinusCartDetail"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_minusbutton"
                             app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintWidth_percent="0.92"
                             tools:ignore="ContentDescription" />
 
-                        <RelativeLayout
-                            android:id="@+id/reLayoutDetail"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="20dp"
-                            android:layout_marginTop="16dp"
-                            android:layout_marginEnd="28dp"
-                            app:layout_constraintEnd_toStartOf="@id/tvProductPriceDetail"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent">
+                        <EditText
+                            android:id="@+id/edtQuantityCartDetail"
+                            android:layout_width="52dp"
+                            android:layout_height="30dp"
+                            android:background="@android:color/transparent"
+                            android:gravity="center"
+                            android:inputType="numberDecimal"
+                            android:text="1"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/ivMinusCartDetail"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="Autofill,HardcodedText,LabelFor" />
 
-                            <TextView
-                                android:id="@+id/tvProductNameDetail"
-                                android:layout_width="800dp"
-                                android:layout_height="wrap_content"
-                                android:ellipsize="marquee"
-                                android:marqueeRepeatLimit="marquee_forever"
-                                android:singleLine="true"
-                                android:text="Some thing to demo don't mind it, lorem ipsum blabla i don't remember, bla bla bla bla bla"
-                                android:textColor="#000000"
-                                android:textSize="20sp"
-                                android:textStyle="bold"
-                                tools:ignore="HardcodedText" />
-                        </RelativeLayout>
+                        <ImageView
+                            android:id="@+id/ivAddCartDetail"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:src="@drawable/ic_addbutton"
+                            app:layout_constraintStart_toEndOf="@id/edtQuantityCartDetail"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            tools:ignore="ContentDescription" />
 
-
-                        <TextView
-                            android:id="@+id/tvProductPriceDetail"
-                            android:layout_width="60dp"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="20dp"
-                            android:text="$300"
-                            android:textSize="16sp"
-                            app:layout_constraintBottom_toBottomOf="@id/reLayoutDetail"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="@id/reLayoutDetail"
-                            tools:ignore="HardcodedText" />
-
-                        <LinearLayout
+                        <RadioButton
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="20dp"
-                            android:layout_marginTop="12dp"
-                            android:orientation="horizontal"
-                            app:layout_constraintLeft_toLeftOf="parent"
-                            app:layout_constraintTop_toBottomOf="@id/reLayoutDetail">
+                            android:id="@+id/darkButtonDetail"
+                            app:layout_constraintStart_toEndOf="@id/ivAddCartDetail"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="4dp"
-                                android:src="@drawable/ic_favorite_black_24dp"
-                                tools:ignore="ContentDescription" />
+                        <TextView
+                            android:id="@+id/colorDetail1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            app:layout_constraintStart_toEndOf="@id/darkButtonDetail"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:text="Dark"
+                            android:textColor="#000000"
+                            tools:ignore="HardcodedText" />
 
-                            <TextView
-                                android:id="@+id/tvLikeCounterDetail"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="4dp"
-                                android:text="23 likes"
-                                tools:ignore="HardcodedText" />
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:id="@+id/lightButtonDetail"
+                            app:layout_constraintStart_toEndOf="@id/colorDetail1"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent" />
 
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginEnd="4dp"
-                                android:src="@drawable/ic_comment"
-                                tools:ignore="ContentDescription" />
-
-                            <TextView
-                                android:id="@+id/tvCommentCounterDetail"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:text="123 comments"
-                                tools:ignore="HardcodedText" />
-                        </LinearLayout>
+                        <TextView
+                            android:id="@+id/colorDetail2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            app:layout_constraintStart_toEndOf="@id/lightButtonDetail"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0"
+                            android:text="Light"
+                            android:textColor="#000000"
+                            tools:ignore="HardcodedText" />
                     </androidx.constraintlayout.widget.ConstraintLayout>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintDetail9"
-                    android:layout_width="0dp"
-                    app:layout_constraintWidth_percent="0.8"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/productFieldDetail">
-
-                    <ImageView
-                        android:id="@+id/ivMinusCartDetail"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_minusbutton"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="ContentDescription" />
-
-                    <EditText
-                        android:id="@+id/edtQuantityCartDetail"
-                        android:layout_width="52dp"
-                        android:layout_height="30dp"
-                        android:background="@android:color/transparent"
-                        android:gravity="center"
-                        android:inputType="numberDecimal"
-                        android:text="1"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/ivMinusCartDetail"
-                        app:layout_constraintTop_toTopOf="parent"
-                        tools:ignore="Autofill,HardcodedText,LabelFor" />
-
-                    <ImageView
-                        android:id="@+id/ivAddCartDetail"
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:src="@drawable/ic_addbutton"
-                        app:layout_constraintStart_toEndOf="@id/edtQuantityCartDetail"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        tools:ignore="ContentDescription" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/buttonFieldDetail"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:id="@+id/darkButtonDetail"
-                        app:layout_constraintStart_toEndOf="@id/ivAddCartDetail"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-
-                    <TextView
-                        android:id="@+id/colorDetail1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:layout_constraintStart_toEndOf="@id/darkButtonDetail"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:text="Dark"
-                        android:textColor="#000000"
-                        tools:ignore="HardcodedText" />
-
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:id="@+id/lightButtonDetail"
-                        app:layout_constraintStart_toEndOf="@id/colorDetail1"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent" />
-
-                    <TextView
-                        android:id="@+id/colorDetail2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        app:layout_constraintStart_toEndOf="@id/lightButtonDetail"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
+                        android:layout_marginTop="16dp"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0"
-                        android:text="Light"
-                        android:textColor="#000000"
-                        tools:ignore="HardcodedText" />
-                </androidx.constraintlayout.widget.ConstraintLayout>
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/constraintDetail9"
+                        app:layout_constraintWidth_percent="0.8">
 
-
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/buttonFieldDetail"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/constraintDetail9"
-                    app:layout_constraintWidth_percent="0.8">
-
-                    <Button
+                        <Button
                             android:id="@+id/buttonAddCartDetail"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -409,24 +411,24 @@
                             app:layout_constraintTop_toTopOf="parent"
                             tools:ignore="HardcodedText"/>
 
-                    <ImageView
-                        android:id="@+id/imageCartCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:elevation="2dp"
-                        android:src="@drawable/ic_check_white"
-                        android:visibility="invisible"
-                        app:layout_constraintBottom_toBottomOf="@id/buttonAddCartDetail"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.9"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/buttonAddCartDetail"
-                        tools:ignore="ContentDescription" />
+                        <ImageView
+                            android:id="@+id/imageCartCheck"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:elevation="2dp"
+                            android:src="@drawable/ic_check_white"
+                            android:visibility="invisible"
+                            app:layout_constraintBottom_toBottomOf="@id/buttonAddCartDetail"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="0.9"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/buttonAddCartDetail"
+                            tools:ignore="ContentDescription" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-                <TextView
+                    <TextView
                         android:id="@+id/numberLikeDetail"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -437,7 +439,7 @@
                         app:layout_constraintTop_toBottomOf="@id/buttonFieldDetail"
                         tools:ignore="HardcodedText"/>
 
-                <ImageView
+                    <ImageView
                         android:id="@+id/unusedLineDetail"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -449,36 +451,36 @@
                         app:layout_constraintWidth_percent="0.92"
                         tools:ignore="ContentDescription"/>
 
-                <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/constraintDetail8"
-                    android:layout_width="match_parent"
-                    android:layout_height="72dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginEnd="20dp"
-                    app:layout_constraintTop_toBottomOf="@id/unusedLineDetail">
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/constraintDetail8"
+                        android:layout_width="match_parent"
+                        android:layout_height="72dp"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="20dp"
+                        app:layout_constraintTop_toBottomOf="@id/unusedLineDetail">
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rvListLike"
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/rvListLike"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintRight_toRightOf="parent" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <TextView
+                        android:id="@+id/unusedTextDetail"
                         android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:text="AVERAGE REVIEW"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/constraintDetail8"
+                        tools:ignore="HardcodedText" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-                <TextView
-                    android:id="@+id/unusedTextDetail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:text="AVERAGE REVIEW"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/constraintDetail8"
-                    tools:ignore="HardcodedText" />
-
-                <ImageView
+                    <ImageView
                         android:id="@+id/unusedLine2Detail"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
@@ -490,128 +492,130 @@
                         app:layout_constraintWidth_percent="0.92"
                         tools:ignore="ContentDescription"/>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/unusedLine2Detail">
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/unusedLine2Detail">
 
-                    <ImageView
+                        <ImageView
                             android:id="@+id/star1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_star_border_red_24dp"
                             tools:ignore="ContentDescription"/>
 
-                    <ImageView
+                        <ImageView
                             android:id="@+id/star2"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_star_border_red_24dp"
                             tools:ignore="ContentDescription"/>
 
-                    <ImageView
+                        <ImageView
                             android:id="@+id/star3"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_star_border_red_24dp"
                             tools:ignore="ContentDescription"/>
 
-                    <ImageView
+                        <ImageView
                             android:id="@+id/star4"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_star_border_red_24dp"
                             tools:ignore="ContentDescription"/>
 
-                    <ImageView
+                        <ImageView
                             android:id="@+id/star5"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:src="@drawable/ic_star_border_red_24dp"
                             tools:ignore="ContentDescription"/>
-                </LinearLayout>
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    </LinearLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </ScrollView>
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/bottom_sheet"
-        android:layout_width="match_parent"
-        android:layout_height="66dp"
-        android:background="#F2FFFFFF"
-        app:behavior_hideable="true"
-        app:behavior_peekHeight="0dp"
-        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
-        <ImageView
-            android:id="@+id/imageInSheet"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:ignore="ContentDescription" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@id/imageInSheet"
-            app:layout_constraintStart_toEndOf="@id/imageInSheet"
-            app:layout_constraintTop_toTopOf="@id/imageInSheet">
-
-            <TextView
-                android:id="@+id/nameInSheet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="something to demo"
-                android:textColor="#000000"
-                android:textSize="18sp"
-                tools:ignore="HardcodedText" />
-
-            <TextView
-                android:id="@+id/priceInSheet"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="demoPrice"
-                tools:ignore="HardcodedText" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/linearCartInSheet"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="8dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/bottom_sheet"
+            android:layout_width="match_parent"
+            android:layout_height="66dp"
+            android:background="#F2FFFFFF"
+            app:behavior_hideable="true"
+            app:behavior_peekHeight="0dp"
+            app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
             <ImageView
-                android:id="@+id/imageCartInSheet"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/ic_cart_red"
+                android:id="@+id/imageInSheet"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="ContentDescription" />
 
-            <TextView
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="VIEW"
-                android:textColor="#D0021B"
-                tools:ignore="HardcodedText" />
+                android:layout_marginStart="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/imageInSheet"
+                app:layout_constraintStart_toEndOf="@id/imageInSheet"
+                app:layout_constraintTop_toTopOf="@id/imageInSheet">
 
-            <TextView
+                <TextView
+                    android:id="@+id/nameInSheet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="something to demo"
+                    android:textColor="#000000"
+                    android:textSize="18sp"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
+                    android:id="@+id/priceInSheet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="demoPrice"
+                    tools:ignore="HardcodedText" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearCartInSheet"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="8dp"
+                android:gravity="center"
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/imageCartInSheet"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/ic_cart_red"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="VIEW"
+                    android:textColor="#D0021B"
+                    tools:ignore="HardcodedText" />
+
+                <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="CART"
                     android:textColor="#D0021B"
                     tools:ignore="HardcodedText"/>
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</layout>

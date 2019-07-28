@@ -30,24 +30,24 @@ class SignInActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_in)
 
-        val slideUp: Animation = loadAnimation(this, R.anim.move_up)
-        Glide.with(this)
-            .load(R.drawable.ic_e_logo_transparent)
-            .into(logoSignIn)
-        logoSignIn.startAnimation(slideUp)
-        Handler().postDelayed({
-            Glide.with(this)
-                .load(R.drawable.ic_logo)
-                .into(logoSignIn)
-            val fadeIn: Animation = loadAnimation(this, R.anim.fade_in)
-            logoSignIn.visibility = View.VISIBLE
-            linear1Si.visibility = View.VISIBLE
-            linear2Si.visibility = View.VISIBLE
-
-            linear1Si.startAnimation(fadeIn)
-            linear2Si.startAnimation(fadeIn)
-            buttonSignIn.startAnimation(fadeIn)
-        }, 3600)
+//        val slideUp: Animation = loadAnimation(this, R.anim.move_up)
+//        Glide.with(this)
+//            .load(R.drawable.ic_e_logo_transparent)
+//            .into(logoSignIn)
+//        logoSignIn.startAnimation(slideUp)
+//        Handler().postDelayed({
+//            Glide.with(this)
+//                .load(R.drawable.ic_logo)
+//                .into(logoSignIn)
+//            val fadeIn: Animation = loadAnimation(this, R.anim.fade_in)
+//            logoSignIn.visibility = View.VISIBLE
+//            linear1Si.visibility = View.VISIBLE
+//            linear2Si.visibility = View.VISIBLE
+//
+//            linear1Si.startAnimation(fadeIn)
+//            linear2Si.startAnimation(fadeIn)
+//            buttonSignIn.startAnimation(fadeIn)
+//        }, 3600)
 
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
 
