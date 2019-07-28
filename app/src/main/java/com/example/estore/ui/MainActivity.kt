@@ -2,7 +2,6 @@ package com.example.estore.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
@@ -17,13 +16,14 @@ import com.example.estore.adapter.ViewPagerMainAdapter
 import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.databaseFilter
-import com.example.estore.model.DatabaseEstore.Companion.listUser
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.utils.CubeInRotationTransformation
 import com.example.estore.utils.RecyclerViewOnClickListener
 import com.google.android.material.appbar.AppBarLayout
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
 
@@ -31,14 +31,47 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     private var filterAdapter: FilterAdapter? = null
     private var viewPagerMainAdapter: ViewPagerMainAdapter? = null
     private var paramsAppBarLayout: AppBarLayout.LayoutParams? = null
+    private lateinit var databaseRef: DatabaseReference
+    private var positionSort = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        databaseRef = FirebaseDatabase.getInstance().getReference("Product")
+        databaseRef.addValueEventListener(object : ValueEventListener {
+            override fun onCancelled(p0: DatabaseError) {
+
+            }
+
+            override fun onDataChange(p0: DataSnapshot) {
+                val listProduct = mutableListOf<Product>()
+                for(product in p0.children){
+                    product.getValue(Product::class.java)?.let { listProduct.add(it) }
+                }
+                database.clear()
+                database.addAll(listProduct)
+                when(positionSort){
+                    0 -> {
+                        databaseFilter.value = database
+                    }
+                    1 -> {
+                        databaseFilter.value = database.filter { it.trending == true }
+                    }
+                    2 -> {
+                        databaseFilter.value = sortingNew()
+                    }
+                    3 -> {
+                        databaseFilter.value = sortingPrice()
+                    }
+                }
+            }
+        })
+
         paramsAppBarLayout = ctlMain.layoutParams as AppBarLayout.LayoutParams
         initToolbar()
         initView()
+
     }
 
     override fun onBackPressed() {
@@ -73,8 +106,8 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     }
 
     private fun initView() {
-        setupRvFilter()
         setupSelectFilter()
+        setupRvFilter()
         setupNavigation()
     }
 
@@ -87,10 +120,22 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
                         Log.e("position filter","$position")
                         when(position)
                         {
-                            0 -> databaseFilter.value = database
-                            1 -> databaseFilter.value = database.filter { it.trending == true }
-                            2 -> databaseFilter.value = sortingNew()
-                            3 -> databaseFilter.value = sortingPrice()
+                            0 -> {
+                                databaseFilter.value = database
+                                positionSort = 0
+                            }
+                            1 -> {
+                                databaseFilter.value = database.filter { it.trending == true }
+                                positionSort = 1
+                            }
+                            2 -> {
+                                databaseFilter.value = sortingNew()
+                                positionSort = 2
+                            }
+                            3 -> {
+                                databaseFilter.value = sortingPrice()
+                                positionSort = 3
+                            }
                         }
                     }
                 })
@@ -208,4 +253,5 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         }
         return listPriceSort
     }
+
 }

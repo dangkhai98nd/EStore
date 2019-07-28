@@ -11,11 +11,13 @@ import com.bumptech.glide.Glide
 import com.example.estore.FirebaseFunction
 import com.example.estore.R
 import com.example.estore.adapter.ListLikeAdapter
+import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.model.ProductCart
 import com.google.android.material.bottomsheet.BottomSheetBehavior
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : AppCompatActivity() {
@@ -28,23 +30,44 @@ class DetailActivity : AppCompatActivity() {
     private var favoriteClick = false
     private var heartClick = false
     private var cartAdded = false
-    private var productToPush: Product? = null
     private var listLikeAdapter: ListLikeAdapter? = null
     private var listLikeSize = 0
     private var quantity = 0
     private var colorChoose = "dark"
+    private lateinit var databaseRef: DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        intent
+        val position = intent.getIntExtra("position", -1)
+        var productDetail = database[position]
+
+        databaseRef = FirebaseDatabase.getInstance().getReference("Product")
+        productDetail.id?.let {
+            databaseRef.child(it).addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    productDetail = p0.getValue(Product::class.java)!!
+                    setUpAdapter(productDetail.listUserLike)
+                    listLikeAdapter?.notifyDataSetChanged()
+                    tvLikeCounterDetail.text =
+                        StringBuilder().append(productDetail.listUserLike.size).append(" likes")
+                    tvCommentCounterDetail.text =
+                        StringBuilder().append(productDetail.commentCounter).append(" comments")
+                    numberLikeDetail.text =
+                        StringBuilder().append(productDetail.listUserLike.size).append(" people like this")
+                }
+            })
+        }
+
         val behavior = BottomSheetBehavior.from(bottom_sheet)
 
-        intent
         initToolbar()
-        val position = intent.getIntExtra("position", -1)
-
-        val productDetail = database[position]
 
         val index = userEstore?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
         if (index != null) {
@@ -106,10 +129,6 @@ class DetailActivity : AppCompatActivity() {
             }
         }
 
-
-
-
-
         nameInSheet.text = productDetail.name
         priceInSheet.text = StringBuilder().append("$").append(productDetail.price)
 
@@ -167,37 +186,55 @@ class DetailActivity : AppCompatActivity() {
             productDetail.rating == 1 -> {
                 set1star()
             }
+            productDetail.rating == 0 ->{
+                resetStar()
+            }
         }
         star5.setOnClickListener {
-            if (star5click) resetStar() else{
+            if (star5click) {
+                productDetail.rating = 0
+                resetStar()
+            } else{
                 set5star()
                 productDetail.rating = 5
             }
         }
 
         star4.setOnClickListener {
-            if (star4click) resetStar() else {
+            if (star4click) {
+                productDetail.rating = 0
+                resetStar()
+            } else {
                 set4star()
                 productDetail.rating = 4
             }
         }
 
         star3.setOnClickListener {
-            if (star3click) resetStar() else {
+            if (star3click) {
+                productDetail.rating = 0
+                resetStar()
+            } else {
                 set3star()
                 productDetail.rating = 3
             }
         }
 
         star2.setOnClickListener {
-            if (star2click) resetStar() else {
+            if (star2click) {
+                productDetail.rating = 0
+                resetStar()
+            } else {
                 set2star()
                 productDetail.rating = 2
             }
         }
 
         star1.setOnClickListener {
-            if (star1click) resetStar() else {
+            if (star1click) {
+                productDetail.rating = 0
+                resetStar()
+            } else {
                 set1star()
                 productDetail.rating = 1
             }
@@ -281,6 +318,7 @@ class DetailActivity : AppCompatActivity() {
 
                     cartAdded = true
                     Handler().postDelayed({
+                        firebaseFunction.updateAny("Product", productDetail.id!! , "rating", productDetail.rating.toString())
                         firebaseFunction.updateAny("User", userEstore?.id!!, "cartList", userEstore?.cartList!!)
                         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     },4000)
@@ -322,8 +360,6 @@ class DetailActivity : AppCompatActivity() {
 
 
         setUpAdapter(productDetail.listUserLike)
-
-        productToPush = productDetail
     }
 
     private fun initToolbar() {

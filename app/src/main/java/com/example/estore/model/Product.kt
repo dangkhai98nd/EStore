@@ -13,7 +13,7 @@ class Product() {
     var numberSold: Int? = null
     var trending: Boolean? = null
     var listUserLike: MutableList<String> = ArrayList()
-    var rating: Int? = null
+    var rating: Int = 0
     var time: String? = null
 
     constructor(
@@ -29,7 +29,7 @@ class Product() {
         numberSold: Int?,
         trending: Boolean?,
         listUserLike: MutableList<String>,
-        rating: Int?,
+        rating: Int,
         time: String?
     ) : this() {
         this.id = id

@@ -1,6 +1,7 @@
 package com.example.estore.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +11,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.estore.R
 import com.example.estore.adapter.BrowseAdapter
+import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.databaseFilter
+import com.example.estore.model.DatabaseEstore.Companion.getDatabase
+import com.example.estore.model.DatabaseEstore.Companion.userEstore
+import com.example.estore.model.Product
+import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.fragment_browse.*
 
 class BrowseFragment : Fragment() {
@@ -23,12 +29,12 @@ class BrowseFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         setupAdapter(view)
 
-        browseAdapter?.setProducts(databaseFilter.value ?: emptyList())
-
-        databaseFilter.observe(this, Observer {
+        databaseFilter.observe(this@BrowseFragment, Observer {
             browseAdapter?.setProducts(it)
-            rvBrowse.layoutManager?.scrollToPosition(0)
+//            rvBrowse.layoutManager?.scrollToPosition(0)
         })
+
+        browseAdapter?.setProducts(databaseFilter.value ?: emptyList())
 
     }
 
