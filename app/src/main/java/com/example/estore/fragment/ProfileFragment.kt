@@ -1,6 +1,5 @@
 package com.example.estore.fragment
 
-//import com.example.estore.ui.SignInActivity.Companion.database
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater

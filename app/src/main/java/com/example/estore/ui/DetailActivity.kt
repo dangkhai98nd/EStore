@@ -318,7 +318,7 @@ class DetailActivity : AppCompatActivity() {
 
                     cartAdded = true
                     Handler().postDelayed({
-                        firebaseFunction.updateAny("Product", productDetail.id!! , "rating", productDetail.rating.toString())
+                        firebaseFunction.updateAny("Product", productDetail.id!! , "rating", productDetail.rating)
                         firebaseFunction.updateAny("User", userEstore?.id!!, "cartList", userEstore?.cartList!!)
                         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
                     },4000)

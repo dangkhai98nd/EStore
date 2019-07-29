@@ -8,6 +8,16 @@
     tools:context=".ui.SignInActivity">
 
     <ImageView
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/uselessLogo"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:id="@+id/logoSignIn"
@@ -25,7 +35,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:orientation="vertical"
-
+        android:visibility="invisible"
         android:layout_marginTop="60dp"
         app:layout_constraintVertical_bias="0.4"
         app:layout_constraintTop_toTopOf="parent"
@@ -44,7 +54,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_your_email_address"
-            android:inputType="textEmailAddress" />
+            android:inputType="textEmailAddress"
+            tools:ignore="Autofill" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -59,7 +70,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_your_password"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            tools:ignore="Autofill" />
 
     </LinearLayout>
 
@@ -71,7 +83,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-
+        android:visibility="invisible"
         app:layout_constraintTop_toBottomOf="@id/linear1Si">
 
         <TextView
@@ -94,7 +106,7 @@
     <Button
         android:id="@+id/buttonSignIn"
         android:layout_width="0dp"
-        android:visibility="visible"
+        android:visibility="invisible"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="@drawable/ic_button_login"

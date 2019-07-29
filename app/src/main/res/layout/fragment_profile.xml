@@ -91,10 +91,10 @@
                     app:layout_constraintTop_toBottomOf="@id/unusedLineDetail">
 
                     <ImageView
-                        android:id="@+id/unusedHeart"
+                        android:id="@+id/unusedIcon"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_favorite_red"
+                        android:src="@drawable/ic_check_green"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -109,7 +109,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/unusedHeart"
+                        app:layout_constraintTop_toBottomOf="@id/unusedIcon"
                         tools:ignore="HardcodedText" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -131,12 +131,13 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="12dp"
+                    android:visibility="gone"
                     android:layout_marginEnd="20dp"
                     android:background="?android:attr/selectableItemBackground"
                     app:layout_constraintTop_toBottomOf="@id/unusedLine2Detail">
 
                     <ImageView
-                        android:id="@+id/unusedCheck"
+                        android:id="@+id/unusedIcon2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@drawable/ic_check_green"
@@ -154,7 +155,7 @@
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/unusedCheck"
+                        app:layout_constraintTop_toBottomOf="@id/unusedIcon2"
                         tools:ignore="HardcodedText" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -163,6 +164,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
+                    android:visibility="gone"
                     android:background="@drawable/ic_line"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -181,10 +183,10 @@
                     app:layout_constraintTop_toBottomOf="@id/unusedLine3">
 
                     <ImageView
-                        android:id="@+id/unusedCart"
+                        android:id="@+id/unusedIcon3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/ic_check_green"
+                        android:src="@drawable/ic_settings_black_24dp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
@@ -193,13 +195,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="To buy"
+                        android:text="Setting"
                         android:textColor="#000000"
                         android:textSize="20sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/unusedCart"
+                        app:layout_constraintTop_toBottomOf="@id/unusedIcon3"
                         tools:ignore="HardcodedText" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 

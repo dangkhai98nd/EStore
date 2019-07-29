@@ -2,7 +2,6 @@ package com.example.estore.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,6 @@ import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.ui.DetailActivity
-import com.google.firebase.database.*
 import kotlinx.android.extensions.LayoutContainer
 
 class BrowseAdapter(
@@ -34,7 +32,7 @@ class BrowseAdapter(
     override fun getItemCount(): Int = products.size
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        holder.bind(products[position], position)
+        holder.bind(products[position])
     }
 
 
@@ -54,7 +52,7 @@ class BrowseAdapter(
         private var heartClick = false
 
 
-        fun bind(product: Product, position: Int) {
+        fun bind(product: Product) {
             Glide.with(mContext)
                 .load(product.photoDark)
                 .into(ivProductBrowse)

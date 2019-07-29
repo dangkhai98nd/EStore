@@ -2,7 +2,6 @@ package com.example.estore.adapter
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,14 +13,12 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.estore.R
-import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.model.ProductCart
 import com.example.estore.ui.DetailActivity
 import kotlinx.android.extensions.LayoutContainer
-import kotlin.contracts.contract
 
 class CartAdapter(
     private val mContext: Context
@@ -66,13 +63,13 @@ class CartAdapter(
             edtQuantityCart.setText(productCart?.quantity.toString())
             if (productCart?.color == "dark") {
                 cvColorCart.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.colorDark))
-                tvColorCart.text = "Dark"
+                tvColorCart.text = StringBuilder().append("Dark")
                 Glide.with(mContext)
                     .load(product.photoDark)
                     .into(ivProductCart)
             } else {
                 cvColorCart.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.colorWhite))
-                tvColorCart.text = "Light"
+                tvColorCart.text = StringBuilder().append("Light")
                 Glide.with(mContext)
                     .load(product.photoLight)
                     .into(ivProductCart)
@@ -92,7 +89,7 @@ class CartAdapter(
                     userEstore?.cartList?.set(position, productCart)
             }
             tvProductNameCart.text = product.name
-            tvPriceCart.text = "\$" + "${product?.price}"
+            tvPriceCart.text = StringBuilder().append("$").append(product.price)
             cvCart.setOnClickListener {
                 val intent = Intent(mContext, DetailActivity::class.java)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

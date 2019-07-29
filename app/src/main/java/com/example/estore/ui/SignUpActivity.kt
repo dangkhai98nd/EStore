@@ -1,6 +1,8 @@
 package com.example.estore.ui
 
 import android.os.Bundle
+import android.text.TextUtils
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.estore.R
@@ -18,33 +20,37 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
 
+        window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
+
         mAuth = FirebaseAuth.getInstance()
         buttonSignUp.setOnClickListener {
-            signUp(emailSignUpInput.text.toString(), passwordSignUpInput.text.toString())
+            if (!TextUtils.isEmpty(emailSignUpInput.text) && !TextUtils.isEmpty(passwordSignUpInput.text) && !TextUtils.isEmpty(userNameSignUpInput.text)) {
+                signUpFirebase(emailSignUpInput.text.toString(), passwordSignUpInput.text.toString(), userNameSignUpInput.text.toString())
+            } else {
+                Toast.makeText(applicationContext, "Please fill in everything", Toast.LENGTH_SHORT).show()
+            }
         }
+
     }
 
-    private fun signUp(email: String?, password: String?){
-        if (password != null && email != null) {
-            mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { p0 ->
-                    if(p0.isSuccessful){
-//                        val user = mAuth.currentUser
-//                        println(user?.uid)
-//                        Toast.makeText(baseContext, "Success.", Toast.LENGTH_SHORT).show()
+    private fun signUpFirebase(email: String, password: String, userName: String) {
+        mAuth.createUserWithEmailAndPassword(email, password)
+            .addOnCompleteListener(this) { p0 ->
+                if (p0.isSuccessful) {
 
-                        databaseRef = FirebaseDatabase.getInstance().getReference("User")
-                        val uid = mAuth.currentUser?.uid
-                        if (uid != null) {
-                            databaseRef.child(uid).setValue(User(uid, null, ArrayList(), ArrayList(), null, null))
-                        }
+                    Toast.makeText(baseContext, "Success.", Toast.LENGTH_SHORT).show()
 
-                    }else{
-                        Toast.makeText(baseContext, "Sign up failed, try again.", Toast.LENGTH_SHORT).show()
+                    databaseRef = FirebaseDatabase.getInstance().getReference("User")
+                    val uid = mAuth.currentUser?.uid
+                    if (uid != null) {
+                        databaseRef.child(uid)
+                            .setValue(User(uid, userName, ArrayList(), ArrayList(), null, null))
                     }
+
+                } else {
+                    Toast.makeText(applicationContext, "Sign up failed, try again.", Toast.LENGTH_SHORT).show()
                 }
-        }else {
-            Toast.makeText(baseContext, "Please fill in everything", Toast.LENGTH_SHORT).show()
-        }
+
+            }
     }
 }

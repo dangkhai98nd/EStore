@@ -18,11 +18,11 @@ class DatabaseEstore {
             val firebaseFunction = FirebaseFunction()
             firebaseFunction.productLiveData.observe(lifecycleOwner , Observer {
                 database.addAll(it)
-                signInCheck.value = true
                 databaseFilter.value = it
             })
 
             firebaseFunction.userLiveData.observe(lifecycleOwner, Observer {
+                signInCheck.value = true
                 userEstore = it
             })
 
