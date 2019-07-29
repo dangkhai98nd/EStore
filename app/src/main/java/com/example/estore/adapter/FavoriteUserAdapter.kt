@@ -48,6 +48,8 @@ class FavoriteUserAdapter(private val mContext: Context, private val listFavorit
                 val product = database[position]
                 Glide.with(mContext)
                     .load(product.photoDark)
+                    .thumbnail(Glide.with(mContext).load(R.drawable.load))
+                    .fitCenter()
                     .into(ivProductBrowse)
                 tvProductNameBrowse.text = product.name
                 if (product.trending == true)

@@ -28,6 +28,8 @@ class ProfileFragment: Fragment() {
         Glide.with(this)
             .load(userEstore.value?.profilePhoto)
             .apply(RequestOptions.circleCropTransform())
+            .thumbnail(Glide.with(this).load(R.drawable.load))
+            .fitCenter()
             .into(profilePhoto)
 
         buttonLogout.setOnClickListener {

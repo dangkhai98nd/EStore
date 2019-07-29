@@ -56,6 +56,8 @@ class BrowseAdapter(
         fun bind(product: Product) {
             Glide.with(mContext)
                 .load(product.photoDark)
+                .thumbnail(Glide.with(mContext).load(R.drawable.load))
+                .fitCenter()
                 .into(ivProductBrowse)
             tvProductNameBrowse.text = product.name
             if (product.trending == true)

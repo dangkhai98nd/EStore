@@ -69,12 +69,16 @@ class CartAdapter(
                 tvColorCart.text = StringBuilder().append("Dark")
                 Glide.with(mContext)
                     .load(product.photoDark)
+                    .thumbnail(Glide.with(mContext).load(R.drawable.load))
+                    .fitCenter()
                     .into(ivProductCart)
             } else {
                 cvColorCart.setCardBackgroundColor(ContextCompat.getColor(mContext, R.color.colorWhite))
                 tvColorCart.text = StringBuilder().append("Light")
                 Glide.with(mContext)
                     .load(product.photoLight)
+                    .thumbnail(Glide.with(mContext).load(R.drawable.load))
+                    .fitCenter()
                     .into(ivProductCart)
             }
 //            listenerChange(productCart?.idProduct)

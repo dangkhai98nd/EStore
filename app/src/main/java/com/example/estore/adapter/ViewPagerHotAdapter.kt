@@ -58,6 +58,8 @@ class ViewPagerHotAdapter(
         fun bind(position: Int) {
             Glide.with(containerView)
                 .load(products[position].photoDark)
+                .thumbnail(Glide.with(mContext).load(R.drawable.load))
+                .fitCenter()
                 .into(ivProductSmallHot)
             ivProductSmallHot.setOnClickListener {
                 val intent = Intent(mContext, DetailActivity::class.java)
@@ -76,6 +78,8 @@ class ViewPagerHotAdapter(
             Glide.with(containerView)
                 .load(products[position].photoDark)
                 .apply(bitmapTransform(BlurTransformation(10, 1)))
+                .thumbnail(Glide.with(mContext).load(R.drawable.load))
+                .fitCenter()
                 .into(ivProductLargeCart)
         }
     }

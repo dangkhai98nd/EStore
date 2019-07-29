@@ -35,6 +35,8 @@ class ListLikeAdapter(private val mContext: Context, private val listLike: List<
                 Glide.with(mContext)
                     .load(user.profilePhoto)
                     .apply(RequestOptions.circleCropTransform())
+                    .thumbnail(Glide.with(mContext).load(R.drawable.load))
+                    .fitCenter()
                     .into(likeProfilePhoto)
             }
         }

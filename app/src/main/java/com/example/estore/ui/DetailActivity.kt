@@ -96,9 +96,11 @@ class DetailActivity : AppCompatActivity() {
 
                     Glide.with(this)
                         .load(productDetail.photoDark)
+                        .thumbnail(Glide.with(this).load(R.drawable.load))
                         .into(productPhotoDetail)
                     Glide.with(this)
                         .load(productDetail.photoDark)
+                        .thumbnail(Glide.with(this).load(R.drawable.load))
                         .into(imageInSheet)
                 }else{
                     darkButtonDetail.isChecked = false
@@ -106,9 +108,11 @@ class DetailActivity : AppCompatActivity() {
 
                     Glide.with(this)
                         .load(productDetail.photoLight)
+                        .thumbnail(Glide.with(this).load(R.drawable.load))
                         .into(productPhotoDetail)
                     Glide.with(this)
                         .load(productDetail.photoLight)
+                        .thumbnail(Glide.with(this).load(R.drawable.load))
                         .into(imageInSheet)
 
                     colorChoose = "light"
@@ -116,9 +120,11 @@ class DetailActivity : AppCompatActivity() {
             }else{
                 Glide.with(this)
                     .load(productDetail.photoDark)
+                    .thumbnail(Glide.with(this).load(R.drawable.load))
                     .into(productPhotoDetail)
                 Glide.with(this)
                     .load(productDetail.photoDark)
+                    .thumbnail(Glide.with(this).load(R.drawable.load))
                     .into(imageInSheet)
                 darkButtonDetail.isChecked = true
                 lightButtonDetail.isChecked = false
@@ -246,10 +252,12 @@ class DetailActivity : AppCompatActivity() {
             colorChoose = "dark"
             Glide.with(this)
                 .load(productDetail.photoDark)
+                .thumbnail(Glide.with(this).load(R.drawable.load))
                 .into(productPhotoDetail)
 
             Glide.with(this)
                 .load(productDetail.photoDark)
+                .thumbnail(Glide.with(this).load(R.drawable.load))
                 .into(imageInSheet)
         }
         lightButtonDetail.setOnClickListener {
@@ -257,10 +265,12 @@ class DetailActivity : AppCompatActivity() {
             colorChoose = "light"
             Glide.with(this)
                 .load(productDetail.photoLight)
+                .thumbnail(Glide.with(this).load(R.drawable.load))
                 .into(productPhotoDetail)
 
             Glide.with(this)
                 .load(productDetail.photoLight)
+                .thumbnail(Glide.with(this).load(R.drawable.load))
                 .into(imageInSheet)
         }
 
