@@ -13,6 +13,7 @@ import com.example.estore.R
 import com.example.estore.adapter.ListLikeAdapter
 import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
+import com.example.estore.model.DatabaseEstore.Companion.updatauser
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.model.ProductCart
@@ -69,7 +70,7 @@ class DetailActivity : AppCompatActivity() {
 
         initToolbar()
 
-        val index = userEstore?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
+        val index = userEstore.value?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
         if (index != null) {
             if(index >= 0){
                 buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
@@ -84,9 +85,9 @@ class DetailActivity : AppCompatActivity() {
 
                 cartAdded = true
 
-                quantity = userEstore?.cartList?.get(index)?.quantity!!
+                quantity = userEstore.value?.cartList?.get(index)?.quantity!!
                 edtQuantityCartDetail.setText(quantity.toString())
-                val color = userEstore?.cartList?.get(index)?.color
+                val color = userEstore.value?.cartList?.get(index)?.color
                 if(color == "dark"){
                     darkButtonDetail.isChecked = true
                     lightButtonDetail.isChecked = false
@@ -147,7 +148,7 @@ class DetailActivity : AppCompatActivity() {
             StringBuilder().append(listLikeSize).append(" people like this")
 
 
-        if(userEstore?.listFavorite?.contains(productDetail.id) == true){
+        if(userEstore.value?.listFavorite?.contains(productDetail.id) == true){
             favoriteClick = true
             buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
         }else {
@@ -155,7 +156,7 @@ class DetailActivity : AppCompatActivity() {
             buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
         }
 
-        if(productDetail.listUserLike.contains(userEstore?.id)){
+        if(productDetail.listUserLike.contains(userEstore.value?.id)){
             heartClick = true
             buttonHeartDetail.setImageResource(R.drawable.ic_heartitemenabled)
         }else{
@@ -266,13 +267,13 @@ class DetailActivity : AppCompatActivity() {
         buttonFavoriteDetail.setOnClickListener {
             favoriteClick = if(!favoriteClick){
                 buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
-                productDetail.id?.let { it1 -> userEstore?.listFavorite?.add(it1) }
-                firebaseFunction.updateAny("User", userEstore!!.id!!, "listFavorite", userEstore!!.listFavorite)
+                productDetail.id?.let { it1 -> userEstore.value?.listFavorite?.add(it1) }
+                firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
                 true
             }else{
                 buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
-                productDetail.id?.let { it1 -> userEstore?.listFavorite?.remove(it1) }
-                firebaseFunction.updateAny("User", userEstore!!.id!!, "listFavorite", userEstore!!.listFavorite)
+                productDetail.id?.let { it1 -> userEstore.value?.listFavorite?.remove(it1) }
+                firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
                 false
             }
         }
@@ -280,7 +281,7 @@ class DetailActivity : AppCompatActivity() {
         buttonHeartDetail.setOnClickListener {
             heartClick = if(!heartClick){
                 buttonHeartDetail.setImageResource(R.drawable.ic_heartitemenabled)
-                userEstore?.id?.let { it1 -> productDetail.listUserLike.add(it1) }
+                userEstore.value?.id?.let { it1 -> productDetail.listUserLike.add(it1) }
                 firebaseFunction.updateAny("Product", productDetail.id!!, "listUserLike", productDetail.listUserLike)
                 listLikeSize++
                 listLikeAdapter?.notifyDataSetChanged()
@@ -289,7 +290,7 @@ class DetailActivity : AppCompatActivity() {
                 true
             }else{
                 buttonHeartDetail.setImageResource(R.drawable.ic_heartitemdisabled)
-                userEstore?.id?.let { it1 -> productDetail.listUserLike.remove(it1) }
+                userEstore.value?.id?.let { it1 -> productDetail.listUserLike.remove(it1) }
                 firebaseFunction.updateAny("Product", productDetail.id!!, "listUserLike", productDetail.listUserLike)
                 listLikeSize--
                 listLikeAdapter?.notifyDataSetChanged()
@@ -308,7 +309,7 @@ class DetailActivity : AppCompatActivity() {
                     buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
                     imageCartCheck.visibility = View.VISIBLE
                     buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
-                    userEstore?.cartList?.add(ProductCart(productDetail.id, quantity, colorChoose))
+                    userEstore.value?.cartList?.add(ProductCart(productDetail.id, quantity, colorChoose))
                     darkButtonDetail.isEnabled = false
                     lightButtonDetail.isEnabled = false
 
@@ -317,11 +318,11 @@ class DetailActivity : AppCompatActivity() {
                     edtQuantityCartDetail.isEnabled = false
 
                     cartAdded = true
+                    firebaseFunction.updateAny("Product", productDetail.id!! , "rating", productDetail.rating)
+                    firebaseFunction.updateAny("User", userEstore.value?.id!!, "cartList", userEstore.value?.cartList!!)
                     Handler().postDelayed({
-                        firebaseFunction.updateAny("Product", productDetail.id!! , "rating", productDetail.rating)
-                        firebaseFunction.updateAny("User", userEstore?.id!!, "cartList", userEstore?.cartList!!)
                         behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                    },4000)
+                    },2000)
                 }else{
                     Toast.makeText(this, "Number must be larger than 0", Toast.LENGTH_SHORT).show()
                 }
@@ -330,9 +331,10 @@ class DetailActivity : AppCompatActivity() {
                 buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_login)
                 imageCartCheck.visibility = View.INVISIBLE
                 buttonAddCartDetail.text = StringBuilder().append("ADD TO CART")
-                val i = userEstore?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
-                userEstore?.cartList?.removeAt(i!!)
-                firebaseFunction.updateAny("User", userEstore?.id!!, "cartList", userEstore?.cartList!!)
+                val i = userEstore.value?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
+                userEstore.value?.cartList?.removeAt(i!!)
+                updatauser(userEstore.value!!)
+                firebaseFunction.updateAny("User", userEstore.value?.id!!, "cartList", userEstore.value?.cartList!!)
 
                 darkButtonDetail.isEnabled = true
                 lightButtonDetail.isEnabled = true

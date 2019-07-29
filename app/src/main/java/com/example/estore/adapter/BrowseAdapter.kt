@@ -71,7 +71,7 @@ class BrowseAdapter(
                 mContext.startActivity(intent)
             }
 
-            if (userEstore?.listFavorite?.contains(product.id) == true) {
+            if (userEstore.value?.listFavorite?.contains(product.id) == true) {
                 favoriteClick = true
                 buttonFavoriteBrowse.setImageResource(R.drawable.ic_favoriteditem)
             } else {
@@ -79,7 +79,7 @@ class BrowseAdapter(
                 buttonFavoriteBrowse.setImageResource(R.drawable.ic_favoriteditemdisabled)
             }
 
-            if (product.listUserLike.contains(userEstore?.id)) {
+            if (product.listUserLike.contains(userEstore.value?.id)) {
                 heartClick = true
                 buttonHeartBrowse.setImageResource(R.drawable.ic_heartitemenabled)
             } else {
@@ -91,13 +91,13 @@ class BrowseAdapter(
                 val firebaseFunction = FirebaseFunction()
                 favoriteClick = if (!favoriteClick) {
                     buttonFavoriteBrowse.setImageResource(R.drawable.ic_favoriteditem)
-                    product.id?.let { it1 -> userEstore?.listFavorite?.add(it1) }
-                    firebaseFunction.updateAny("User", userEstore!!.id!!, "listFavorite", userEstore!!.listFavorite)
+                    product.id?.let { it1 -> userEstore.value?.listFavorite?.add(it1) }
+                    firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
                     true
                 } else {
                     buttonFavoriteBrowse.setImageResource(R.drawable.ic_favoriteditemdisabled)
-                    product.id?.let { it1 -> userEstore?.listFavorite?.remove(it1) }
-                    firebaseFunction.updateAny("User", userEstore!!.id!!, "listFavorite", userEstore!!.listFavorite)
+                    product.id?.let { it1 -> userEstore.value?.listFavorite?.remove(it1) }
+                    firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
                     false
                 }
             }
@@ -106,13 +106,13 @@ class BrowseAdapter(
                 val firebaseFunction = FirebaseFunction()
                 heartClick = if (!heartClick) {
                     buttonHeartBrowse.setImageResource(R.drawable.ic_heartitemenabled)
-                    userEstore?.id?.let { it1 -> product.listUserLike.add(it1) }
+                    userEstore.value?.id?.let { it1 -> product.listUserLike.add(it1) }
                     tvLikeCounterBrowse.text = StringBuilder().append(product.listUserLike.size).append(" likes")
                     firebaseFunction.updateAny("Product", product.id!!, "listUserLike", product.listUserLike)
                     true
                 } else {
                     buttonHeartBrowse.setImageResource(R.drawable.ic_heartitemdisabled)
-                    userEstore?.id?.let { it1 -> product.listUserLike.remove(it1) }
+                    userEstore.value?.id?.let { it1 -> product.listUserLike.remove(it1) }
                     tvLikeCounterBrowse.text = StringBuilder().append(product.listUserLike.size).append(" likes")
                     firebaseFunction.updateAny("Product", product.id!!, "listUserLike", product.listUserLike)
                     false

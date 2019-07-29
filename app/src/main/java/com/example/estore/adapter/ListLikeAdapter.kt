@@ -10,9 +10,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.example.estore.R
 import com.example.estore.model.DatabaseEstore.Companion.listUser
-import com.example.estore.model.DatabaseEstore.Companion.userEstore
-import com.example.estore.model.User
-import kotlinx.android.extensions.LayoutContainer
 
 class ListLikeAdapter(private val mContext: Context, private val listLike: List<String>) : RecyclerView.Adapter<ListLikeAdapter.ItemHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemHolder {

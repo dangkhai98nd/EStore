@@ -1,10 +1,12 @@
 package com.example.estore.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.estore.R
@@ -30,23 +32,39 @@ class CartFragment : Fragment() {
 
         setupAdapter(view)
 
+        Log.e("start","sfasdfasdf")
+        userEstore.observe(this@CartFragment, Observer {user ->
+            subtotal = 0
+            productList = mutableListOf()
+            Log.e("observe","sfasdfasdf")
+            user?.cartList?.map { cart ->
+                database.forEach {
+                    if (it.id == cart.idProduct)
+                    {
+                        productList.add(it)
+                        subtotal += it.price?.times(cart.quantity ?: 0) ?: 0
+                    }
+                }
+            }
+            cartAdapter?.setData(user?.cartList,productList)
+            root?.tvSubtotalCart?.text = """${"$"}${1f.times(subtotal)}"""
+            root?.tvTaxesCart?.text = "\$" + 0.1f.times(subtotal).toString()
+            root?.tvTotalCart?.text = "\$" + 1.1f.times(subtotal).toString()
+        })
 
-
-        userEstore?.cartList?.map { cart ->
+        userEstore.value?.cartList?.map { cart ->
             database.forEach {
                 if (it.id == cart.idProduct)
                 {
                     productList.add(it)
-                    subtotal += it.price?.times(cart.quantity ?: return) ?: 0
+                    subtotal += it.price?.times(cart.quantity ?: 0) ?: 0
                 }
             }
         }
-        cartAdapter?.setData(userEstore?.cartList,productList)
-        cartAdapter?.notifyDataSetChanged()
+        cartAdapter?.setData(userEstore.value?.cartList,productList)
         root?.tvSubtotalCart?.text = """${"$"}${1f.times(subtotal)}"""
         root?.tvTaxesCart?.text = "\$" + 0.1f.times(subtotal).toString()
         root?.tvTotalCart?.text = "\$" + 1.1f.times(subtotal).toString()
-
 
     }
 

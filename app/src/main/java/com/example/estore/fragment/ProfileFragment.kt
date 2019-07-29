@@ -22,18 +22,18 @@ class ProfileFragment: Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        userName.text = userEstore?.userName
-        profileStatus.text = userEstore?.status
+        userName.text = userEstore.value?.userName
+        profileStatus.text = userEstore.value?.status
 
         Glide.with(this)
-            .load(userEstore?.profilePhoto)
+            .load(userEstore.value?.profilePhoto)
             .apply(RequestOptions.circleCropTransform())
             .into(profilePhoto)
 
         buttonLogout.setOnClickListener {
             val intent = Intent(context, SignInActivity::class.java)
             database.clear()
-            userEstore = null
+            userEstore.value = null
             DatabaseEstore.databaseFilter.value = listOf()
             DatabaseEstore.listUser.clear()
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)

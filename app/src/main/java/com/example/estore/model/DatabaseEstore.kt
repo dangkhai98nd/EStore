@@ -5,12 +5,13 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.example.estore.FirebaseFunction
+import java.text.FieldPosition
 
 class DatabaseEstore {
     companion object {
         var database : MutableList<Product> = mutableListOf()
         var databaseFilter : MutableLiveData<List<Product>> = MutableLiveData()
-        var userEstore: User? = null
+        var userEstore: MutableLiveData<User> = MutableLiveData()
         var listUser: MutableList<User> = mutableListOf()
         var signInCheck: MutableLiveData<Boolean> = MutableLiveData()
 
@@ -23,7 +24,7 @@ class DatabaseEstore {
 
             firebaseFunction.userLiveData.observe(lifecycleOwner, Observer {
                 signInCheck.value = true
-                userEstore = it
+                userEstore.value = it
             })
 
             firebaseFunction.listUserLiveData.observe(lifecycleOwner, Observer {
@@ -35,5 +36,10 @@ class DatabaseEstore {
             firebaseFunction.estoreGetProductAll()
         }
 
+        fun updatauser(user : User ) {
+            userEstore.value = user
+        }
     }
+
+
 }

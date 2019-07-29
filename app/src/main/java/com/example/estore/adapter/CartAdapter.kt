@@ -12,8 +12,10 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.estore.FirebaseFunction
 import com.example.estore.R
 import com.example.estore.model.DatabaseEstore.Companion.database
+import com.example.estore.model.DatabaseEstore.Companion.updatauser
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.model.ProductCart
@@ -25,6 +27,7 @@ class CartAdapter(
 ) : RecyclerView.Adapter<CartAdapter.ItemViewHolder>() {
     private var cartList: List<ProductCart> = listOf()
     private var productList : List<Product> = listOf()
+    private var firebaseFunction : FirebaseFunction = FirebaseFunction()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.item_cart, parent, false))
@@ -76,17 +79,25 @@ class CartAdapter(
             }
 //            listenerChange(productCart?.idProduct)
             ivMinusCart.setOnClickListener {
+                if (1 < productCart?.quantity ?: 0)
                 productCart?.quantity = productCart?.quantity?.minus(1)
                 edtQuantityCart.setText(productCart?.quantity.toString())
-                if (productCart != null)
-                    userEstore?.cartList?.set(position, productCart)
+                if (productCart != null) {
+                    userEstore.value?.cartList?.set(position, productCart)
+                    updatauser(userEstore.value!!)
+                    firebaseFunction.updateAny("User", userEstore.value?.id!!,"cartList", userEstore.value?.cartList ?: return@setOnClickListener)
+                }
+
             }
 
             ivAddCart.setOnClickListener {
                 productCart?.quantity = productCart?.quantity?.plus(1)
                 edtQuantityCart.setText(productCart?.quantity.toString())
-                if (productCart != null)
-                    userEstore?.cartList?.set(position, productCart)
+                if (productCart != null) {
+                    userEstore.value?.cartList?.set(position, productCart)
+                    updatauser(userEstore.value!!)
+                    firebaseFunction.updateAny("User", userEstore.value?.id!!,"cartList", userEstore.value?.cartList ?: return@setOnClickListener)
+                }
             }
             tvProductNameCart.text = product.name
             tvPriceCart.text = StringBuilder().append("$").append(product.price)

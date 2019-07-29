@@ -81,7 +81,7 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         if (doubleBackToExitPressedOnce) {
             val intent = Intent(this@MainActivity, SignInActivity::class.java)
             database.clear()
-            userEstore = null
+            userEstore.value = null
             DatabaseEstore.databaseFilter.value = listOf()
             DatabaseEstore.listUser.clear()
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
