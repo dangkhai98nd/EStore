@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.estore.FirebaseFunction
 import com.example.estore.R
+import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
@@ -92,11 +93,13 @@ class BrowseAdapter(
                 favoriteClick = if (!favoriteClick) {
                     buttonFavoriteBrowse.setImageResource(R.drawable.ic_favoriteditem)
                     product.id?.let { it1 -> userEstore.value?.listFavorite?.add(it1) }
+                    DatabaseEstore.updatauser(userEstore.value!!)
                     firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
                     true
                 } else {
                     buttonFavoriteBrowse.setImageResource(R.drawable.ic_favoriteditemdisabled)
                     product.id?.let { it1 -> userEstore.value?.listFavorite?.remove(it1) }
+                    DatabaseEstore.updatauser(userEstore.value!!)
                     firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
                     false
                 }

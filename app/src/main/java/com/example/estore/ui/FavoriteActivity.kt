@@ -2,6 +2,7 @@ package com.example.estore.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.estore.R
 import com.example.estore.adapter.FavoriteUserAdapter
@@ -16,6 +17,9 @@ class FavoriteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_favorite)
         initToolbar()
         userEstore.value?.listFavorite?.let { setUpAdapter(it) }
+        userEstore.observe(this, Observer {
+            listUserFavoriteAdapter?.notifyDataSetChanged()
+        })
     }
 
     private fun initToolbar() {

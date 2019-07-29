@@ -35,6 +35,10 @@ class BrowseFragment : Fragment() {
         })
 
         browseAdapter?.setProducts(databaseFilter.value ?: emptyList())
+        userEstore.observe(this, Observer {
+            browseAdapter?.notifyDataSetChanged()
+        })
+
 
     }
 

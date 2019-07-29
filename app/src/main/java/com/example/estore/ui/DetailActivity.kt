@@ -268,11 +268,13 @@ class DetailActivity : AppCompatActivity() {
             favoriteClick = if(!favoriteClick){
                 buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
                 productDetail.id?.let { it1 -> userEstore.value?.listFavorite?.add(it1) }
+                updatauser(userEstore.value!!)
                 firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
                 true
             }else{
                 buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
                 productDetail.id?.let { it1 -> userEstore.value?.listFavorite?.remove(it1) }
+                updatauser(userEstore.value!!)
                 firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
                 false
             }
