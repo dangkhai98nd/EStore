@@ -42,6 +42,7 @@ class CartFragment : Fragment() {
             }
         }
         cartAdapter?.setData(userEstore?.cartList,productList)
+        cartAdapter?.notifyDataSetChanged()
         root?.tvSubtotalCart?.text = """${"$"}${1f.times(subtotal)}"""
         root?.tvTaxesCart?.text = "\$" + 0.1f.times(subtotal).toString()
         root?.tvTotalCart?.text = "\$" + 1.1f.times(subtotal).toString()
