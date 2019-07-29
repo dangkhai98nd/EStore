@@ -2,10 +2,12 @@ package com.example.estore.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +35,7 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     private var paramsAppBarLayout: AppBarLayout.LayoutParams? = null
     private lateinit var databaseRef: DatabaseReference
     private var positionSort = 0
+    private var doubleBackToExitPressedOnce = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,13 +78,20 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     }
 
     override fun onBackPressed() {
-        val intent = Intent(this@MainActivity, SignInActivity::class.java)
-        database.clear()
-        userEstore = null
-        DatabaseEstore.databaseFilter.value = listOf()
-        DatabaseEstore.listUser.clear()
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
-        startActivity(intent)
+        if (doubleBackToExitPressedOnce) {
+            val intent = Intent(this@MainActivity, SignInActivity::class.java)
+            database.clear()
+            userEstore = null
+            DatabaseEstore.databaseFilter.value = listOf()
+            DatabaseEstore.listUser.clear()
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK)
+            startActivity(intent)
+        }
+
+        this.doubleBackToExitPressedOnce = true
+        Toast.makeText(this, "Please click BACK again to exit", Toast.LENGTH_SHORT).show()
+
+        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
 
     private fun initToolbar() {
