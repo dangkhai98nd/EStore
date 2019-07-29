@@ -53,6 +53,7 @@ class SignInActivity : AppCompatActivity() {
         mAuth = FirebaseAuth.getInstance()
         buttonSignIn.setOnClickListener {
             if (!TextUtils.isEmpty(emailInput.text) && !TextUtils.isEmpty(passwordInput.text)) {
+                buttonSignIn.isEnabled = false
                 authentication(emailInput.text.toString(), passwordInput.text.toString())
             } else {
                 Toast.makeText(applicationContext, "Please fill in everything", Toast.LENGTH_SHORT).show()
@@ -75,7 +76,7 @@ class SignInActivity : AppCompatActivity() {
                     if (user != null) {
                         getDatabase(this, user.uid)
                     }
-                    Toast.makeText(baseContext, "Success.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, "Success", Toast.LENGTH_SHORT).show()
                     signInCheck.observe(this, Observer {
                         val intent = Intent(this, MainActivity::class.java)
                         Log.e("size", "${database.size}")
@@ -83,8 +84,9 @@ class SignInActivity : AppCompatActivity() {
                     })
 
                 } else {
-                    Toast.makeText(applicationContext, "Authentication failed.", Toast.LENGTH_SHORT)
+                    Toast.makeText(applicationContext, "Authentication failed", Toast.LENGTH_SHORT)
                         .show()
+                    buttonSignIn.isEnabled = true
                 }
             }
     }

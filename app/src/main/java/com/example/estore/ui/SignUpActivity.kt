@@ -26,6 +26,7 @@ class SignUpActivity : AppCompatActivity() {
         buttonSignUp.setOnClickListener {
             if (!TextUtils.isEmpty(emailSignUpInput.text) && !TextUtils.isEmpty(passwordSignUpInput.text) && !TextUtils.isEmpty(userNameSignUpInput.text)) {
                 signUpFirebase(emailSignUpInput.text.toString(), passwordSignUpInput.text.toString(), userNameSignUpInput.text.toString())
+                buttonSignUp.isEnabled = false
             } else {
                 Toast.makeText(applicationContext, "Please fill in everything", Toast.LENGTH_SHORT).show()
             }
@@ -38,7 +39,7 @@ class SignUpActivity : AppCompatActivity() {
             .addOnCompleteListener(this) { p0 ->
                 if (p0.isSuccessful) {
 
-                    Toast.makeText(baseContext, "Success.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, "Success", Toast.LENGTH_SHORT).show()
 
                     databaseRef = FirebaseDatabase.getInstance().getReference("User")
                     val uid = mAuth.currentUser?.uid
@@ -48,7 +49,8 @@ class SignUpActivity : AppCompatActivity() {
                     }
 
                 } else {
-                    Toast.makeText(applicationContext, "Sign up failed, try again.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Sign up failed, try again", Toast.LENGTH_SHORT).show()
+                    buttonSignUp.isEnabled = true
                 }
 
             }
