@@ -2,378 +2,360 @@ package com.example.estore.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.estore.FirebaseFunction
 import com.example.estore.R
 import com.example.estore.adapter.ListLikeAdapter
-import com.example.estore.model.DatabaseEstore
+import com.example.estore.databinding.ActivityDetailBinding
 import com.example.estore.model.DatabaseEstore.Companion.database
-import com.example.estore.model.DatabaseEstore.Companion.updatauser
-import com.example.estore.model.DatabaseEstore.Companion.userEstore
-import com.example.estore.model.Product
-import com.example.estore.model.ProductCart
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : AppCompatActivity() {
     private var firebaseFunction = FirebaseFunction()
-    private var star1click = false
-    private var star2click = false
-    private var star3click = false
-    private var star4click = false
-    private var star5click = false
-    private var favoriteClick = false
-    private var heartClick = false
-    private var cartAdded = false
     private var listLikeAdapter: ListLikeAdapter? = null
     private var listLikeSize = 0
-    private var quantity = 0
-    private var colorChoose = "dark"
     private lateinit var databaseRef: DatabaseReference
+    private lateinit var viewModel: DetailViewModel
+    private lateinit var binding: ActivityDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
 
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
         intent
         val position = intent.getIntExtra("position", -1)
-        var productDetail = database[position]
+        viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
 
-        databaseRef = FirebaseDatabase.getInstance().getReference("Product")
-        productDetail.id?.let {
-            databaseRef.child(it).addValueEventListener(object : ValueEventListener {
-                override fun onCancelled(p0: DatabaseError) {
-
+        viewModel.photoLink.observe(this, Observer {
+            Glide.with(this)
+                .load(it)
+                .into(binding.productPhotoDetail)
+            Glide.with(this)
+                .load(it)
+                .into(binding.imageCartInSheet)
+        })
+        viewModel.rating.observe(this, Observer {
+            when (it) {
+                5 -> {
+                    set5star()
                 }
-
-                override fun onDataChange(p0: DataSnapshot) {
-                    productDetail = p0.getValue(Product::class.java)!!
-                    setUpAdapter(productDetail.listUserLike)
-                    listLikeAdapter?.notifyDataSetChanged()
-                    tvLikeCounterDetail.text =
-                        StringBuilder().append(productDetail.listUserLike.size).append(" likes")
-                    tvCommentCounterDetail.text =
-                        StringBuilder().append(productDetail.commentCounter).append(" comments")
-                    numberLikeDetail.text =
-                        StringBuilder().append(productDetail.listUserLike.size).append(" people like this")
+                4 -> {
+                    set4star()
                 }
-            })
-        }
+                3 -> {
+                    set3star()
+                }
+                2 -> {
+                    set2star()
+                }
+                1 -> {
+                    set1star()
+                }
+                0 -> {
+                    resetStar()
+                }
+            }
+        })
+        viewModel.heartClick.observe(this, Observer {
+            if (it) {
+                buttonHeartDetail.setImageResource(R.drawable.ic_heartitemenabled)
+            } else buttonHeartDetail.setImageResource(R.drawable.ic_heartitemdisabled)
+        })
+        viewModel.trending.observe(this, Observer {
+            if(it){
+                binding.clTrendingDetail.visibility = View.VISIBLE
+            }else binding.clTrendingDetail.visibility = View.GONE
+        })
+        viewModel.favoriteClick.observe(this, Observer {
+            if(it){
+                binding.buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
+            }else buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
+        })
+
+
+        viewModel.productDetail = database[position]
+        viewModel.getImage()
+        viewModel.getRating()
+        viewModel.getHeart()
+        viewModel.getTrending()
+        viewModel.getFavoriteButton()
+        binding.darkButtonDetail.isChecked = true
+        binding.lightButtonDetail.isChecked = false
+
+
 
         val behavior = BottomSheetBehavior.from(bottom_sheet)
 
         initToolbar()
 
-        val index = userEstore.value?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
-        if (index != null) {
-            if(index >= 0){
-                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
-                imageCartCheck.visibility = View.VISIBLE
-                buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
-                darkButtonDetail.isEnabled = false
-                lightButtonDetail.isEnabled = false
-
-                ivAddCartDetail.isEnabled = false
-                ivMinusCartDetail.isEnabled = false
-                edtQuantityCartDetail.isEnabled = false
-
-                cartAdded = true
-
-                quantity = userEstore.value?.cartList?.get(index)?.quantity!!
-                edtQuantityCartDetail.setText(quantity.toString())
-                val color = userEstore.value?.cartList?.get(index)?.color
-                if(color == "dark"){
-                    darkButtonDetail.isChecked = true
-                    lightButtonDetail.isChecked = false
-
-                    colorChoose = "dark"
-
-                    Glide.with(this)
-                        .load(productDetail.photoDark)
-                        .thumbnail(Glide.with(this).load(R.drawable.load))
-                        .into(productPhotoDetail)
-                    Glide.with(this)
-                        .load(productDetail.photoDark)
-                        .thumbnail(Glide.with(this).load(R.drawable.load))
-                        .into(imageInSheet)
-                }else{
-                    darkButtonDetail.isChecked = false
-                    lightButtonDetail.isChecked = true
-
-                    Glide.with(this)
-                        .load(productDetail.photoLight)
-                        .thumbnail(Glide.with(this).load(R.drawable.load))
-                        .into(productPhotoDetail)
-                    Glide.with(this)
-                        .load(productDetail.photoLight)
-                        .thumbnail(Glide.with(this).load(R.drawable.load))
-                        .into(imageInSheet)
-
-                    colorChoose = "light"
-                }
-            }else{
-                Glide.with(this)
-                    .load(productDetail.photoDark)
-                    .thumbnail(Glide.with(this).load(R.drawable.load))
-                    .into(productPhotoDetail)
-                Glide.with(this)
-                    .load(productDetail.photoDark)
-                    .thumbnail(Glide.with(this).load(R.drawable.load))
-                    .into(imageInSheet)
-                darkButtonDetail.isChecked = true
-                lightButtonDetail.isChecked = false
-                edtQuantityCartDetail.setText(quantity.toString())
-
-                ivAddCartDetail.isEnabled = true
-                ivMinusCartDetail.isEnabled = true
-                edtQuantityCartDetail.isEnabled = true
-            }
+        binding.apply {
+            nameInSheet.text = viewModel.productDetail.name
+            priceInSheet.text = StringBuilder().append("$").append(viewModel.productDetail.price)
+            tvProductNameDetail.text = viewModel.productDetail.name
+            tvProductNameDetail.isSelected = true
+            tvProductPriceDetail.text =
+                StringBuilder().append("$").append(viewModel.productDetail.price)
         }
 
-        nameInSheet.text = productDetail.name
-        priceInSheet.text = StringBuilder().append("$").append(productDetail.price)
-
-        tvProductNameDetail.text = productDetail.name
-        tvProductNameDetail.isSelected = true
-
-        tvProductPriceDetail.text = StringBuilder().append("$").append(productDetail.price)
-
-        listLikeSize = productDetail.listUserLike.size
-
-        tvLikeCounterDetail.text =
-            StringBuilder().append(listLikeSize).append(" likes")
-        tvCommentCounterDetail.text =
-            StringBuilder().append(productDetail.commentCounter).append(" comments")
-        numberLikeDetail.text =
-            StringBuilder().append(listLikeSize).append(" people like this")
-
-
-        if(userEstore.value?.listFavorite?.contains(productDetail.id) == true){
-            favoriteClick = true
-            buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
-        }else {
-            favoriteClick = false
-            buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
+        binding.darkButtonDetail.setOnClickListener {
+            binding.lightButtonDetail.isChecked = false
+            viewModel.colorChoose = "dark"
+            viewModel.getImage()
         }
 
-        if(productDetail.listUserLike.contains(userEstore.value?.id)){
-            heartClick = true
-            buttonHeartDetail.setImageResource(R.drawable.ic_heartitemenabled)
-        }else{
-            heartClick = false
-            buttonHeartDetail.setImageResource(R.drawable.ic_heartitemdisabled)
+        binding.lightButtonDetail.setOnClickListener {
+            binding.darkButtonDetail.isChecked = false
+            viewModel.colorChoose = "light"
+            viewModel.getImage()
         }
 
-
-        if (productDetail.trending == true) {
-            tvTrendingDetail.visibility = View.VISIBLE
-        } else {
-            tvTrendingDetail.visibility = View.INVISIBLE
-        }
-
-        when {
-            productDetail.rating == 5 -> {
-                set5star()
-            }
-            productDetail.rating == 4 -> {
-                set4star()
-            }
-            productDetail.rating == 3 -> {
-                set3star()
-            }
-            productDetail.rating == 2 -> {
-                set2star()
-            }
-            productDetail.rating == 1 -> {
-                set1star()
-            }
-            productDetail.rating == 0 ->{
-                resetStar()
-            }
-        }
         star5.setOnClickListener {
-            if (star5click) {
-                productDetail.rating = 0
-                resetStar()
-            } else{
-                set5star()
-                productDetail.rating = 5
+            if (viewModel.star5click) {
+                viewModel.productDetail.rating = 0
+            } else {
+                viewModel.productDetail.rating = 5
             }
+            viewModel.getRating()
         }
 
         star4.setOnClickListener {
-            if (star4click) {
-                productDetail.rating = 0
-                resetStar()
+            if (viewModel.star4click) {
+                viewModel.productDetail.rating = 0
             } else {
-                set4star()
-                productDetail.rating = 4
+                viewModel.productDetail.rating = 4
             }
+            viewModel.getRating()
         }
 
         star3.setOnClickListener {
-            if (star3click) {
-                productDetail.rating = 0
-                resetStar()
+            if (viewModel.star3click) {
+                viewModel.productDetail.rating = 0
             } else {
-                set3star()
-                productDetail.rating = 3
+                viewModel.productDetail.rating = 3
             }
+            viewModel.getRating()
         }
 
         star2.setOnClickListener {
-            if (star2click) {
-                productDetail.rating = 0
-                resetStar()
+            if (viewModel.star2click) {
+                viewModel.productDetail.rating = 0
             } else {
-                set2star()
-                productDetail.rating = 2
+                viewModel.productDetail.rating = 2
             }
+            viewModel.getRating()
         }
 
         star1.setOnClickListener {
-            if (star1click) {
-                productDetail.rating = 0
-                resetStar()
+            if (viewModel.star1click) {
+                viewModel.productDetail.rating = 0
             } else {
-                set1star()
-                productDetail.rating = 1
+                viewModel.productDetail.rating = 1
             }
+            viewModel.getRating()
         }
+//        databaseRef = FirebaseDatabase.getInstance().getReference("Product")
+//        productDetail.id?.let {
+//            databaseRef.child(it).addValueEventListener(object : ValueEventListener {
+//                override fun onCancelled(p0: DatabaseError) {
+//
+//                }
+//
+//                override fun onDataChange(p0: DataSnapshot) {
+//                    productDetail = p0.getValue(Product::class.java)!!
+//                    setUpAdapter(productDetail.listUserLike)
+//                    listLikeAdapter?.notifyDataSetChanged()
+//                    tvLikeCounterDetail.text =
+//                        StringBuilder().append(productDetail.listUserLike.size).append(" likes")
+//                    tvCommentCounterDetail.text =
+//                        StringBuilder().append(productDetail.commentCounter).append(" comments")
+//                    numberLikeDetail.text =
+//                        StringBuilder().append(productDetail.listUserLike.size).append(" people like this")
+//                }
+//            })
+//        }
+//        val index = userEstore.value?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
+//        if (index != null) {
+//            if(index >= 0){
+//                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
+//                imageCartCheck.visibility = View.VISIBLE
+//                buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
+//                darkButtonDetail.isEnabled = false
+//                lightButtonDetail.isEnabled = false
+//
+//                ivAddCartDetail.isEnabled = false
+//                ivMinusCartDetail.isEnabled = false
+//                edtQuantityCartDetail.isEnabled = false
+//
+//                cartAdded = true
+//
+//                quantity = userEstore.value?.cartList?.get(index)?.quantity!!
+//                edtQuantityCartDetail.setText(quantity.toString())
+//                val color = userEstore.value?.cartList?.get(index)?.color
+//                if(color == "dark"){
+//                    darkButtonDetail.isChecked = true
+//                    lightButtonDetail.isChecked = false
+//
+//                    colorChoose = "dark"
+//
+//                    Glide.with(this)
+//                        .load(productDetail.photoDark)
+//                        .thumbnail(Glide.with(this).load(R.drawable.load))
+//                        .into(productPhotoDetail)
+//                    Glide.with(this)
+//                        .load(productDetail.photoDark)
+//                        .thumbnail(Glide.with(this).load(R.drawable.load))
+//                        .into(imageInSheet)
+//                }else{
+//                    darkButtonDetail.isChecked = false
+//                    lightButtonDetail.isChecked = true
+//
+//                    Glide.with(this)
+//                        .load(productDetail.photoLight)
+//                        .thumbnail(Glide.with(this).load(R.drawable.load))
+//                        .into(productPhotoDetail)
+//                    Glide.with(this)
+//                        .load(productDetail.photoLight)
+//                        .thumbnail(Glide.with(this).load(R.drawable.load))
+//                        .into(imageInSheet)
+//
+//                    colorChoose = "light"
+//                }
+//            }else{
+//                Glide.with(this)
+//                    .load(productDetail.photoDark)
+//                    .thumbnail(Glide.with(this).load(R.drawable.load))
+//                    .into(productPhotoDetail)
+//                Glide.with(this)
+//                    .load(productDetail.photoDark)
+//                    .thumbnail(Glide.with(this).load(R.drawable.load))
+//                    .into(imageInSheet)
+//                darkButtonDetail.isChecked = true
+//                lightButtonDetail.isChecked = false
+//                edtQuantityCartDetail.setText(quantity.toString())
+//
+//                ivAddCartDetail.isEnabled = true
+//                ivMinusCartDetail.isEnabled = true
+//                edtQuantityCartDetail.isEnabled = true
+//            }
+//        }
+//        listLikeSize = productDetail.listUserLike.size
+//
+//
 
-        darkButtonDetail.setOnClickListener {
-            lightButtonDetail.isChecked = false
-            colorChoose = "dark"
-            Glide.with(this)
-                .load(productDetail.photoDark)
-                .thumbnail(Glide.with(this).load(R.drawable.load))
-                .into(productPhotoDetail)
-
-            Glide.with(this)
-                .load(productDetail.photoDark)
-                .thumbnail(Glide.with(this).load(R.drawable.load))
-                .into(imageInSheet)
-        }
-        lightButtonDetail.setOnClickListener {
-            darkButtonDetail.isChecked = false
-            colorChoose = "light"
-            Glide.with(this)
-                .load(productDetail.photoLight)
-                .thumbnail(Glide.with(this).load(R.drawable.load))
-                .into(productPhotoDetail)
-
-            Glide.with(this)
-                .load(productDetail.photoLight)
-                .thumbnail(Glide.with(this).load(R.drawable.load))
-                .into(imageInSheet)
-        }
-
-        buttonFavoriteDetail.setOnClickListener {
-            favoriteClick = if(!favoriteClick){
-                buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
-                productDetail.id?.let { it1 -> userEstore.value?.listFavorite?.add(it1) }
-                updatauser(userEstore.value!!)
-                firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
-                true
-            }else{
-                buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
-                productDetail.id?.let { it1 -> userEstore.value?.listFavorite?.remove(it1) }
-                updatauser(userEstore.value!!)
-                firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
-                false
-            }
-        }
-
-        buttonHeartDetail.setOnClickListener {
-            heartClick = if(!heartClick){
-                buttonHeartDetail.setImageResource(R.drawable.ic_heartitemenabled)
-                userEstore.value?.id?.let { it1 -> productDetail.listUserLike.add(it1) }
-                firebaseFunction.updateAny("Product", productDetail.id!!, "listUserLike", productDetail.listUserLike)
-                listLikeSize++
-                listLikeAdapter?.notifyDataSetChanged()
-                numberLikeDetail.text = StringBuilder().append(listLikeSize).append(" people like this")
-                tvLikeCounterDetail.text = StringBuilder().append(listLikeSize).append(" likes")
-                true
-            }else{
-                buttonHeartDetail.setImageResource(R.drawable.ic_heartitemdisabled)
-                userEstore.value?.id?.let { it1 -> productDetail.listUserLike.remove(it1) }
-                firebaseFunction.updateAny("Product", productDetail.id!!, "listUserLike", productDetail.listUserLike)
-                listLikeSize--
-                listLikeAdapter?.notifyDataSetChanged()
-                numberLikeDetail.text = StringBuilder().append(listLikeSize).append(" people like this")
-                tvLikeCounterDetail.text = StringBuilder().append(listLikeSize).append(" likes")
-                false
-            }
-        }
-
-        buttonAddCartDetail.setOnClickListener {
-            if(!cartAdded) {
-                if(quantity > 0){
-                    if(behavior.state != BottomSheetBehavior.STATE_EXPANDED){
-                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
-                    }
-                    buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
-                    imageCartCheck.visibility = View.VISIBLE
-                    buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
-                    userEstore.value?.cartList?.add(ProductCart(productDetail.id, quantity, colorChoose))
-                    darkButtonDetail.isEnabled = false
-                    lightButtonDetail.isEnabled = false
-
-                    ivAddCartDetail.isEnabled = false
-                    ivMinusCartDetail.isEnabled = false
-                    edtQuantityCartDetail.isEnabled = false
-
-                    cartAdded = true
-                    firebaseFunction.updateAny("Product", productDetail.id!! , "rating", productDetail.rating)
-                    firebaseFunction.updateAny("User", userEstore.value?.id!!, "cartList", userEstore.value?.cartList!!)
-                    Handler().postDelayed({
-                        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                    },2000)
-                }else{
-                    Toast.makeText(this, "Number must be larger than 0", Toast.LENGTH_SHORT).show()
-                }
-
-            }else{
-                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_login)
-                imageCartCheck.visibility = View.INVISIBLE
-                buttonAddCartDetail.text = StringBuilder().append("ADD TO CART")
-                val i = userEstore.value?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
-                userEstore.value?.cartList?.removeAt(i!!)
-                updatauser(userEstore.value!!)
-                firebaseFunction.updateAny("User", userEstore.value?.id!!, "cartList", userEstore.value?.cartList!!)
-
-                darkButtonDetail.isEnabled = true
-                lightButtonDetail.isEnabled = true
-
-                ivAddCartDetail.isEnabled = true
-                ivMinusCartDetail.isEnabled = true
-                edtQuantityCartDetail.isEnabled = true
-
-                cartAdded = false
-            }
-        }
+//
+//
+//
 
 
+//        buttonFavoriteDetail.setOnClickListener {
+//            viewModel.favoriteClick = if(!viewModel.favoriteClick){
+//                buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
+//                productDetail.id?.let { it1 -> userEstore.value?.listFavorite?.add(it1) }
+//                updateUser(userEstore.value!!)
+//                firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
+//                true
+//            }else{
+//                buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
+//                productDetail.id?.let { it1 -> userEstore.value?.listFavorite?.remove(it1) }
+//                updateUser(userEstore.value!!)
+//                firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
+//                false
+//            }
+//        }
 
-        ivMinusCartDetail.setOnClickListener {
-            if(quantity > 0){
-                quantity -= 1
-                edtQuantityCartDetail.setText(quantity.toString())
-            }
-        }
-        ivAddCartDetail.setOnClickListener {
-            quantity += 1
-            edtQuantityCartDetail.setText(quantity.toString())
-        }
-
-
-        setUpAdapter(productDetail.listUserLike)
+//        buttonHeartDetail.setOnClickListener {
+//            viewModel.heartClick = if(!viewModel.heartClick){
+//                buttonHeartDetail.setImageResource(R.drawable.ic_heartitemenabled)
+//                userEstore.value?.id?.let { it1 -> productDetail.listUserLike.add(it1) }
+//                firebaseFunction.updateAny("Product", productDetail.id!!, "listUserLike", productDetail.listUserLike)
+//                listLikeSize++
+//                listLikeAdapter?.notifyDataSetChanged()
+//                numberLikeDetail.text = StringBuilder().append(listLikeSize).append(" people like this")
+//                tvLikeCounterDetail.text = StringBuilder().append(listLikeSize).append(" likes")
+//                true
+//            }else{
+//                buttonHeartDetail.setImageResource(R.drawable.ic_heartitemdisabled)
+//                userEstore.value?.id?.let { it1 -> productDetail.listUserLike.remove(it1) }
+//                firebaseFunction.updateAny("Product", productDetail.id!!, "listUserLike", productDetail.listUserLike)
+//                listLikeSize--
+//                listLikeAdapter?.notifyDataSetChanged()
+//                numberLikeDetail.text = StringBuilder().append(listLikeSize).append(" people like this")
+//                tvLikeCounterDetail.text = StringBuilder().append(listLikeSize).append(" likes")
+//                false
+//            }
+//        }
+//
+//        buttonAddCartDetail.setOnClickListener {
+//            if(!cartAdded) {
+//                if(quantity > 0){
+//                    if(behavior.state != BottomSheetBehavior.STATE_EXPANDED){
+//                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+//                    }
+//                    buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
+//                    imageCartCheck.visibility = View.VISIBLE
+//                    buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
+//                    userEstore.value?.cartList?.add(ProductCart(productDetail.id, quantity, colorChoose))
+//                    darkButtonDetail.isEnabled = false
+//                    lightButtonDetail.isEnabled = false
+//
+//                    ivAddCartDetail.isEnabled = false
+//                    ivMinusCartDetail.isEnabled = false
+//                    edtQuantityCartDetail.isEnabled = false
+//
+//                    cartAdded = true
+//                    firebaseFunction.updateAny("Product", productDetail.id!! , "rating", productDetail.rating)
+//                    firebaseFunction.updateAny("User", userEstore.value?.id!!, "cartList", userEstore.value?.cartList!!)
+//                    Handler().postDelayed({
+//                        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+//                    },2000)
+//                }else{
+//                    Toast.makeText(this, "Number must be larger than 0", Toast.LENGTH_SHORT).show()
+//                }
+//
+//            }else{
+//                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_login)
+//                imageCartCheck.visibility = View.INVISIBLE
+//                buttonAddCartDetail.text = StringBuilder().append("ADD TO CART")
+//                val i = userEstore.value?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
+//                userEstore.value?.cartList?.removeAt(i!!)
+//                updateUser(userEstore.value!!)
+//                firebaseFunction.updateAny("User", userEstore.value?.id!!, "cartList", userEstore.value?.cartList!!)
+//
+//                darkButtonDetail.isEnabled = true
+//                lightButtonDetail.isEnabled = true
+//
+//                ivAddCartDetail.isEnabled = true
+//                ivMinusCartDetail.isEnabled = true
+//                edtQuantityCartDetail.isEnabled = true
+//
+//                cartAdded = false
+//            }
+//        }
+//
+//
+//
+//        ivMinusCartDetail.setOnClickListener {
+//            if(quantity > 0){
+//                quantity -= 1
+//                edtQuantityCartDetail.setText(quantity.toString())
+//            }
+//        }
+//        ivAddCartDetail.setOnClickListener {
+//            quantity += 1
+//            edtQuantityCartDetail.setText(quantity.toString())
+//        }
+//
+//
+//        setUpAdapter(productDetail.listUserLike)
     }
 
     private fun initToolbar() {
@@ -405,86 +387,98 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun set5star() {
-        star1.setImageResource(R.drawable.ic_star_red_24dp)
-        star2.setImageResource(R.drawable.ic_star_red_24dp)
-        star3.setImageResource(R.drawable.ic_star_red_24dp)
-        star4.setImageResource(R.drawable.ic_star_red_24dp)
-        star5.setImageResource(R.drawable.ic_star_red_24dp)
-        star1click = false
-        star2click = false
-        star3click = false
-        star4click = false
-        star5click = true
+        binding.apply {
+            star1.setImageResource(R.drawable.ic_star_red_24dp)
+            star2.setImageResource(R.drawable.ic_star_red_24dp)
+            star3.setImageResource(R.drawable.ic_star_red_24dp)
+            star4.setImageResource(R.drawable.ic_star_red_24dp)
+            star5.setImageResource(R.drawable.ic_star_red_24dp)
+        }
+        viewModel.star1click = false
+        viewModel.star2click = false
+        viewModel.star3click = false
+        viewModel.star4click = false
+        viewModel.star5click = true
     }
 
     private fun set4star() {
-        star1.setImageResource(R.drawable.ic_star_red_24dp)
-        star2.setImageResource(R.drawable.ic_star_red_24dp)
-        star3.setImageResource(R.drawable.ic_star_red_24dp)
-        star4.setImageResource(R.drawable.ic_star_red_24dp)
-        star5.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star1click = false
-        star2click = false
-        star3click = false
-        star4click = true
-        star5click = false
+        binding.apply {
+            star1.setImageResource(R.drawable.ic_star_red_24dp)
+            star2.setImageResource(R.drawable.ic_star_red_24dp)
+            star3.setImageResource(R.drawable.ic_star_red_24dp)
+            star4.setImageResource(R.drawable.ic_star_red_24dp)
+            star5.setImageResource(R.drawable.ic_star_border_red_24dp)
+        }
+        viewModel.star1click = false
+        viewModel.star2click = false
+        viewModel.star3click = false
+        viewModel.star4click = true
+        viewModel.star5click = false
     }
 
     private fun set3star() {
-        star1.setImageResource(R.drawable.ic_star_red_24dp)
-        star2.setImageResource(R.drawable.ic_star_red_24dp)
-        star3.setImageResource(R.drawable.ic_star_red_24dp)
-        star4.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star5.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star1click = false
-        star2click = false
-        star3click = true
-        star4click = false
-        star5click = false
+        binding.apply {
+            star1.setImageResource(R.drawable.ic_star_red_24dp)
+            star2.setImageResource(R.drawable.ic_star_red_24dp)
+            star3.setImageResource(R.drawable.ic_star_red_24dp)
+            star4.setImageResource(R.drawable.ic_star_border_red_24dp)
+            star5.setImageResource(R.drawable.ic_star_border_red_24dp)
+        }
+        viewModel.star1click = false
+        viewModel.star2click = false
+        viewModel.star3click = true
+        viewModel.star4click = false
+        viewModel.star5click = false
     }
 
     private fun set2star() {
-        star1.setImageResource(R.drawable.ic_star_red_24dp)
-        star2.setImageResource(R.drawable.ic_star_red_24dp)
-        star3.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star4.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star5.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star1click = false
-        star2click = true
-        star3click = false
-        star4click = false
-        star5click = false
+        binding.apply {
+            star1.setImageResource(R.drawable.ic_star_red_24dp)
+            star2.setImageResource(R.drawable.ic_star_red_24dp)
+            star3.setImageResource(R.drawable.ic_star_border_red_24dp)
+            star4.setImageResource(R.drawable.ic_star_border_red_24dp)
+            star5.setImageResource(R.drawable.ic_star_border_red_24dp)
+        }
+        viewModel.star1click = false
+        viewModel.star2click = true
+        viewModel.star3click = false
+        viewModel.star4click = false
+        viewModel.star5click = false
     }
 
     private fun set1star() {
-        star1.setImageResource(R.drawable.ic_star_red_24dp)
-        star2.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star3.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star4.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star5.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star1click = true
-        star2click = false
-        star3click = false
-        star4click = false
-        star5click = false
+        binding.apply {
+            star1.setImageResource(R.drawable.ic_star_red_24dp)
+            star2.setImageResource(R.drawable.ic_star_border_red_24dp)
+            star3.setImageResource(R.drawable.ic_star_border_red_24dp)
+            star4.setImageResource(R.drawable.ic_star_border_red_24dp)
+            star5.setImageResource(R.drawable.ic_star_border_red_24dp)
+        }
+        viewModel.star1click = true
+        viewModel.star2click = false
+        viewModel.star3click = false
+        viewModel.star4click = false
+        viewModel.star5click = false
     }
 
     private fun resetStar() {
-        star1.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star2.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star3.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star4.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star5.setImageResource(R.drawable.ic_star_border_red_24dp)
-        star1click = false
-        star2click = false
-        star3click = false
-        star4click = false
-        star5click = false
+        binding.apply {
+            star1.setImageResource(R.drawable.ic_star_border_red_24dp)
+            star2.setImageResource(R.drawable.ic_star_border_red_24dp)
+            star3.setImageResource(R.drawable.ic_star_border_red_24dp)
+            star4.setImageResource(R.drawable.ic_star_border_red_24dp)
+            star5.setImageResource(R.drawable.ic_star_border_red_24dp)
+        }
+        viewModel.star1click = false
+        viewModel.star2click = false
+        viewModel.star3click = false
+        viewModel.star4click = false
+        viewModel.star5click = false
     }
 
-    private fun setUpAdapter(listLike: List<String>){
+    private fun setUpAdapter(listLike: List<String>) {
         listLikeAdapter = ListLikeAdapter(this, listLike)
         rvListLike.adapter = listLikeAdapter
-        rvListLike.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
+        rvListLike.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 }
