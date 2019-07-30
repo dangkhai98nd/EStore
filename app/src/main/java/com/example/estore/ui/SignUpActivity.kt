@@ -5,54 +5,34 @@ import android.text.TextUtils
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import com.example.estore.R
+import com.example.estore.databinding.ActivitySignUpBinding
 import com.example.estore.model.User
+import com.example.estore.viewmodel.SignInViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import kotlinx.android.synthetic.main.activity_sign_up.*
 
 class SignUpActivity : AppCompatActivity() {
-    private lateinit var mAuth: FirebaseAuth
-    private lateinit var databaseRef: DatabaseReference
 
+    private var signUpViewModel: SignInViewModel? = null
+    private var mActivitySignUpBinding: ActivitySignUpBinding? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_sign_up)
-
+        initBinding()
         window.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN)
-
-        mAuth = FirebaseAuth.getInstance()
-        buttonSignUp.setOnClickListener {
-            if (!TextUtils.isEmpty(emailSignUpInput.text) && !TextUtils.isEmpty(passwordSignUpInput.text) && !TextUtils.isEmpty(userNameSignUpInput.text)) {
-                signUpFirebase(emailSignUpInput.text.toString(), passwordSignUpInput.text.toString(), userNameSignUpInput.text.toString())
-                buttonSignUp.isEnabled = false
-            } else {
-                Toast.makeText(applicationContext, "Please fill in everything", Toast.LENGTH_SHORT).show()
-            }
-        }
 
     }
 
-    private fun signUpFirebase(email: String, password: String, userName: String) {
-        mAuth.createUserWithEmailAndPassword(email, password)
-            .addOnCompleteListener(this) { p0 ->
-                if (p0.isSuccessful) {
-
-                    Toast.makeText(baseContext, "Success", Toast.LENGTH_SHORT).show()
-
-                    databaseRef = FirebaseDatabase.getInstance().getReference("User")
-                    val uid = mAuth.currentUser?.uid
-                    if (uid != null) {
-                        databaseRef.child(uid)
-                            .setValue(User(uid, userName, ArrayList(), ArrayList(), null, null))
-                    }
-
-                } else {
-                    Toast.makeText(applicationContext, "Sign up failed, try again", Toast.LENGTH_SHORT).show()
-                    buttonSignUp.isEnabled = true
-                }
-
-            }
+    private fun initBinding() {
+        mActivitySignUpBinding = DataBindingUtil.setContentView(this, R.layout.activity_sign_up)
+        signUpViewModel = SignInViewModel(this, this)
+        mActivitySignUpBinding.apply {
+            this?.lifecycleOwner = this@SignUpActivity
+            this?.signUpViewModel = signUpViewModel
+        }
     }
 }

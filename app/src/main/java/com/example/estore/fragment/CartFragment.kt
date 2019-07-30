@@ -39,11 +39,9 @@ class CartFragment : Fragment() {
 
         setupAdapter(view)
 
-        Log.e("start","sfasdfasdf")
         userEstore.observe(this@CartFragment, Observer {user ->
             subtotal = 0f
             productList = mutableListOf()
-            Log.e("observe","sfasdfasdf")
             user?.cartList?.map { cart ->
                 database.forEach {
                     if (it.id == cart.idProduct)

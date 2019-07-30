@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.util.Log
 import android.widget.Toast
+import androidx.databinding.ObservableField
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
@@ -24,8 +25,13 @@ class SignInViewModel(
     var email : String? = null
     private var mAuth: FirebaseAuth? = null
     private var databaseRef: DatabaseReference? = null
+    var hideProgressbar : ObservableField<Boolean> = ObservableField(true)
+    var hideButtonSignIn : ObservableField<Boolean> = ObservableField(true)
+    var notice : ObservableField<String> = ObservableField("")
 
     fun onClickSignIn() {
+        hideProgressbar.set(false)
+        hideButtonSignIn.set(true)
         mAuth = FirebaseAuth.getInstance()
         authentication(email, password)
     }
@@ -47,24 +53,28 @@ class SignInViewModel(
                 ?.addOnCompleteListener { p0 ->
                     if (p0.isSuccessful) {
                         val user = mAuth?.currentUser
-
                         if (user != null) {
                             DatabaseEstore.getDatabase(lifecycleOwner, user.uid)
                         }
-                        Toast.makeText(mContext, "Success.", Toast.LENGTH_SHORT).show()
+                        notice.set("Success")
 
-                        DatabaseEstore.databaseFilter.observe(lifecycleOwner, Observer {
+                        DatabaseEstore.signInCheck.observe(lifecycleOwner, Observer {
                             val intent = Intent(mContext, MainActivity::class.java)
                             Log.e("size", "${DatabaseEstore.database.size}")
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             mContext.startActivity(intent)
                         })
+
                     } else {
-                        Toast.makeText(mContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                        hideProgressbar.set(true)
+                        hideButtonSignIn.set(false)
+                        notice.set("Authentication failed")
                     }
                 }
         } else {
-            Toast.makeText(mContext, "Please fill in everything", Toast.LENGTH_SHORT).show()
+            hideProgressbar.set(true)
+            hideButtonSignIn.set(false)
+            notice.set("Please fill in everything")
         }
     }
 
@@ -80,11 +90,11 @@ class SignInViewModel(
                         }
 
                     }else{
-                        Toast.makeText(mContext, "Sign up failed, try again.", Toast.LENGTH_SHORT).show()
+                        notice.set("Sign up failed, try again.")
                     }
                 }
         }else {
-            Toast.makeText(mContext, "Please fill in everything", Toast.LENGTH_SHORT).show()
+            notice.set("Please fill in everything")
         }
     }
 

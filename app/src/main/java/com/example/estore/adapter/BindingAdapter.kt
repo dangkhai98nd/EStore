@@ -14,7 +14,6 @@ class BindingAdapter {
         @BindingAdapter("changeScrollFlags")
         @JvmStatic
         fun CollapsingToolbarLayout.setScrollFlags(scrollNull: Boolean) {
-            Log.e("setScrollFlags null", "$scrollNull")
             val paramsAppBarLayout: AppBarLayout.LayoutParams = this.layoutParams as AppBarLayout.LayoutParams
             if (scrollNull) {
                 paramsAppBarLayout.scrollFlags = 0

@@ -77,7 +77,6 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         })
 
         paramsAppBarLayout = ctlMain.layoutParams as AppBarLayout.LayoutParams
-//        initToolbar()
         initView()
 
     }
@@ -99,27 +98,6 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
 
-    private fun initToolbar() {
-        ic_search.setOnClickListener {
-            ic_search.visibility = View.GONE
-            tvTitle.visibility = View.GONE
-            groupSearch.visibility = View.VISIBLE
-        }
-        ic_close.setOnClickListener {
-            ic_search.visibility = View.VISIBLE
-            tvTitle.visibility = View.VISIBLE
-            groupSearch.visibility = View.GONE
-        }
-        tvSearch.setOnClickListener {
-            if (edtSearch.text.toString() != "") {
-                val intent = Intent(this, SearchResultActivity::class.java)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                intent.putExtra("keyword", edtSearch.text.toString())
-                startActivity(intent)
-            }
-        }
-    }
-
     private fun initView() {
         setupSelectFilter()
         setupRvFilter()
@@ -132,7 +110,6 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
                 this, object : RecyclerViewOnClickListener.OnItemClickListener {
                     override fun onItemClick(view: View, position: Int) {
                         filterAdapter?.setSelectedPosition(position)
-                        Log.e("position filter","$position")
                         when(position)
                         {
                             0 -> {

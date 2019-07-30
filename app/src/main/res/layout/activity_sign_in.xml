@@ -1,133 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
+        <import type="android.view.View"/>
         <variable name="signInViewModel"
                   type="com.example.estore.viewmodel.SignInViewModel"/>
     </data>
 
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/clSignIn"
-    tools:context=".ui.SignInActivity">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                       xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                       xmlns:tools="http://schemas.android.com/tools"
+                                                       android:layout_width="match_parent"
+                                                       android:layout_height="match_parent"
+                                                       android:id="@+id/clSignIn"
+                                                       tools:context=".ui.SignInActivity">
 
-    <ImageView
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:id="@+id/uselessLogo"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:ignore="ContentDescription" />
+        <ImageView
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:id="@+id/uselessLogo"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:ignore="ContentDescription"/>
 
-    <ImageView
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:id="@+id/logoSignIn"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.2"
-        tools:ignore="ContentDescription" />
+        <ImageView
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:id="@+id/logoSignIn"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintVertical_bias="0.2"
+                tools:ignore="ContentDescription"/>
 
-    <LinearLayout
-        android:id="@+id/linear1Si"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical"
-        android:visibility="invisible"
-        android:layout_marginTop="60dp"
-        app:layout_constraintVertical_bias="0.4"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent">
+        <LinearLayout
+                android:id="@+id/linear1Si"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
+                android:visibility="invisible"
+                android:layout_marginTop="60dp"
+                app:layout_constraintVertical_bias="0.4"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent">
 
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+            <EditText
+                    android:id="@+id/emailInput"
+                    android:text="@={signInViewModel.email}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enter_your_email_address"
+                    android:inputType="textEmailAddress"
+                    tools:ignore="Autofill"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
+
+            <EditText
+                    android:id="@+id/passwordInput"
+                    android:text="@={signInViewModel.password}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enter_your_password"
+                    android:inputType="textPassword"
+                    tools:ignore="Autofill"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+                android:id="@+id/linear2Si"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10sp"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="invisible"
+                app:layout_constraintTop_toBottomOf="@id/linear1Si">
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Don't have account? "
+                    tools:ignore="HardcodedText"/>
+
+            <TextView
+                    android:id="@+id/signUp"
+                    android:onClick="@{() -> signInViewModel.onClickChangeActivitySignUp()}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Sign up"
+                    android:textColor="#CC0000"
+                    android:textStyle="bold"
+                    tools:ignore="HardcodedText"/>
+        </LinearLayout>
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/email"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+                android:id="@+id/notice"
+                app:layout_constraintTop_toBottomOf="@id/linear2Si"
+                android:textColor="#CC6600"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@{signInViewModel.notice}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <EditText
-            android:id="@+id/emailInput"
-            android:text="@={signInViewModel.email}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_your_email_address"
-            android:inputType="textEmailAddress"
-            tools:ignore="Autofill" />
+        <Button
+                android:id="@+id/buttonSignIn"
+                android:onClick="@{() -> signInViewModel.onClickSignIn()}"
+                android:layout_width="0dp"
+                android:visibility="@{signInViewModel.hideButtonSignIn ? View.GONE : View.VISIBLE}"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/ic_button_login"
+                android:text="Sign In"
+                android:textStyle="bold"
+                android:textColor="#FFFFFF"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/notice"
+                app:layout_constraintWidth_percent="0.6"
+                tools:ignore="HardcodedText"/>
+        <ProgressBar
+                android:id="@+id/progressbar"
+                android:layout_marginTop="20dp"
+                android:visibility="@{signInViewModel.hideProgressbar ? View.GONE : View.VISIBLE}"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/notice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/password"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <EditText
-            android:id="@+id/passwordInput"
-            android:text="@={signInViewModel.password}"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_your_password"
-            android:inputType="textPassword"
-            tools:ignore="Autofill" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linear2Si"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10sp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        android:visibility="invisible"
-        app:layout_constraintTop_toBottomOf="@id/linear1Si">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Don't have account? "
-            android:textColor="#CC6600"
-            tools:ignore="HardcodedText" />
-
-        <TextView
-            android:id="@+id/signUp"
-            android:onClick="@{() -> signInViewModel.onClickSignUp()}"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Sign up"
-            android:textColor="#CC0000"
-            android:textStyle="bold"
-            tools:ignore="HardcodedText" />
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/buttonSignIn"
-        android:onClick="@{() -> signInViewModel.onClickSignIn()}"
-        android:layout_width="0dp"
-        android:visibility="invisible"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/ic_button_login"
-        android:text="Sign In"
-        android:textStyle="bold"
-        android:textColor="#FFFFFF"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear2Si"
-        app:layout_constraintWidth_percent="0.6"
-        tools:ignore="HardcodedText" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

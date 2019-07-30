@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
+        <import type="android.view.View"/>
         <variable name="signUpViewModel"
                   type="com.example.estore.viewmodel.SignInViewModel"/>
     </data>
@@ -71,7 +72,15 @@
 
 
         </LinearLayout>
-
+        <TextView
+                android:id="@+id/notice"
+                app:layout_constraintTop_toBottomOf="@id/linear1"
+                android:textColor="#CC6600"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:text="@{signUpViewModel.notice}"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
         <Button
                 android:onClick="@{() -> signUpViewModel.onClickSignUp()}"
                 android:layout_width="0dp"
@@ -84,7 +93,7 @@
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/linear1"
+                app:layout_constraintTop_toBottomOf="@id/notice"
                 app:layout_constraintWidth_percent="0.6"/>
 
 
