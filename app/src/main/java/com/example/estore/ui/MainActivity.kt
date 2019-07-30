@@ -3,15 +3,12 @@ package com.example.estore.ui
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.estore.R
 import com.example.estore.adapter.FilterAdapter
@@ -176,39 +173,18 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         toolbarViewModel?.postionNavigation(position)
     }
 
+
     fun sortingNew(): MutableList<Product> {
         val listNewSort = mutableListOf<Product>()
         listNewSort.addAll(database)
-        val size = database.size
-
-        var maxidx: Int
-        for(i in 0 until size){
-            maxidx = i
-            for(j in i+1 until size){
-                if(listNewSort[j].time!! > listNewSort[maxidx].time!!){
-                    maxidx = j
-                }
-                listNewSort[maxidx] = listNewSort[i].also { listNewSort[i] = listNewSort[maxidx] }
-            }
-        }
+        listNewSort.sortByDescending { it.time }
         return listNewSort
     }
 
     fun sortingPrice(): MutableList<Product>{
         val listPriceSort = mutableListOf<Product>()
         listPriceSort.addAll(database)
-        val size = database.size
-
-        var minidx: Int
-        for(i in 0 until size){
-            minidx = i
-            for(j in i+1 until size){
-                if(listPriceSort[j].price!! > listPriceSort[minidx].price!!){
-                    minidx = j
-                }
-                listPriceSort[minidx] = listPriceSort[i].also { listPriceSort[i] = listPriceSort[minidx] }
-            }
-        }
+        listPriceSort.sortByDescending { it.price }
         return listPriceSort
     }
     private fun initBinding() {
