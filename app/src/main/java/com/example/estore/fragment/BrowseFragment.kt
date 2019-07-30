@@ -31,7 +31,7 @@ class BrowseFragment : Fragment() {
 
         databaseFilter.observe(this@BrowseFragment, Observer {
             browseAdapter?.setProducts(it)
-            rvBrowse.layoutManager?.scrollToPosition(0)
+//            rvBrowse.layoutManager?.scrollToPosition(0)
         })
 
         browseAdapter?.setProducts(databaseFilter.value ?: emptyList())

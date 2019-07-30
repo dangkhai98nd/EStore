@@ -48,14 +48,12 @@ class CartFragment : Fragment() {
                     {
                         productList.add(it)
                         subtotal += it.price?.times(cart.quantity ?: 0) ?: 0
-                        cartViewModel?.subtotal?.set(subtotal)
+
                     }
                 }
             }
+            cartViewModel?.subtotal?.set(subtotal)
             cartAdapter?.setData(user?.cartList,productList)
-//            root?.tvSubtotalCart?.text = """${"$"}${1f.times(subtotal)}"""
-//            root?.tvTaxesCart?.text = "\$" + 0.1f.times(subtotal).toString()
-//            root?.tvTotalCart?.text = "\$" + 1.1f.times(subtotal).toString()
         })
 
         userEstore.value?.cartList?.map { cart ->
@@ -64,14 +62,12 @@ class CartFragment : Fragment() {
                 {
                     productList.add(it)
                     subtotal += it.price?.times(cart.quantity ?: 0) ?: 0
-                    cartViewModel?.subtotal?.set(subtotal)
+
                 }
             }
         }
+        cartViewModel?.subtotal?.set(subtotal)
         cartAdapter?.setData(userEstore.value?.cartList,productList)
-//        root?.tvSubtotalCart?.text = """${"$"}${1f.times(subtotal)}"""
-//        root?.tvTaxesCart?.text = "\$" + 0.1f.times(subtotal).toString()
-//        root?.tvTotalCart?.text = "\$" + 1.1f.times(subtotal).toString()
 
     }
 

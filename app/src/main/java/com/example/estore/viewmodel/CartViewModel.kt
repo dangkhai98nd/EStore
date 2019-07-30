@@ -2,7 +2,9 @@ package com.example.estore.viewmodel
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.databinding.Observable
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.example.estore.R
@@ -38,21 +40,31 @@ class CartViewModel(
             textColor = "White"
             url = product?.photoLight
         }
+        quantity.addOnPropertyChangedCallback(object : Observable.OnPropertyChangedCallback() {
+            override fun onPropertyChanged(sender: Observable?, propertyId: Int) {
+                if (quantity.get().isNullOrEmpty())
+                    return
+
+                if (0 < quantity.get()?.toInt() ?: return) {
+                    cart?.quantity = quantity.get()?.toInt()
+                    userEstore.value?.cartList?.set(position ?: return, cart ?: return)
+                    updateUser(userEstore.value)
+                }
+
+            }
+        })
     }
 
     fun increase() {
         cart?.quantity = cart?.quantity?.plus(1)
         quantity.set(cart?.quantity.toString())
-        userEstore.value?.cartList?.set(position ?: return, cart ?: return)
-        updateUser(userEstore.value)
     }
 
     fun decrease() {
+
         if (1 < cart?.quantity ?: return) {
             cart?.quantity = cart?.quantity?.minus(1)
             quantity.set(cart?.quantity.toString())
-            userEstore.value?.cartList?.set(position ?: return, cart ?: return)
-            updateUser(userEstore.value)
         }
     }
 

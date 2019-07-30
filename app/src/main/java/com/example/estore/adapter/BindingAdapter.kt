@@ -2,6 +2,7 @@ package com.example.estore.adapter
 
 import android.util.Log
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
@@ -31,6 +32,12 @@ class BindingAdapter {
                 .load(url)
                 .into(this)
 
+        }
+
+        @BindingAdapter("isSelected")
+        @JvmStatic
+        fun TextView.setIsSelected(boolean: Boolean){
+            this.isSelected = boolean
         }
 
     }
