@@ -9,12 +9,14 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager.widget.ViewPager
 import com.example.estore.R
 import com.example.estore.adapter.FilterAdapter
 import com.example.estore.adapter.ViewPagerMainAdapter
+import com.example.estore.databinding.ActivityMainBinding
 import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.databaseFilter
@@ -22,6 +24,7 @@ import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.utils.CubeInRotationTransformation
 import com.example.estore.utils.RecyclerViewOnClickListener
+import com.example.estore.viewmodel.ToolbarViewModel
 import com.google.android.material.appbar.AppBarLayout
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_main.*
@@ -36,11 +39,13 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
     private lateinit var databaseRef: DatabaseReference
     private var positionSort = 0
     private var doubleBackToExitPressedOnce = false
+    private var mActivityMainBinding: ActivityMainBinding? = null
+    private var toolbarViewModel: ToolbarViewModel? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
+        initBinding()
         databaseRef = FirebaseDatabase.getInstance().getReference("Product")
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(p0: DatabaseError) {
@@ -72,7 +77,7 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         })
 
         paramsAppBarLayout = ctlMain.layoutParams as AppBarLayout.LayoutParams
-        initToolbar()
+//        initToolbar()
         initView()
 
     }
@@ -191,45 +196,11 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         }
         navigation.menu.getItem(position).isChecked = true
         preMenuItem = navigation.menu.getItem(position)
-        when (position) {
-            0 -> {
-                paramsAppBarLayout?.scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL +
-                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
-                tvTitle.text = StringBuilder().append("BROWSE")
-                ic_search.visibility = ImageView.VISIBLE
-                ic_paymentconfirmed.visibility = ImageView.GONE
-                rvFilter.visibility = RecyclerView.VISIBLE
-            }
-            1 -> {
-                paramsAppBarLayout?.scrollFlags = AppBarLayout.LayoutParams.SCROLL_FLAG_SCROLL +
-                        AppBarLayout.LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
-                tvTitle.text = StringBuilder().append("HOT")
-                ic_search.visibility = ImageView.VISIBLE
-                ic_paymentconfirmed.visibility = ImageView.GONE
-                rvFilter.visibility = RecyclerView.VISIBLE
-            }
-            2 -> {
-                paramsAppBarLayout?.scrollFlags = 0
-                tvTitle.text = StringBuilder().append("CART")
-                ic_search.visibility = ImageView.GONE
-                ic_paymentconfirmed.visibility = ImageView.VISIBLE
-                rvFilter.visibility = RecyclerView.GONE
-            }
-            else -> {
-                paramsAppBarLayout?.scrollFlags = 0
-                tvTitle.text = StringBuilder().append("PROFILE")
-                ic_search.visibility = ImageView.GONE
-                ic_paymentconfirmed.visibility = ImageView.GONE
-                rvFilter.visibility = RecyclerView.GONE
-            }
-        }
-        ctlMain.layoutParams = paramsAppBarLayout
-        tvTitle.visibility = View.VISIBLE
-        groupSearch.visibility = View.GONE
+        toolbarViewModel?.postionNavigation(position)
     }
 
     fun sortingNew(): MutableList<Product> {
-        var listNewSort = mutableListOf<Product>()
+        val listNewSort = mutableListOf<Product>()
         listNewSort.addAll(database)
         val size = database.size
 
@@ -263,5 +234,13 @@ class MainActivity : AppCompatActivity(), ViewPager.OnPageChangeListener {
         }
         return listPriceSort
     }
-
+    private fun initBinding() {
+        mActivityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+        toolbarViewModel = ToolbarViewModel(this)
+        mActivityMainBinding.apply {
+            this?.lifecycleOwner = this@MainActivity
+            this?.toolbarViewModel = toolbarViewModel
+        }
+        mActivityMainBinding?.executePendingBindings()
+    }
 }

@@ -1,162 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:fitsSystemWindows="true"
-        android:layout_height="match_parent"
-        tools:context=".ui.MainActivity">
-
-    <com.google.android.material.appbar.AppBarLayout
-            app:layout_constraintTop_toTopOf="parent"
-            android:id="@+id/toolbarMain"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-                android:id="@+id/ctlMain"
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-            <androidx.constraintlayout.widget.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_appbar">
-                <TextView
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:id="@+id/tvTitle"
-                        android:text="@string/browse"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                    android:textColor="#FFFFFF"
-                        android:textSize="18sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"/>
-                <ImageView
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:src="@drawable/ic_searchbutton"
-                        android:id="@+id/ic_search"
-                        android:layout_marginEnd="20dp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"/>
-
-                <ImageView
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        android:src="@drawable/ic_paymentconfirmed"
-                        android:id="@+id/ic_paymentconfirmed"
-                        android:layout_marginEnd="20dp"
-                        android:visibility="gone"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"/>
-
-                <ImageView
-                        android:id="@+id/ic_close"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginStart="20dp"
-                        android:src="@drawable/ic_closebutton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/edtSearch"
-                        android:hint="@string/keyword"
-                        android:maxLines="1"
-                        android:gravity="center|left"
-                        android:imeOptions="actionNext"
-                        android:textSize="18sp"
-                        app:layout_constraintStart_toEndOf="@+id/ic_close"
-                        app:layout_constraintEnd_toStartOf="@id/tvSearch"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:background="@android:color/transparent"
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"/>
-
-                <TextView
-                        android:id="@+id/tvSearch"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        android:layout_marginEnd="20dp"
-                        android:gravity="center"
-                        android:textStyle="bold"
-                        android:text="@string/search"
-                        android:textSize="18sp"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"/>
-
-                <androidx.constraintlayout.widget.Group
-                        android:id="@+id/groupSearch"
-                        app:constraint_referenced_ids="tvSearch,edtSearch,ic_close"
-                        android:visibility="gone"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"/>
-
-                <!--<androidx.constraintlayout.widget.Group-->
-                <!--android:id="@+id/groupNormal"-->
-                <!--app:constraint_referenced_ids="tvTitle,ic_search"-->
-                <!--android:visibility="visible"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"/>-->
-
-                <!--<androidx.constraintlayout.widget.Group-->
-                <!--android:id="@+id/groupCart"-->
-                <!--android:visibility="gone"-->
-                <!--app:constraint_referenced_ids="tvTitle,ic_paymentconfirmed"-->
-                <!--android:layout_width="match_parent"-->
-                <!--android:layout_height="match_parent"/>-->
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvFilter"
-                android:orientation="horizontal"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/height_appbar">
-
-        </androidx.recyclerview.widget.RecyclerView>
-    </com.google.android.material.appbar.AppBarLayout>
-
-    <com.example.estore.utils.NonSwipeableViewPager
-            android:id="@+id/vpMain"
-            app:layout_constraintTop_toBottomOf="@+id/toolbarMain"
-            app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-    </com.example.estore.utils.NonSwipeableViewPager>
+<layout>
+    <data>
+        <import type="android.view.View"/>
+        <variable name="toolbarViewModel"
+                  type="com.example.estore.viewmodel.ToolbarViewModel"/>
+    </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:layout_gravity="bottom"
-            android:id="@+id/clNavigation"
-            app:layout_behavior=".utils.BottomNavigationBehavior"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:fitsSystemWindows="true"
+            android:layout_height="match_parent"
+            tools:context=".ui.MainActivity">
 
-
-        <com.google.android.material.appbar.CollapsingToolbarLayout
-                app:layout_scrollFlags="scroll|enterAlways"
-                android:id="@+id/ctlNavigation"
-                android:layout_gravity="bottom"
+        <com.google.android.material.appbar.AppBarLayout
+                app:layout_constraintTop_toTopOf="parent"
+                android:id="@+id/toolbarMain"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-            <com.google.android.material.bottomnavigation.BottomNavigationView
-                    android:id="@+id/navigation"
-                    android:background="@color/colorPrimary"
-                    app:menu="@menu/navigation"
-                app:itemTextColor="#FFFFFF"
-                app:itemIconTint="#FFFFFF"
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                    android:id="@+id/ctlMain"
+                    app:changeScrollFlags="@{toolbarViewModel.scrollNull}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-            </com.google.android.material.bottomnavigation.BottomNavigationView>
-        </com.google.android.material.appbar.CollapsingToolbarLayout>
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_appbar">
+                    <TextView
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:id="@+id/tvTitle"
+                            android:text="@{toolbarViewModel.tvTitle}"
+                            android:visibility="@{toolbarViewModel.hideTitle ? View.GONE : View.VISIBLE}"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+                    <ImageView
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:src="@drawable/ic_searchbutton"
+                            android:onClick="@{() -> toolbarViewModel.onClickivSearch()}"
+                            android:visibility="@{toolbarViewModel.hideSearch ? View.GONE : View.VISIBLE}"
+                            android:id="@+id/ic_search"
+                            android:layout_marginEnd="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+
+                    <ImageView
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            android:src="@drawable/ic_paymentconfirmed"
+                            android:id="@+id/ic_paymentconfirmed"
+                            android:visibility="@{toolbarViewModel.hidePaymentConfirmed ? View.GONE : View.VISIBLE}"
+                            android:layout_marginEnd="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+
+                    <ImageView
+                            android:id="@+id/ic_close"
+                            android:onClick="@{() -> toolbarViewModel.onClickivClose()}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginStart="20dp"
+                            android:src="@drawable/ic_closebutton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/edtSearch"
+                            android:hint="@string/keyword"
+                            android:textColorHint="@color/colorWhite"
+                            android:text="@={toolbarViewModel.edtSearch}"
+                            android:maxLines="1"
+                            android:gravity="center|left"
+                            android:imeOptions="actionNext"
+                            android:textColor="#FFFFFF"
+                            android:textSize="18sp"
+                            app:layout_constraintStart_toEndOf="@+id/ic_close"
+                            app:layout_constraintEnd_toStartOf="@id/tvSearch"
+                            android:layout_marginLeft="20dp"
+                            android:layout_marginRight="20dp"
+                            android:background="@android:color/transparent"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"/>
+
+                    <TextView
+                            android:id="@+id/tvSearch"
+                            android:textColor="#FFFFFF"
+                            android:onClick="@{() -> toolbarViewModel.onClicktvSearch()}"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            android:layout_marginEnd="20dp"
+                            android:gravity="center"
+                            android:textStyle="bold"
+                            android:text="@string/search"
+                            android:textSize="18sp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"/>
+
+                    <androidx.constraintlayout.widget.Group
+                            android:id="@+id/groupSearch"
+                            app:constraint_referenced_ids="tvSearch,edtSearch,ic_close"
+                            android:visibility="@{toolbarViewModel.hideGroupSearch ? View.GONE : View.VISIBLE}"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                    <!--<androidx.constraintlayout.widget.Group-->
+                    <!--android:id="@+id/groupNormal"-->
+                    <!--app:constraint_referenced_ids="tvTitle,ic_search"-->
+                    <!--android:visibility="visible"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"/>-->
+
+                    <!--<androidx.constraintlayout.widget.Group-->
+                    <!--android:id="@+id/groupCart"-->
+                    <!--android:visibility="gone"-->
+                    <!--app:constraint_referenced_ids="tvTitle,ic_paymentconfirmed"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="match_parent"/>-->
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rvFilter"
+                    android:visibility="@{toolbarViewModel.hidervFilter ? View.GONE : View.VISIBLE}"
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_appbar">
+
+            </androidx.recyclerview.widget.RecyclerView>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <com.example.estore.utils.NonSwipeableViewPager
+                android:id="@+id/vpMain"
+                app:layout_constraintTop_toBottomOf="@+id/toolbarMain"
+                app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+        </com.example.estore.utils.NonSwipeableViewPager>
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:layout_gravity="bottom"
+                android:id="@+id/clNavigation"
+                app:layout_behavior=".utils.BottomNavigationBehavior"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+
+            <com.google.android.material.appbar.CollapsingToolbarLayout
+                    app:layout_scrollFlags="scroll|enterAlways"
+                    android:id="@+id/ctlNavigation"
+                    android:layout_gravity="bottom"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                        android:id="@+id/navigation"
+                        android:background="@color/colorPrimary"
+                        app:menu="@menu/navigation"
+                        app:itemTextColor="#FFFFFF"
+                        app:itemIconTint="#FFFFFF"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                </com.google.android.material.bottomnavigation.BottomNavigationView>
+            </com.google.android.material.appbar.CollapsingToolbarLayout>
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+</layout>

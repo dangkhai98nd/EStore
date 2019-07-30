@@ -4,8 +4,10 @@ import android.util.Log
 import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.appbar.CollapsingToolbarLayout
+import jp.wasabeef.glide.transformations.BlurTransformation
 
 class BindingAdapter {
     companion object {
@@ -29,15 +31,8 @@ class BindingAdapter {
             Glide.with(context)
                 .load(url)
                 .into(this)
+
         }
 
-//        @BindingAdapter("colorProduct")
-//        @JvmStatic
-//        fun CardView.setColorProduct(color : String?) {
-//            if (color == "dark")
-//            {
-//                this.setCardBackgroundColor()
-//            }
-//        }
     }
 }

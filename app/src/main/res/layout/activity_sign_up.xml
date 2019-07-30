@@ -1,81 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.SignUpActivity">
+<layout>
+    <data>
+        <variable name="signUpViewModel"
+                  type="com.example.estore.viewmodel.SignInViewModel"/>
+    </data>
 
-    <LinearLayout
-        android:id="@+id/linear1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                       xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                       xmlns:tools="http://schemas.android.com/tools"
+                                                       android:layout_width="match_parent"
+                                                       android:layout_height="match_parent"
+                                                       tools:context=".ui.SignUpActivity">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/username"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+        <LinearLayout
+                android:id="@+id/linear1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-        <EditText
-            android:id="@+id/userNameSignUpInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_your_username" />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/username"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/email"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <EditText
+                    android:id="@+id/userNameSignUpInput"
+                    android:text="@={signUpViewModel.username}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enter_your_username"/>
 
-        <EditText
-            android:id="@+id/emailSignUpInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_your_email_address"
-            android:inputType="textEmailAddress" />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/email"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/password"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            <EditText
+                    android:id="@+id/emailSignUpInput"
+                    android:text="@={signUpViewModel.email}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enter_your_email_address"
+                    android:inputType="textEmailAddress"/>
 
-        <EditText
-            android:id="@+id/passwordSignUpInput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/enter_your_password"
-            android:inputType="textPassword" />
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password"
+                    android:textColor="#000000"
+                    android:textSize="20sp"
+                    android:textStyle="bold"/>
 
-
-    </LinearLayout>
-
-    <Button
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_button_login"
-        android:text="@string/sign_up"
-        android:layout_marginTop="20dp"
-        android:id="@+id/buttonSignUp"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/linear1"
-        app:layout_constraintWidth_percent="0.6" />
+            <EditText
+                    android:id="@+id/passwordSignUpInput"
+                    android:text="@={signUpViewModel.password}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/enter_your_password"
+                    android:inputType="textPassword"/>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+
+        <Button
+                android:onClick="@{() -> signUpViewModel.onClickSignUp()}"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/ic_button_login"
+                android:text="@string/sign_up"
+                android:layout_marginTop="20dp"
+                android:id="@+id/buttonSignUp"
+                android:textColor="#FFFFFF"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/linear1"
+                app:layout_constraintWidth_percent="0.6"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
