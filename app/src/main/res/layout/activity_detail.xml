@@ -2,12 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    
-    <data>
-        <variable
-            name="product"
-            type="com.example.estore.ui.DetailViewModel" />
-    </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -280,7 +274,6 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginEnd="4dp"
-                                    android:text=""
                                     tools:ignore="HardcodedText" />
 
                                 <ImageView
@@ -323,13 +316,12 @@
                             app:layout_constraintTop_toTopOf="parent"
                             tools:ignore="ContentDescription" />
 
-                        <EditText
+                        <TextView
                             android:id="@+id/edtQuantityCartDetail"
                             android:layout_width="52dp"
                             android:layout_height="30dp"
                             android:background="@android:color/transparent"
                             android:gravity="center"
-                            android:inputType="numberDecimal"
                             android:text="1"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintStart_toEndOf="@id/ivMinusCartDetail"
@@ -420,7 +412,6 @@
                             android:layout_height="wrap_content"
                             android:elevation="2dp"
                             android:src="@drawable/ic_check_white"
-                            android:visibility="invisible"
                             app:layout_constraintBottom_toBottomOf="@id/buttonAddCartDetail"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintHorizontal_bias="0.9"

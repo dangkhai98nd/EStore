@@ -31,6 +31,7 @@ class DetailActivity : AppCompatActivity() {
         setContentView(R.layout.activity_detail)
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_detail)
+        val behavior = BottomSheetBehavior.from(bottom_sheet)
         intent
         val position = intent.getIntExtra("position", -1)
         viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
@@ -63,7 +64,7 @@ class DetailActivity : AppCompatActivity() {
                 .into(binding.productPhotoDetail)
             Glide.with(this)
                 .load(it)
-                .into(binding.imageCartInSheet)
+                .into(binding.imageInSheet)
         })
         viewModel.rating.observe(this, Observer {
             when (it) {
@@ -106,8 +107,8 @@ class DetailActivity : AppCompatActivity() {
             if (it) {
                 binding.apply {
                     buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
-                    imageCartCheck.visibility = View.VISIBLE
                     buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
+                    imageCartCheck.visibility = View.VISIBLE
                     darkButtonDetail.isEnabled = false
                     lightButtonDetail.isEnabled = false
                     ivAddCartDetail.isEnabled = false
@@ -116,13 +117,20 @@ class DetailActivity : AppCompatActivity() {
                     if (viewModel.colorChoose == "dark") {
                         darkButtonDetail.isChecked = true
                     } else lightButtonDetail.isChecked = true
+
+                    if (behavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    }
+                    Handler().postDelayed({
+                        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }, 2000)
                 }
             } else {
                 binding.apply {
                     viewModel.colorChoose.let { it1 -> viewModel.getImage(it1) }
                     buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_login)
-                    imageCartCheck.visibility = View.INVISIBLE
                     buttonAddCartDetail.text = StringBuilder().append("ADD TO CART")
+                    imageCartCheck.visibility = View.INVISIBLE
                     darkButtonDetail.isEnabled = true
                     lightButtonDetail.isEnabled = true
                     ivAddCartDetail.isEnabled = true
@@ -135,7 +143,7 @@ class DetailActivity : AppCompatActivity() {
             }
         })
         viewModel.quantity.observe(this, Observer {
-            binding.edtQuantityCartDetail.setText(it.toString())
+            binding.edtQuantityCartDetail.text = it.toString()
         })
         viewModel.numberLike.observe(this, Observer {
             binding.tvLikeCounterDetail.text = StringBuilder().append(it).append(" likes")
@@ -149,8 +157,6 @@ class DetailActivity : AppCompatActivity() {
         viewModel.getTrending()
         viewModel.getFavoriteButton()
         viewModel.getNumberLike()
-
-        val behavior = BottomSheetBehavior.from(bottom_sheet)
 
         initToolbar()
 
@@ -221,19 +227,17 @@ class DetailActivity : AppCompatActivity() {
             viewModel.getRating()
         }
 
-        binding.buttonAddCartDetail.setOnClickListener {
-            if (viewModel.cartAdded.value == false) {
-                viewModel.cartAdded.value = true
-                if (behavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                    behavior.state = BottomSheetBehavior.STATE_EXPANDED
+        binding.apply{
+            buttonAddCartDetail.setOnClickListener {
+                if (viewModel.cartAdded.value == false) {
+                    viewModel.cartAdded.value = true
+
+                } else {
+                    viewModel.cartAdded.value = false
                 }
-                Handler().postDelayed({
-                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                }, 2000)
-            } else {
-                viewModel.cartAdded.value = false
             }
         }
+
 
         binding.ivAddCartDetail.setOnClickListener {
             viewModel.quantity.value = viewModel.quantity.value?.plus(1)
