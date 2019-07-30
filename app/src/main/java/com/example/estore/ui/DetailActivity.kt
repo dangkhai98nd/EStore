@@ -220,24 +220,6 @@ class DetailActivity : AppCompatActivity() {
             viewModel.getRating()
         }
 
-        binding.apply{
-            buttonAddCartDetail.setOnClickListener {
-                if (viewModel.cartAdded.value == false) {
-                    viewModel.cartAdded.value = true
-
-                    if (behavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
-                    }
-                    Handler().postDelayed({
-                        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                    }, 2000)
-
-                } else {
-                    viewModel.cartAdded.value = false
-                }
-            }
-        }
-
 
         binding.ivAddCartDetail.setOnClickListener {
             viewModel.quantity.value = viewModel.quantity.value?.plus(1)
@@ -267,16 +249,24 @@ class DetailActivity : AppCompatActivity() {
                 viewModel.removeFavorite()
             }
         }
-
-        binding.buttonAddCartDetail.setOnClickListener {
-            if(viewModel.cartAdded.value == true){
-                viewModel.removeCart()
-                viewModel.cartAdded.value = false
-            }else {
-                viewModel.addCart()
-                viewModel.cartAdded.value = true
+        binding.apply{
+            buttonAddCartDetail.setOnClickListener {
+                if(viewModel.cartAdded.value == true){
+                    viewModel.removeCart()
+                    viewModel.cartAdded.value = false
+                }else {
+                    viewModel.addCart()
+                    viewModel.cartAdded.value = true
+                    if (behavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    }
+                    Handler().postDelayed({
+                        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }, 2000)
+                }
             }
         }
+
 
         setUpAdapter(viewModel.productDetail.listUserLike)
 
