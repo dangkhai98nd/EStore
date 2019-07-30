@@ -77,9 +77,8 @@ class ViewPagerHotAdapter(
         fun bind(position: Int) {
             Glide.with(containerView)
                 .load(products[position].photoDark)
-                .apply(bitmapTransform(BlurTransformation(10, 1)))
                 .thumbnail(Glide.with(mContext).load(R.drawable.load))
-                .fitCenter()
+                .apply(bitmapTransform(BlurTransformation(10, 1)))
                 .into(ivProductLargeCart)
         }
     }

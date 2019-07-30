@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <variable name="signInViewModel"
+                  type="com.example.estore.viewmodel.SignInViewModel"/>
+    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -51,6 +57,7 @@
 
         <EditText
             android:id="@+id/emailInput"
+            android:text="@={signInViewModel.email}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_your_email_address"
@@ -67,6 +74,7 @@
 
         <EditText
             android:id="@+id/passwordInput"
+            android:text="@={signInViewModel.password}"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="@string/enter_your_password"
@@ -95,6 +103,7 @@
 
         <TextView
             android:id="@+id/signUp"
+            android:onClick="@{() -> signInViewModel.onClickSignUp()}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Sign up"
@@ -105,6 +114,7 @@
 
     <Button
         android:id="@+id/buttonSignIn"
+        android:onClick="@{() -> signInViewModel.onClickSignIn()}"
         android:layout_width="0dp"
         android:visibility="invisible"
         android:layout_height="wrap_content"
@@ -120,3 +130,4 @@
         tools:ignore="HardcodedText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

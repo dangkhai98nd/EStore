@@ -36,7 +36,7 @@ class DatabaseEstore {
             firebaseFunction.estoreGetProductAll()
         }
 
-        fun updatauser(user : User ) {
+        fun updateUser(user : User?) {
             userEstore.value = user
         }
     }

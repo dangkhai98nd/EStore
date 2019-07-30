@@ -5,27 +5,34 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.estore.R
 import com.example.estore.adapter.CartAdapter
+import com.example.estore.databinding.FragmentCartBinding
 import com.example.estore.model.DatabaseEstore.Companion.database
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
+import com.example.estore.viewmodel.CartViewModel
 import kotlinx.android.synthetic.main.fragment_cart.*
 import kotlinx.android.synthetic.main.fragment_cart.view.*
 
 class CartFragment : Fragment() {
     private var cartAdapter: CartAdapter? = null
-    private var subtotal: Int = 0
-    private var root: View? = null
+    private var subtotal: Float = 0f
+//    private var root: View? = null
     private var productList: MutableList<Product> = mutableListOf()
+    private var fragmentCartBinding : FragmentCartBinding? = null
+    private var cartViewModel : CartViewModel? = null
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        root = inflater.inflate(R.layout.fragment_cart, container, false)
-        return root
+        fragmentCartBinding = DataBindingUtil.inflate(inflater,R.layout.fragment_cart, container, false)
+        cartViewModel = CartViewModel()
+        fragmentCartBinding?.cartViewModel = cartViewModel
+        return fragmentCartBinding?.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -34,7 +41,7 @@ class CartFragment : Fragment() {
 
         Log.e("start","sfasdfasdf")
         userEstore.observe(this@CartFragment, Observer {user ->
-            subtotal = 0
+            subtotal = 0f
             productList = mutableListOf()
             Log.e("observe","sfasdfasdf")
             user?.cartList?.map { cart ->
@@ -43,13 +50,14 @@ class CartFragment : Fragment() {
                     {
                         productList.add(it)
                         subtotal += it.price?.times(cart.quantity ?: 0) ?: 0
+                        cartViewModel?.subtotal?.set(subtotal)
                     }
                 }
             }
             cartAdapter?.setData(user?.cartList,productList)
-            root?.tvSubtotalCart?.text = """${"$"}${1f.times(subtotal)}"""
-            root?.tvTaxesCart?.text = "\$" + 0.1f.times(subtotal).toString()
-            root?.tvTotalCart?.text = "\$" + 1.1f.times(subtotal).toString()
+//            root?.tvSubtotalCart?.text = """${"$"}${1f.times(subtotal)}"""
+//            root?.tvTaxesCart?.text = "\$" + 0.1f.times(subtotal).toString()
+//            root?.tvTotalCart?.text = "\$" + 1.1f.times(subtotal).toString()
         })
 
         userEstore.value?.cartList?.map { cart ->
@@ -58,13 +66,14 @@ class CartFragment : Fragment() {
                 {
                     productList.add(it)
                     subtotal += it.price?.times(cart.quantity ?: 0) ?: 0
+                    cartViewModel?.subtotal?.set(subtotal)
                 }
             }
         }
         cartAdapter?.setData(userEstore.value?.cartList,productList)
-        root?.tvSubtotalCart?.text = """${"$"}${1f.times(subtotal)}"""
-        root?.tvTaxesCart?.text = "\$" + 0.1f.times(subtotal).toString()
-        root?.tvTotalCart?.text = "\$" + 1.1f.times(subtotal).toString()
+//        root?.tvSubtotalCart?.text = """${"$"}${1f.times(subtotal)}"""
+//        root?.tvTaxesCart?.text = "\$" + 0.1f.times(subtotal).toString()
+//        root?.tvTotalCart?.text = "\$" + 1.1f.times(subtotal).toString()
 
     }
 

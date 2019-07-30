@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <androidx.constraintlayout.widget.ConstraintLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
@@ -28,6 +29,7 @@
                     android:text="@string/search_result"
                     android:id="@+id/tvTitleSearch"
                     android:gravity="center"
+                    android:textColor="@color/colorWhite"
                     android:textStyle="bold"
                     android:textSize="18sp"
                     android:layout_width="wrap_content"
@@ -55,10 +57,12 @@
             <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/edtSearchSearch"
                     android:hint="@string/keyword"
+                    android:textColorHint="@color/colorWhite"
                     android:maxLines="1"
                     android:gravity="center|left"
                     android:imeOptions="actionNext"
                     android:textSize="18sp"
+                    android:textColor="@color/colorWhite"
                     app:layout_constraintStart_toEndOf="@+id/ic_closeSearch"
                     app:layout_constraintEnd_toStartOf="@id/tvSearchSearch"
                     android:layout_marginLeft="20dp"
@@ -74,6 +78,7 @@
                     app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginEnd="20dp"
                     android:gravity="center"
+                    android:textColor="@color/colorWhite"
                     android:textStyle="bold"
                     android:text="@string/search"
                     android:textSize="18sp"
@@ -102,6 +107,7 @@
             <TextView
                     android:id="@+id/tvResult"
                     android:textSize="16sp"
+                    android:textColor="@color/colorWhite"
                     android:gravity="center|left"
                     android:layout_marginStart="20dp"
                     android:layout_width="match_parent"

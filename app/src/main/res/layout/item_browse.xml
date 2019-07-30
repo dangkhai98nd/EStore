@@ -1,188 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-        xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        app:cardCornerRadius="10dp"
-        android:id="@+id/cvItemBrowse"
-        app:cardElevation="0dp"
-        android:layout_margin="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="300dp">
+<layout>
+    <data>
+        <import type="com.example.estore.R.drawable"/>
+        <import type="android.view.View"/>
+        <variable name="browseViewModel" type="com.example.estore.viewmodel.BrowseViewModel"/>
+    </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/productFieldBrowse"
+    <androidx.cardview.widget.CardView
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            xmlns:tools="http://schemas.android.com/tools"
+            app:cardCornerRadius="10dp"
+            android:onClick="@{() -> browseViewModel.detail()}"
+            android:id="@+id/cvItemBrowse"
+            app:cardElevation="0dp"
+            android:layout_margin="5dp"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="300dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/productField1Browse"
+                android:id="@+id/productFieldBrowse"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.7"
-                app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                    android:id="@+id/buttonHeartBrowse"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="16dp"
-                    android:src="@drawable/ic_heartitemdisabled"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription"/>
-
-            <ImageView
-                    android:id="@+id/buttonFavoriteBrowse"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="20dp"
-                    android:src="@drawable/ic_favoriteditemdisabled"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    tools:ignore="ContentDescription"/>
-
-            <ImageView
-                    android:id="@+id/ivProductBrowse"
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_marginStart="12dp"
-                    android:layout_marginEnd="12dp"
-                    android:layout_marginBottom="6dp"
-                android:layout_marginTop="12dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/clTrendingBrowse"
-                    app:layout_constraintEnd_toStartOf="@id/buttonFavoriteBrowse"
-                    app:layout_constraintStart_toEndOf="@id/buttonHeartBrowse"
-                    app:layout_constraintTop_toTopOf="@id/buttonFavoriteBrowse"
-                    app:layout_constraintVertical_bias="1"
-                    tools:ignore="ContentDescription"/>
+                android:layout_height="match_parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                    android:id="@+id/clTrendingBrowse"
-                    android:layout_marginBottom="12dp"
-                    app:layout_constraintStart_toStartOf="@id/buttonHeartBrowse"
-                    app:layout_constraintBottom_toBottomOf="@+id/productField1Browse"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:id="@+id/productField1Browse"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintHeight_percent="0.7"
+                    app:layout_constraintTop_toTopOf="parent">
+
                 <ImageView
-                        android:id="@+id/icTrendingBrowse"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"
-                        android:src="@drawable/ic_flag"
+                        android:id="@+id/buttonHeartBrowse"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                    tools:ignore="ContentDescription" />
-                <TextView
-                        android:id="@+id/tvTrendingBrowse"
-                        android:layout_marginStart="10dp"
-                        app:layout_constraintTop_toTopOf="@+id/icTrendingBrowse"
-                        app:layout_constraintBottom_toBottomOf="@+id/icTrendingBrowse"
-                        app:layout_constraintStart_toEndOf="@+id/icTrendingBrowse"
-                        android:text="@string/trending"
-                        android:textColor="@color/colorRed"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="16dp"
+                        android:onClick="@{() -> browseViewModel.buttonHeartBrowse()}"
+                        android:src="@{browseViewModel.icHeart}"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription"/>
+
+                <ImageView
+                        android:id="@+id/buttonFavoriteBrowse"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="20dp"
+                        android:onClick="@{() -> browseViewModel.buttonFavoriteBrowse()}"
+                        android:src="@{browseViewModel.icFavourite}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="ContentDescription"/>
+
+                <ImageView
+                        android:id="@+id/ivProductBrowse"
+                        app:imageURL="@{browseViewModel.product.photoDark}"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginEnd="12dp"
+                        android:layout_marginBottom="6dp"
+                        android:layout_marginTop="12dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/clTrendingBrowse"
+                        app:layout_constraintEnd_toStartOf="@id/buttonFavoriteBrowse"
+                        app:layout_constraintStart_toEndOf="@id/buttonHeartBrowse"
+                        app:layout_constraintTop_toTopOf="@id/buttonFavoriteBrowse"
+                        app:layout_constraintVertical_bias="1"
+                        tools:ignore="ContentDescription"/>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/clTrendingBrowse"
+                        android:visibility="@{browseViewModel.product.trending ? View.VISIBLE : View.GONE}"
+                        android:layout_marginBottom="12dp"
+                        app:layout_constraintStart_toStartOf="@id/buttonHeartBrowse"
+                        app:layout_constraintBottom_toBottomOf="@+id/productField1Browse"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+                    <ImageView
+                            android:id="@+id/icTrendingBrowse"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:src="@drawable/ic_flag"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            tools:ignore="ContentDescription"/>
+                    <TextView
+                            android:id="@+id/tvTrendingBrowse"
+                            android:layout_marginStart="10dp"
+                            app:layout_constraintTop_toTopOf="@+id/icTrendingBrowse"
+                            app:layout_constraintBottom_toBottomOf="@+id/icTrendingBrowse"
+                            app:layout_constraintStart_toEndOf="@+id/icTrendingBrowse"
+                            android:text="@string/trending"
+                            android:textColor="@color/colorRed"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintHeight_percent="0.3"
+                    app:layout_constraintTop_toBottomOf="@id/productField1Browse">
+
+                <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_line"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintWidth_percent="0.92"
+                        tools:ignore="ContentDescription"/>
+
+                <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintEnd_toStartOf="@id/tvProductPriceBrowse"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        android:layout_marginStart="20dp"
+                        android:layout_marginTop="12dp"
+                        android:layout_marginEnd="20dp"
+                        android:id="@+id/reLayoutBrowse">
+                    <TextView
+                            android:id="@+id/tvProductNameBrowse"
+                            android:layout_width="800dp"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:singleLine="true"
+                            android:text="@{browseViewModel.product.name}"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            tools:ignore="HardcodedText"/>
+                </RelativeLayout>
+
+                <TextView
+                        android:id="@+id/tvProductPriceBrowse"
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="20dp"
+                        android:text="@{browseViewModel.convertInttoStrPrice(browseViewModel.product.price)}"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="@id/reLayoutBrowse"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/reLayoutBrowse"
+                        android:gravity="end"
+                        tools:ignore="HardcodedText"/>
+
+                <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/reLayoutBrowse">
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="4dp"
+                            android:src="@drawable/ic_favorite_black_24dp"
+                            tools:ignore="ContentDescription"/>
+
+                    <TextView
+                            android:id="@+id/tvLikeCounterBrowse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="4dp"
+                            android:text="@{browseViewModel.getLikeCounter(browseViewModel.likeCounter)}"
+                            tools:ignore="HardcodedText"/>
+
+                    <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="4dp"
+                            android:src="@drawable/ic_comment"
+                            tools:ignore="ContentDescription"/>
+
+                    <TextView
+                            android:id="@+id/tvCommentCounterBrowse"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:text="@{browseViewModel.getCommentCounter(browseViewModel.commentCounter)}"
+                            tools:ignore="HardcodedText"/>
+                </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                app:layout_constraintHeight_percent="0.3"
-                app:layout_constraintTop_toBottomOf="@id/productField1Browse">
-
-            <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/ic_line"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintWidth_percent="0.92"
-                    tools:ignore="ContentDescription"/>
-
-            <RelativeLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toStartOf="@id/tvProductPriceBrowse"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="12dp"
-                android:layout_marginEnd="20dp"
-                android:id="@+id/reLayoutBrowse">
-                <TextView
-                    android:id="@+id/tvProductNameBrowse"
-                    android:layout_width="800dp"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:singleLine="true"
-                    android:text="some thing to demo don't mind it, lorem ipsum blabla i don't remember, bla bla bla bla bla"
-                    android:textColor="#000000"
-                    android:textSize="20sp"
-                    tools:ignore="HardcodedText"/>
-            </RelativeLayout>
-
-            <TextView
-                    android:id="@+id/tvProductPriceBrowse"
-                    android:layout_width="60dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="20dp"
-                    android:text="$300"
-                    android:textSize="16sp"
-                    app:layout_constraintBottom_toBottomOf="@id/reLayoutBrowse"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@id/reLayoutBrowse"
-                    android:gravity="end"
-                    tools:ignore="HardcodedText"/>
-
-            <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/reLayoutBrowse">
-
-                <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="4dp"
-                        android:src="@drawable/ic_favorite_black_24dp"
-                        tools:ignore="ContentDescription"/>
-
-                <TextView
-                        android:id="@+id/tvLikeCounterBrowse"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="4dp"
-                        android:text="23 likes"
-                        tools:ignore="HardcodedText"/>
-
-                <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="4dp"
-                        android:src="@drawable/ic_comment"
-                        tools:ignore="ContentDescription"/>
-
-                <TextView
-                        android:id="@+id/tvCommentCounterBrowse"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:text="123 comments"
-                        tools:ignore="HardcodedText"/>
-            </LinearLayout>
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-</androidx.cardview.widget.CardView>
+    </androidx.cardview.widget.CardView>
+</layout>

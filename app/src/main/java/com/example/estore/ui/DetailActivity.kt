@@ -11,9 +11,8 @@ import com.bumptech.glide.Glide
 import com.example.estore.FirebaseFunction
 import com.example.estore.R
 import com.example.estore.adapter.ListLikeAdapter
-import com.example.estore.model.DatabaseEstore
 import com.example.estore.model.DatabaseEstore.Companion.database
-import com.example.estore.model.DatabaseEstore.Companion.updatauser
+import com.example.estore.model.DatabaseEstore.Companion.updateUser
 import com.example.estore.model.DatabaseEstore.Companion.userEstore
 import com.example.estore.model.Product
 import com.example.estore.model.ProductCart
@@ -278,13 +277,13 @@ class DetailActivity : AppCompatActivity() {
             favoriteClick = if(!favoriteClick){
                 buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
                 productDetail.id?.let { it1 -> userEstore.value?.listFavorite?.add(it1) }
-                updatauser(userEstore.value!!)
+                updateUser(userEstore.value!!)
                 firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
                 true
             }else{
                 buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
                 productDetail.id?.let { it1 -> userEstore.value?.listFavorite?.remove(it1) }
-                updatauser(userEstore.value!!)
+                updateUser(userEstore.value!!)
                 firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
                 false
             }
@@ -345,7 +344,7 @@ class DetailActivity : AppCompatActivity() {
                 buttonAddCartDetail.text = StringBuilder().append("ADD TO CART")
                 val i = userEstore.value?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
                 userEstore.value?.cartList?.removeAt(i!!)
-                updatauser(userEstore.value!!)
+                updateUser(userEstore.value!!)
                 firebaseFunction.updateAny("User", userEstore.value?.id!!, "cartList", userEstore.value?.cartList!!)
 
                 darkButtonDetail.isEnabled = true
