@@ -2,6 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    
+    <data>
+        <variable
+            name="product"
+            type="com.example.estore.ui.DetailViewModel" />
+    </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:layout_width="match_parent"
@@ -234,11 +240,9 @@
                                     android:ellipsize="marquee"
                                     android:marqueeRepeatLimit="marquee_forever"
                                     android:singleLine="true"
-                                    android:text="Some thing to demo don't mind it, lorem ipsum blabla i don't remember, bla bla bla bla bla"
                                     android:textColor="#000000"
                                     android:textSize="20sp"
-                                    android:textStyle="bold"
-                                    tools:ignore="HardcodedText" />
+                                    android:textStyle="bold" />
                             </RelativeLayout>
 
 
@@ -247,7 +251,6 @@
                                 android:layout_width="60dp"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="20dp"
-                                android:text="$300"
                                 android:textSize="16sp"
                                 app:layout_constraintBottom_toBottomOf="@id/reLayoutDetail"
                                 app:layout_constraintEnd_toEndOf="parent"
@@ -277,7 +280,7 @@
                                     android:layout_height="wrap_content"
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginEnd="4dp"
-                                    android:text="23 likes"
+                                    android:text=""
                                     tools:ignore="HardcodedText" />
 
                                 <ImageView
