@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.estore.FirebaseFunction
 import com.example.estore.R
 import com.example.estore.adapter.CartAdapter
 import com.example.estore.databinding.FragmentCartBinding
@@ -23,7 +24,7 @@ import kotlinx.android.synthetic.main.fragment_cart.view.*
 class CartFragment : Fragment() {
     private var cartAdapter: CartAdapter? = null
     private var subtotal: Float = 0f
-//    private var root: View? = null
+    private var firebaseFunction : FirebaseFunction = FirebaseFunction()
     private var productList: MutableList<Product> = mutableListOf()
     private var fragmentCartBinding : FragmentCartBinding? = null
     private var cartViewModel : CartViewModel? = null
@@ -52,6 +53,7 @@ class CartFragment : Fragment() {
                     }
                 }
             }
+            firebaseFunction.updateAny("User",user.id ?: return@Observer,"cartList",user.cartList)
             cartViewModel?.subtotal?.set(subtotal)
             cartAdapter?.setData(user?.cartList,productList)
         })
