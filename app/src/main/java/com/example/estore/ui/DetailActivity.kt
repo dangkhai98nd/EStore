@@ -117,13 +117,6 @@ class DetailActivity : AppCompatActivity() {
                     if (viewModel.colorChoose == "dark") {
                         darkButtonDetail.isChecked = true
                     } else lightButtonDetail.isChecked = true
-
-                    if (behavior.state != BottomSheetBehavior.STATE_EXPANDED) {
-                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
-                    }
-                    Handler().postDelayed({
-                        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-                    }, 2000)
                 }
             } else {
                 binding.apply {
@@ -231,6 +224,13 @@ class DetailActivity : AppCompatActivity() {
             buttonAddCartDetail.setOnClickListener {
                 if (viewModel.cartAdded.value == false) {
                     viewModel.cartAdded.value = true
+
+                    if (behavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                    }
+                    Handler().postDelayed({
+                        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                    }, 2000)
 
                 } else {
                     viewModel.cartAdded.value = false
