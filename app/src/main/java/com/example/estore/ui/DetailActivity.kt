@@ -2,6 +2,7 @@ package com.example.estore.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
@@ -9,19 +10,18 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.example.estore.FirebaseFunction
 import com.example.estore.R
 import com.example.estore.adapter.ListLikeAdapter
 import com.example.estore.databinding.ActivityDetailBinding
 import com.example.estore.model.DatabaseEstore.Companion.database
+import com.example.estore.model.Product
+import com.example.estore.viewmodel.DetailViewModel
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.firebase.database.*
 import kotlinx.android.synthetic.main.activity_detail.*
 
 class DetailActivity : AppCompatActivity() {
-    private var firebaseFunction = FirebaseFunction()
     private var listLikeAdapter: ListLikeAdapter? = null
-    private var listLikeSize = 0
     private lateinit var databaseRef: DatabaseReference
     private lateinit var viewModel: DetailViewModel
     private lateinit var binding: ActivityDetailBinding
@@ -34,6 +34,28 @@ class DetailActivity : AppCompatActivity() {
         intent
         val position = intent.getIntExtra("position", -1)
         viewModel = ViewModelProviders.of(this).get(DetailViewModel::class.java)
+        viewModel.productDetail = database[position]
+
+        databaseRef = FirebaseDatabase.getInstance().getReference("Product")
+        viewModel.productDetail.id?.let {
+            databaseRef.child(it).addValueEventListener(object : ValueEventListener {
+                override fun onCancelled(p0: DatabaseError) {
+
+                }
+
+                override fun onDataChange(p0: DataSnapshot) {
+                    viewModel.productDetail = p0.getValue(Product::class.java)!!
+                    viewModel.getNumberLike()
+                    setUpAdapter(viewModel.productDetail.listUserLike)
+                    listLikeAdapter?.notifyDataSetChanged()
+
+                }
+            })
+        }
+
+
+
+
 
         viewModel.photoLink.observe(this, Observer {
             Glide.with(this)
@@ -71,27 +93,62 @@ class DetailActivity : AppCompatActivity() {
             } else buttonHeartDetail.setImageResource(R.drawable.ic_heartitemdisabled)
         })
         viewModel.trending.observe(this, Observer {
-            if(it){
+            if (it) {
                 binding.clTrendingDetail.visibility = View.VISIBLE
-            }else binding.clTrendingDetail.visibility = View.GONE
+            } else binding.clTrendingDetail.visibility = View.GONE
         })
         viewModel.favoriteClick.observe(this, Observer {
-            if(it){
+            if (it) {
                 binding.buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
-            }else buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
+            } else buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
+        })
+        viewModel.cartAdded.observe(this, Observer {
+            if (it) {
+                binding.apply {
+                    buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
+                    imageCartCheck.visibility = View.VISIBLE
+                    buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
+                    darkButtonDetail.isEnabled = false
+                    lightButtonDetail.isEnabled = false
+                    ivAddCartDetail.isEnabled = false
+                    ivMinusCartDetail.isEnabled = false
+                    edtQuantityCartDetail.isEnabled = false
+                    if (viewModel.colorChoose == "dark") {
+                        darkButtonDetail.isChecked = true
+                    } else lightButtonDetail.isChecked = true
+                }
+            } else {
+                binding.apply {
+                    viewModel.colorChoose.let { it1 -> viewModel.getImage(it1) }
+                    buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_login)
+                    imageCartCheck.visibility = View.INVISIBLE
+                    buttonAddCartDetail.text = StringBuilder().append("ADD TO CART")
+                    darkButtonDetail.isEnabled = true
+                    lightButtonDetail.isEnabled = true
+                    ivAddCartDetail.isEnabled = true
+                    ivMinusCartDetail.isEnabled = true
+                    edtQuantityCartDetail.isEnabled = true
+                    if (viewModel.colorChoose == "dark") {
+                        darkButtonDetail.isChecked = true
+                    } else lightButtonDetail.isChecked = true
+                }
+            }
+        })
+        viewModel.quantity.observe(this, Observer {
+            binding.edtQuantityCartDetail.setText(it.toString())
+        })
+        viewModel.numberLike.observe(this, Observer {
+            binding.tvLikeCounterDetail.text = StringBuilder().append(it).append(" likes")
+            binding.numberLikeDetail.text = StringBuilder().append(it).append(" people like this")
         })
 
 
-        viewModel.productDetail = database[position]
-        viewModel.getImage()
+        viewModel.checkCart()
         viewModel.getRating()
         viewModel.getHeart()
         viewModel.getTrending()
         viewModel.getFavoriteButton()
-        binding.darkButtonDetail.isChecked = true
-        binding.lightButtonDetail.isChecked = false
-
-
+        viewModel.getNumberLike()
 
         val behavior = BottomSheetBehavior.from(bottom_sheet)
 
@@ -104,21 +161,22 @@ class DetailActivity : AppCompatActivity() {
             tvProductNameDetail.isSelected = true
             tvProductPriceDetail.text =
                 StringBuilder().append("$").append(viewModel.productDetail.price)
+            tvCommentCounterDetail.text = StringBuilder().append(viewModel.productDetail.commentCounter).append(" comments")
         }
 
         binding.darkButtonDetail.setOnClickListener {
-            binding.lightButtonDetail.isChecked = false
             viewModel.colorChoose = "dark"
-            viewModel.getImage()
+            binding.lightButtonDetail.isChecked = false
+            viewModel.getImage("dark")
         }
 
         binding.lightButtonDetail.setOnClickListener {
-            binding.darkButtonDetail.isChecked = false
             viewModel.colorChoose = "light"
-            viewModel.getImage()
+            binding.darkButtonDetail.isChecked = false
+            viewModel.getImage("light")
         }
 
-        star5.setOnClickListener {
+        binding.star5.setOnClickListener {
             if (viewModel.star5click) {
                 viewModel.productDetail.rating = 0
             } else {
@@ -127,7 +185,7 @@ class DetailActivity : AppCompatActivity() {
             viewModel.getRating()
         }
 
-        star4.setOnClickListener {
+        binding.star4.setOnClickListener {
             if (viewModel.star4click) {
                 viewModel.productDetail.rating = 0
             } else {
@@ -136,7 +194,7 @@ class DetailActivity : AppCompatActivity() {
             viewModel.getRating()
         }
 
-        star3.setOnClickListener {
+        binding.star3.setOnClickListener {
             if (viewModel.star3click) {
                 viewModel.productDetail.rating = 0
             } else {
@@ -145,7 +203,7 @@ class DetailActivity : AppCompatActivity() {
             viewModel.getRating()
         }
 
-        star2.setOnClickListener {
+        binding.star2.setOnClickListener {
             if (viewModel.star2click) {
                 viewModel.productDetail.rating = 0
             } else {
@@ -154,7 +212,7 @@ class DetailActivity : AppCompatActivity() {
             viewModel.getRating()
         }
 
-        star1.setOnClickListener {
+        binding.star1.setOnClickListener {
             if (viewModel.star1click) {
                 viewModel.productDetail.rating = 0
             } else {
@@ -162,200 +220,63 @@ class DetailActivity : AppCompatActivity() {
             }
             viewModel.getRating()
         }
-//        databaseRef = FirebaseDatabase.getInstance().getReference("Product")
-//        productDetail.id?.let {
-//            databaseRef.child(it).addValueEventListener(object : ValueEventListener {
-//                override fun onCancelled(p0: DatabaseError) {
-//
-//                }
-//
-//                override fun onDataChange(p0: DataSnapshot) {
-//                    productDetail = p0.getValue(Product::class.java)!!
-//                    setUpAdapter(productDetail.listUserLike)
-//                    listLikeAdapter?.notifyDataSetChanged()
-//                    tvLikeCounterDetail.text =
-//                        StringBuilder().append(productDetail.listUserLike.size).append(" likes")
-//                    tvCommentCounterDetail.text =
-//                        StringBuilder().append(productDetail.commentCounter).append(" comments")
-//                    numberLikeDetail.text =
-//                        StringBuilder().append(productDetail.listUserLike.size).append(" people like this")
-//                }
-//            })
-//        }
-//        val index = userEstore.value?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
-//        if (index != null) {
-//            if(index >= 0){
-//                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
-//                imageCartCheck.visibility = View.VISIBLE
-//                buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
-//                darkButtonDetail.isEnabled = false
-//                lightButtonDetail.isEnabled = false
-//
-//                ivAddCartDetail.isEnabled = false
-//                ivMinusCartDetail.isEnabled = false
-//                edtQuantityCartDetail.isEnabled = false
-//
-//                cartAdded = true
-//
-//                quantity = userEstore.value?.cartList?.get(index)?.quantity!!
-//                edtQuantityCartDetail.setText(quantity.toString())
-//                val color = userEstore.value?.cartList?.get(index)?.color
-//                if(color == "dark"){
-//                    darkButtonDetail.isChecked = true
-//                    lightButtonDetail.isChecked = false
-//
-//                    colorChoose = "dark"
-//
-//                    Glide.with(this)
-//                        .load(productDetail.photoDark)
-//                        .thumbnail(Glide.with(this).load(R.drawable.load))
-//                        .into(productPhotoDetail)
-//                    Glide.with(this)
-//                        .load(productDetail.photoDark)
-//                        .thumbnail(Glide.with(this).load(R.drawable.load))
-//                        .into(imageInSheet)
-//                }else{
-//                    darkButtonDetail.isChecked = false
-//                    lightButtonDetail.isChecked = true
-//
-//                    Glide.with(this)
-//                        .load(productDetail.photoLight)
-//                        .thumbnail(Glide.with(this).load(R.drawable.load))
-//                        .into(productPhotoDetail)
-//                    Glide.with(this)
-//                        .load(productDetail.photoLight)
-//                        .thumbnail(Glide.with(this).load(R.drawable.load))
-//                        .into(imageInSheet)
-//
-//                    colorChoose = "light"
-//                }
-//            }else{
-//                Glide.with(this)
-//                    .load(productDetail.photoDark)
-//                    .thumbnail(Glide.with(this).load(R.drawable.load))
-//                    .into(productPhotoDetail)
-//                Glide.with(this)
-//                    .load(productDetail.photoDark)
-//                    .thumbnail(Glide.with(this).load(R.drawable.load))
-//                    .into(imageInSheet)
-//                darkButtonDetail.isChecked = true
-//                lightButtonDetail.isChecked = false
-//                edtQuantityCartDetail.setText(quantity.toString())
-//
-//                ivAddCartDetail.isEnabled = true
-//                ivMinusCartDetail.isEnabled = true
-//                edtQuantityCartDetail.isEnabled = true
-//            }
-//        }
-//        listLikeSize = productDetail.listUserLike.size
-//
-//
 
-//
-//
-//
+        binding.buttonAddCartDetail.setOnClickListener {
+            if (viewModel.cartAdded.value == false) {
+                viewModel.cartAdded.value = true
+                if (behavior.state != BottomSheetBehavior.STATE_EXPANDED) {
+                    behavior.state = BottomSheetBehavior.STATE_EXPANDED
+                }
+                Handler().postDelayed({
+                    behavior.state = BottomSheetBehavior.STATE_COLLAPSED
+                }, 2000)
+            } else {
+                viewModel.cartAdded.value = false
+            }
+        }
+
+        binding.ivAddCartDetail.setOnClickListener {
+            viewModel.quantity.value = viewModel.quantity.value?.plus(1)
+        }
+        binding.ivMinusCartDetail.setOnClickListener {
+            if (viewModel.quantity.value!! > 1) {
+                viewModel.quantity.value = viewModel.quantity.value?.minus(1)
+            }
+        }
+
+        binding.buttonHeartDetail.setOnClickListener {
+            if (viewModel.heartClick.value == false) {
+                viewModel.heartClick.value = true
+                viewModel.addListLike()
+
+            } else {
+                viewModel.heartClick.value = false
+                viewModel.removeListLike()
+            }
+        }
+        binding.buttonFavoriteDetail.setOnClickListener {
+            if (viewModel.favoriteClick.value == false) {
+                viewModel.favoriteClick.value = true
+                viewModel.addListFavorite()
+            } else {
+                viewModel.favoriteClick.value = false
+                viewModel.removeFavorite()
+            }
+        }
+
+        binding.buttonAddCartDetail.setOnClickListener {
+            if(viewModel.cartAdded.value == true){
+                viewModel.removeCart()
+                viewModel.cartAdded.value = false
+            }else {
+                viewModel.addCart()
+                viewModel.cartAdded.value = true
+            }
+        }
+
+        setUpAdapter(viewModel.productDetail.listUserLike)
 
 
-//        buttonFavoriteDetail.setOnClickListener {
-//            viewModel.favoriteClick = if(!viewModel.favoriteClick){
-//                buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditem)
-//                productDetail.id?.let { it1 -> userEstore.value?.listFavorite?.add(it1) }
-//                updateUser(userEstore.value!!)
-//                firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
-//                true
-//            }else{
-//                buttonFavoriteDetail.setImageResource(R.drawable.ic_favoriteditemdisabled)
-//                productDetail.id?.let { it1 -> userEstore.value?.listFavorite?.remove(it1) }
-//                updateUser(userEstore.value!!)
-//                firebaseFunction.updateAny("User", userEstore.value!!.id!!, "listFavorite", userEstore.value!!.listFavorite)
-//                false
-//            }
-//        }
-
-//        buttonHeartDetail.setOnClickListener {
-//            viewModel.heartClick = if(!viewModel.heartClick){
-//                buttonHeartDetail.setImageResource(R.drawable.ic_heartitemenabled)
-//                userEstore.value?.id?.let { it1 -> productDetail.listUserLike.add(it1) }
-//                firebaseFunction.updateAny("Product", productDetail.id!!, "listUserLike", productDetail.listUserLike)
-//                listLikeSize++
-//                listLikeAdapter?.notifyDataSetChanged()
-//                numberLikeDetail.text = StringBuilder().append(listLikeSize).append(" people like this")
-//                tvLikeCounterDetail.text = StringBuilder().append(listLikeSize).append(" likes")
-//                true
-//            }else{
-//                buttonHeartDetail.setImageResource(R.drawable.ic_heartitemdisabled)
-//                userEstore.value?.id?.let { it1 -> productDetail.listUserLike.remove(it1) }
-//                firebaseFunction.updateAny("Product", productDetail.id!!, "listUserLike", productDetail.listUserLike)
-//                listLikeSize--
-//                listLikeAdapter?.notifyDataSetChanged()
-//                numberLikeDetail.text = StringBuilder().append(listLikeSize).append(" people like this")
-//                tvLikeCounterDetail.text = StringBuilder().append(listLikeSize).append(" likes")
-//                false
-//            }
-//        }
-//
-//        buttonAddCartDetail.setOnClickListener {
-//            if(!cartAdded) {
-//                if(quantity > 0){
-//                    if(behavior.state != BottomSheetBehavior.STATE_EXPANDED){
-//                        behavior.state = BottomSheetBehavior.STATE_EXPANDED
-//                    }
-//                    buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_cart_checked)
-//                    imageCartCheck.visibility = View.VISIBLE
-//                    buttonAddCartDetail.text = StringBuilder().append("ADDED TO CART")
-//                    userEstore.value?.cartList?.add(ProductCart(productDetail.id, quantity, colorChoose))
-//                    darkButtonDetail.isEnabled = false
-//                    lightButtonDetail.isEnabled = false
-//
-//                    ivAddCartDetail.isEnabled = false
-//                    ivMinusCartDetail.isEnabled = false
-//                    edtQuantityCartDetail.isEnabled = false
-//
-//                    cartAdded = true
-//                    firebaseFunction.updateAny("Product", productDetail.id!! , "rating", productDetail.rating)
-//                    firebaseFunction.updateAny("User", userEstore.value?.id!!, "cartList", userEstore.value?.cartList!!)
-//                    Handler().postDelayed({
-//                        behavior.state = BottomSheetBehavior.STATE_COLLAPSED
-//                    },2000)
-//                }else{
-//                    Toast.makeText(this, "Number must be larger than 0", Toast.LENGTH_SHORT).show()
-//                }
-//
-//            }else{
-//                buttonAddCartDetail.setBackgroundResource(R.drawable.ic_button_login)
-//                imageCartCheck.visibility = View.INVISIBLE
-//                buttonAddCartDetail.text = StringBuilder().append("ADD TO CART")
-//                val i = userEstore.value?.cartList?.indexOfFirst { it.idProduct == productDetail.id }
-//                userEstore.value?.cartList?.removeAt(i!!)
-//                updateUser(userEstore.value!!)
-//                firebaseFunction.updateAny("User", userEstore.value?.id!!, "cartList", userEstore.value?.cartList!!)
-//
-//                darkButtonDetail.isEnabled = true
-//                lightButtonDetail.isEnabled = true
-//
-//                ivAddCartDetail.isEnabled = true
-//                ivMinusCartDetail.isEnabled = true
-//                edtQuantityCartDetail.isEnabled = true
-//
-//                cartAdded = false
-//            }
-//        }
-//
-//
-//
-//        ivMinusCartDetail.setOnClickListener {
-//            if(quantity > 0){
-//                quantity -= 1
-//                edtQuantityCartDetail.setText(quantity.toString())
-//            }
-//        }
-//        ivAddCartDetail.setOnClickListener {
-//            quantity += 1
-//            edtQuantityCartDetail.setText(quantity.toString())
-//        }
-//
-//
-//        setUpAdapter(productDetail.listUserLike)
     }
 
     private fun initToolbar() {
@@ -379,12 +300,9 @@ class DetailActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
+
     }
 
-    override fun onBackPressed() {
-        finish()
-        super.onBackPressed()
-    }
 
     private fun set5star() {
         binding.apply {
@@ -478,7 +396,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setUpAdapter(listLike: List<String>) {
         listLikeAdapter = ListLikeAdapter(this, listLike)
-        rvListLike.adapter = listLikeAdapter
-        rvListLike.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.rvListLike.adapter = listLikeAdapter
+        binding.rvListLike.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
     }
 }
